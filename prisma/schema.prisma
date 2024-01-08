@@ -1,8 +1,8 @@
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -38,7 +38,7 @@ model Users {
   name        String
   password    String
   location    String
-  phoneNumber Int
+  phoneNumber BigInt
   orders      Orders[]
 }
 
@@ -46,14 +46,22 @@ model Admins {
   id       Int    @id @default(autoincrement())
   name     String
   password String
+  usernam  String
 }
 
 model Orders {
-  id         Int      @id @default(autoincrement())
+  id         Int         @id @default(autoincrement())
   items      Json
   quantity   Int
   totalPrice Float
   date       DateTime
+  status     OrderStatus
   userId     Int
-  user       Users    @relation(fields: [userId], references: [id])
+  user       Users       @relation(fields: [userId], references: [id])
+}
+
+enum OrderStatus {
+  Pending
+  Delivered
+  Preparing
 }
