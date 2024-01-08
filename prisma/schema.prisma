@@ -1,35 +1,35 @@
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
 generator client {
   provider = "prisma-client-js"
 }
 
 model Kitchen {
-  id         Int     @id @default(autoincrement())
-  name       String
-  image      String
-  productsId Int
-  products   Product @relation(fields: [productsId], references: [id])
+  id      Int       @id @default(autoincrement())
+  name    String
+  image   String?
+  Product Product[]
 }
 
 model Product {
-  id          Int       @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   description String
   price       Float
-  image       String
-  category    Category  @relation(fields: [categoryId], references: [id])
+  image       String?
   categoryId  Int
-  kitchens    Kitchen[]
+  kitchenId   Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  kitchen     Kitchen  @relation(fields: [kitchenId], references: [id])
 }
 
 model Category {
   id       Int       @id @default(autoincrement())
   name     String
-  image    String
+  image    String?
   products Product[]
 }
 
@@ -39,7 +39,7 @@ model Users {
   password    String
   location    String
   phoneNumber Int
-  Orders      Orders[]
+  orders      Orders[]
 }
 
 model Admins {
@@ -54,6 +54,6 @@ model Orders {
   quantity   Int
   totalPrice Float
   date       DateTime
-  user       Users    @relation(fields: [userId], references: [id])
   userId     Int
+  user       Users    @relation(fields: [userId], references: [id])
 }
