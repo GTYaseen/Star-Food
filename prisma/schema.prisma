@@ -36,6 +36,7 @@ model Category {
 model Users {
   id          Int      @id @default(autoincrement())
   name        String
+  username    String @unique
   password    String
   location    String
   phoneNumber BigInt
@@ -46,7 +47,7 @@ model Admins {
   id       Int    @id @default(autoincrement())
   name     String
   password String
-  usernam  String
+  username  String @unique
 }
 
 model Orders {
