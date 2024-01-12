@@ -1,0 +1,15 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@font-face {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Rubik-Regular"),
+    url("../../fonts/Rubik-Italic-VariableFont_wght.ttf") format("truetype");
+}
+
+* {
+  font-family: "Rubik", sans-serif;
+}

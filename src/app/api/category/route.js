@@ -24,7 +24,7 @@ export async function GET(req) {
       },
     };
   }
-  let products = await prisma.category.findMany({
+  let category = await prisma.category.findMany({
     where: cat
       ? {
           categoryId: parseInt(cat),
@@ -35,7 +35,7 @@ export async function GET(req) {
       id: "asc",
     },
   });
-  const response = new Response(JSON.stringify(products));
+  const response = new Response(JSON.stringify(category));
   return setCorsHeaders(response);
 }
 export async function POST(req) {
