@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/react": "^2.2.9",
     "@prisma/client": "^5.8.0",
     "autoprefixer": "^10.4.16",
     "axios": "^1.6.5",
     "bcrypt": "^5.1.1",
+    "framer-motion": "^10.18.0",
     "jsonwebtoken": "^9.0.2",
     "next": "14.0.4",
     "postcss": "^8.4.33",
