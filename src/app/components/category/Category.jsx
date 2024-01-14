@@ -48,11 +48,11 @@ export default function Category() {
           ? Array.from({ length: 5 }).map((_, index) => (
               <SkeletonLoading key={index} />
             ))
-          : category.map((item) => (
+          : category.map((item, index) => (
               <li key={item.id} className="cursor-pointer flex-shrink-0">
                 <div>
                   <Card
-                    key={item.id}
+                    key={index}
                     isFooterBlurred
                     radius="lg"
                     className="border-none h-[150px] w-[150px]"
