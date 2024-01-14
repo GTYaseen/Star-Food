@@ -1,8 +1,8 @@
 import React from "react";
-import "./container.css";
+
 function Container({ children, width, ...props }) {
   return (
-    <div className="container" style={{ maxWidth: width }}>
+    <div className="w-full max-w-[1000px] mx-auto my-auto" style={{ maxWidth: width }}>
       {children}
     </div>
   );

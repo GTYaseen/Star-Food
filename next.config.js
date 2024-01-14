@@ -5,6 +5,7 @@ const nextConfig = {
       "https://www.pexels.com/",
       "cdn.discordapp.com",
       "images.pexels.com",
+      "images.unsplash.com",
     ],
   },
 };

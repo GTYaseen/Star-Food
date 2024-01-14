@@ -9,6 +9,8 @@ import { GrFormPrevious } from "react-icons/gr";
 import axios from "axios";
 import { Card, CardFooter, Image, Button, CardBody } from "@nextui-org/react";
 import { IoAddCircleSharp } from "react-icons/io5";
+import Header from "@/app/components/header/Header";
+import Category from "@/app/components/category/category";
 
 function SkeletonLoading() {
   return (
@@ -23,16 +25,12 @@ function Page() {
   const [category, setCategory] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [search, setSearch] = useState("");
-  const [refresh, setRefresh] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `http://localhost:3000/api/category?cat=${search}`
-        );
+        const response = await axios.get(`http://localhost:3000/api/category`);
         setCategory(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -43,9 +41,7 @@ function Page() {
     const fetchData2 = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `http://localhost:3000/api/product?cat=${search}`
-        );
+        const response = await axios.get(`http://localhost:3000/api/product`);
         setProducts(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -56,17 +52,12 @@ function Page() {
 
     fetchData();
     fetchData2();
-  }, [search, refresh]);
+  }, []);
 
   return (
     <div className="bg-[#FBFAF4] h-[100vh]">
-      <div className="bg-white border-b-2">
-        <Container>
-          <div className="text-3xl flex items-center justify-end h-12">
-            <FiMenu />
-          </div>
-        </Container>
-      </div>
+      {/*header*/}
+      <Header />
       <Container>
         <Space height={"3rem"} />
         <p className="text-6xl font-normal flex justify-end items-end">
@@ -74,46 +65,7 @@ function Page() {
         </p>
         <Space height={"3rem"} />
         {/*category top*/}
-        <div className="flex justify-between">
-          <div className="flex items-center">
-            <GrFormPrevious className="text-4xl text-[#FFD143]" />
-            <p className="text-3xl text-[#FFD143] drop-shadow-lg">
-              مشاهدة الكل
-            </p>
-          </div>
-          <p className="text-3xl font-normal drop-shadow-lg ">الاصناف</p>
-        </div>
-        {/*category*/}
-        <Space height={"1rem"} />
-        <ul className="flex flex-row gap-10 overflow-y-auto">
-          {loading
-            ? Array.from({ length: 5 }).map((_, index) => (
-                <SkeletonLoading key={index} />
-              ))
-            : category.map((item) => (
-                <li key={item.id} className="cursor-pointer flex-shrink-0">
-                  <div>
-                    <Card
-                      isFooterBlurred
-                      radius="lg"
-                      className="border-none h-[150px] w-[150px]"
-                    >
-                      <Image
-                        alt={item.name}
-                        className="rounded-3xl"
-                        height={200}
-                        src={item.image}
-                        width={200}
-                      />
-                    </Card>
-                    <p className="text-3xl font-normal text-center">
-                      {item.name}
-                    </p>
-                    <Space height={"1rem"} />
-                  </div>
-                </li>
-              ))}
-        </ul>
+        <Category />
         <Space height={"3rem"} />
         {/*product top*/}
         <div className="flex justify-between">
