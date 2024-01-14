@@ -1,22 +1,21 @@
 import React from "react";
 import { GrFormPrevious } from "react-icons/gr";
 import { useState, useEffect } from "react";
-import { Card, CardFooter, Image, Button, CardBody } from "@nextui-org/react";
+import {
+  Card,
+  CardFooter,
+  Image,
+  Button,
+  CardBody,
+  Skeleton,
+} from "@nextui-org/react";
 import { Space } from "@/app/components/space/Space";
 import axios from "axios";
-
-function SkeletonLoading() {
-  return (
-    <div className="flex flex-col items-center">
-      <div className="w-60 h-60 bg-gray-300 animate-pulse rounded-3xl gap-2"></div>
-      <div className="w-60 h-5 mt-2 bg-gray-300 animate-pulse rounded-full"></div>
-    </div>
-  );
-}
 
 export default function Category() {
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -46,13 +45,26 @@ export default function Category() {
       <ul className="flex flex-row gap-10 overflow-y-auto">
         {loading
           ? Array.from({ length: 5 }).map((_, index) => (
-              <SkeletonLoading key={index} />
+              <li key={index} className="cursor-pointer flex-shrink-0">
+                <div>
+                  <Card
+                    loading
+                    key={index}
+                    radius="lg"
+                    className="border-none h-[150px] w-[150px]"
+                  >
+                    <Skeleton.Image className="rounded-3xl" />
+                  </Card>
+                  <Skeleton.Text className="text-3xl font-normal text-center" />
+                  <Space height={"1rem"} />
+                </div>
+              </li>
             ))
-          : category.map((item, index) => (
+          : category.map((item) => (
               <li key={item.id} className="cursor-pointer flex-shrink-0">
                 <div>
                   <Card
-                    key={index}
+                    key={item.id}
                     isFooterBlurred
                     radius="lg"
                     className="border-none h-[150px] w-[150px]"

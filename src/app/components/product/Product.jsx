@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Card, CardFooter, Image, Button, CardBody } from "@nextui-org/react";
+import { Card, CardFooter, Image, CardBody } from "@nextui-org/react";
 import { GrFormPrevious } from "react-icons/gr";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { Space } from "@/app/components/space/Space";
