@@ -81,7 +81,7 @@ function Page() {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/register", {
+      const response = await axios.post("https://star-food-bay.vercel.app/api/register", {
         name,
         password,
         phoneNumber,
@@ -105,7 +105,7 @@ function Page() {
   };
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/login", {
+      const response = await axios.post("https://star-food-bay.vercel.app/api/login", {
         username,
         password,
       });
