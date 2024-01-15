@@ -14,9 +14,17 @@ function setCorsHeaders(response) {
   return response;
 }
 
-export async function POST(req) {
-  const { name, username, password, phoneNumber, location } = await req.json();
+export default async function handler(req, res) {
+  // Set CORS headers for OPTIONS requests
+  if (req.method === "OPTIONS") {
+    const response = new Response(null);
+    return setCorsHeaders(response);
+  }
+
+  // Continue with CORS headers for POST requests
   try {
+    const { name, username, password, phoneNumber, location } = await req.body;
+
     const hashedPassword = await bcrypt.hash(password, 10);
     let result = await prisma.users.create({
       data: {
@@ -34,13 +42,13 @@ export async function POST(req) {
       { expiresIn: "1h" }
     );
 
-    const response = new Response(
-      JSON.stringify({
-        success: true,
-        result,
-        token,
-      })
-    );
+    const responseBody = {
+      success: true,
+      result,
+      token,
+    };
+
+    const response = new Response(JSON.stringify(responseBody));
     return setCorsHeaders(response);
   } catch (error) {
     console.error("Error during processing:", error);
@@ -60,5 +68,7 @@ export async function POST(req) {
       { status: 500 } // Set a status code indicating an internal server error
     );
     return setCorsHeaders(response);
+  } finally {
+    await prisma.$disconnect();
   }
 }
