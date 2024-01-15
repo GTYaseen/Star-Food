@@ -14,7 +14,7 @@ function setCorsHeaders(response) {
   return response;
 }
 
-export default async function handler(req, res) {
+export async function POST(req) {
   // Set CORS headers for OPTIONS requests
   if (req.method === "OPTIONS") {
     const response = new Response(null);
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
   // Continue with CORS headers for POST requests
   try {
-    const { name, username, password, phoneNumber, location } = await req.body;
+    const { name, username, password, phoneNumber, location } = await req.json();
 
     const hashedPassword = await bcrypt.hash(password, 10);
     let result = await prisma.users.create({

@@ -11,7 +11,7 @@ const corsMiddleware = cors({
   credentials: true,
 });
 
-export default async function handler(req, res) {
+export default async function POST(req, res) {
   // Apply CORS middleware
   await corsMiddleware(req, res);
 
