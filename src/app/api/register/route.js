@@ -29,7 +29,7 @@ export async function POST(req) {
     });
 
     const token = jwt.sign(
-      { userId: result.id, username: result.username },
+      { userId: result.id, username: result.name },
       "user",
       { expiresIn: "1h" }
     );

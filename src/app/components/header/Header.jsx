@@ -3,7 +3,7 @@ import Container from "@/app/components/container/container";
 import { FiMenu } from "react-icons/fi";
 import SideMenu from "./sideMenu/sideMenu";
 
-export default function Header({ user } ) {
+export default function Header({ user }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const sideClick = () => {
