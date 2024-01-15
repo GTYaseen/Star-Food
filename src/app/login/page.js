@@ -81,16 +81,13 @@ function Page() {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/userRegister",
-        {
-          name,
-          password,
-          phoneNumber,
-          location,
-          username,
-        }
-      );
+      const response = await axios.post("http://localhost:3000/api/register", {
+        name,
+        password,
+        phoneNumber,
+        location,
+        username,
+      });
       const token = response.data.token;
       localStorage.setItem("token", token);
       router.push("/kitchens/1");
@@ -108,7 +105,7 @@ function Page() {
   };
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/api/userLogin", {
+      const response = await axios.post("http://localhost:3000/api/login", {
         username,
         password,
       });

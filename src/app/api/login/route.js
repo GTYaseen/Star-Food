@@ -21,10 +21,11 @@ export async function POST(req) {
     });
 
     if (!user) {
-      return new Response(
+      const response = new Response(
         JSON.stringify({ success: false, msg: "User not found" }),
         { status: 404 }
       );
+      return setCorsHeaders(response);
     }
 
     const match = await bcrypt.compare(password, user.password);
@@ -32,35 +33,36 @@ export async function POST(req) {
     if (match) {
       const token = jwt.sign(
         { userId: user.id, username: user.username },
-        "user", // Replace with a secure secret key
+        "user",
         { expiresIn: "1h" }
       );
       const responseBody = {
         success: true,
         token,
-        user: { id: user.id, username: user.username }, // Only include necessary user data
+        user: { id: user.id, username: user.username },
       };
-      return new Response(JSON.stringify(responseBody));
+      const response = new Response(JSON.stringify(responseBody));
+      return setCorsHeaders(response);
     } else {
-      return new Response(
+      const response = new Response(
         JSON.stringify({ success: false, msg: "Wrong password!" }),
         { status: 401 }
       );
+      return setCorsHeaders(response);
     }
   } catch (error) {
     console.error("Error during processing:", error);
 
-    // Log the specific Prisma error if available
     if (error instanceof Error && error.code) {
       console.error("Prisma error:", error.code);
     }
 
-    return new Response(
+    const response = new Response(
       JSON.stringify({ success: false, error: "Internal server error" }),
       { status: 500 }
     );
+    return setCorsHeaders(response);
   } finally {
-    // Close the Prisma client to avoid resource leaks
     await prisma.$disconnect();
   }
 }
