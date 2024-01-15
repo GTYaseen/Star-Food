@@ -12,31 +12,29 @@ function setCorsHeaders(response) {
 }
 export async function GET(req) {
   const searchParams = req.nextUrl.searchParams;
-  const cat = searchParams.get("cat");
-  const query = searchParams.get("query");
+  const id = searchParams.get("id");
 
   let whereClause = {};
 
-  if (query) {
+  if (id) {
     whereClause = {
-      name: {
-        contains: query,
-      },
+      kitchenId: parseInt(id), // Parse id to an integer
     };
   }
-  let category = await prisma.category.findMany({
-    where: cat
-      ? {
-          categoryId: parseInt(cat),
-          ...whereClause,
-        }
-      : whereClause,
-    orderBy: {
-      id: "asc",
-    },
-  });
-  const response = new Response(JSON.stringify(category));
-  return setCorsHeaders(response);
+
+  try {
+    let category = await prisma.category.findMany({
+      where: whereClause,
+      orderBy: {
+        id: "asc",
+      },
+    });
+    const response = new Response(JSON.stringify(category));
+    return setCorsHeaders(response);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return new Response("Internal Server Error", { status: 500 });
+  }
 }
 export async function POST(req) {
   const body = await req.json();
