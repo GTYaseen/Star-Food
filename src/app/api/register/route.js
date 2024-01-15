@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 function setCorsHeaders(response) {
   response.headers.set("Access-Control-Allow-Origin", "*");
-  response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+  response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   response.headers.set(
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization"
@@ -15,16 +15,8 @@ function setCorsHeaders(response) {
 }
 
 export async function POST(req) {
-  // Set CORS headers for OPTIONS requests
-  if (req.method === "OPTIONS") {
-    const response = new Response(null);
-    return setCorsHeaders(response);
-  }
-
-  // Continue with CORS headers for POST requests
+  const { name, username, password, phoneNumber, location } = await req.json();
   try {
-    const { name, username, password, phoneNumber, location } = await req.json();
-
     const hashedPassword = await bcrypt.hash(password, 10);
     let result = await prisma.users.create({
       data: {
@@ -42,13 +34,13 @@ export async function POST(req) {
       { expiresIn: "1h" }
     );
 
-    const responseBody = {
-      success: true,
-      result,
-      token,
-    };
-
-    const response = new Response(JSON.stringify(responseBody));
+    const response = new Response(
+      JSON.stringify({
+        success: true,
+        result,
+        token,
+      })
+    );
     return setCorsHeaders(response);
   } catch (error) {
     console.error("Error during processing:", error);
@@ -68,7 +60,5 @@ export async function POST(req) {
       { status: 500 } // Set a status code indicating an internal server error
     );
     return setCorsHeaders(response);
-  } finally {
-    await prisma.$disconnect();
   }
 }

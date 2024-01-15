@@ -13,7 +13,7 @@ const Category = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`https://star-food-bay.vercel.app/api/category`);
+        const response = await axios.get(`http://localhost:3000/api/category`);
         setCategory(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

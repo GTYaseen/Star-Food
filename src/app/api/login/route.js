@@ -1,63 +1,68 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
-import cors from "cors";
-
 const prisma = new PrismaClient();
 
-const corsMiddleware = cors({
-  origin: "https://star-food-bay.vercel.app",
-  methods: ["POST"],
-  credentials: true,
-});
+function setCorsHeaders(response) {
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  response.headers.set(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+  return response;
+}
 
-export default async function POST(req, res) {
-  // Apply CORS middleware
-  await corsMiddleware(req, res);
+export async function POST(req) {
+  const { username, password } = await req.json();
+  try {
+    const user = await prisma.users.findUnique({
+      where: { username },
+    });
 
-  if (req.method === "POST") {
-    const { username, password } = await req.body;
-
-    try {
-      const user = await prisma.users.findUnique({
-        where: { username },
-      });
-
-      if (!user) {
-        return res.status(404).json({ success: false, msg: "User not found" });
-      }
-
-      const match = await bcrypt.compare(password, user.password);
-
-      if (match) {
-        const token = jwt.sign(
-          { userId: user.id, username: user.username },
-          "user",
-          { expiresIn: "1h" }
-        );
-        const responseBody = {
-          success: true,
-          token,
-          user: { id: user.id, username: user.username },
-        };
-        return res.status(200).json(responseBody);
-      } else {
-        return res.status(401).json({ success: false, msg: "Wrong password!" });
-      }
-    } catch (error) {
-      console.error("Error during processing:", error);
-
-      if (error instanceof Error && error.code) {
-        console.error("Prisma error:", error.code);
-      }
-
-      return res
-        .status(500)
-        .json({ success: false, error: "Internal server error" });
-    } finally {
-      await prisma.$disconnect();
+    if (!user) {
+      const response = new Response(
+        JSON.stringify({ success: false, msg: "User not found" }),
+        { status: 404 }
+      );
+      return setCorsHeaders(response);
     }
-  } else {
-    return res.status(405).end(); // Method Not Allowed
+
+    const match = await bcrypt.compare(password, user.password);
+
+    if (match) {
+      const token = jwt.sign(
+        { userId: user.id, username: user.username },
+        "user",
+        { expiresIn: "1h" }
+      );
+      const responseBody = {
+        success: true,
+        token,
+        user: { id: user.id, username: user.username },
+      };
+      const response = new Response(JSON.stringify(responseBody));
+      return setCorsHeaders(response);
+    } else {
+      const response = new Response(
+        JSON.stringify({ success: false, msg: "Wrong password!" }),
+        { status: 401 }
+      );
+      return setCorsHeaders(response);
+    }
+  } catch (error) {
+    console.error("Error during processing:", error);
+
+    if (error instanceof Error && error.code) {
+      console.error("Prisma error:", error.code);
+    }
+
+    const response = new Response(
+      JSON.stringify({ success: false, error: "Internal server error" }),
+      { status: 500 }
+    );
+    return setCorsHeaders(response);
+  } finally {
+    await prisma.$disconnect();
   }
 }
