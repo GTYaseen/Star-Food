@@ -13,7 +13,7 @@ function setCorsHeaders(response) {
   );
   return response;
 }
-
+const jwtSecret = process.env.JWT_SECRET;
 export async function POST(req) {
   const { name, username, password, phoneNumber, location } = await req.json();
   try {
@@ -30,7 +30,7 @@ export async function POST(req) {
 
     const token = jwt.sign(
       { userId: result.id, username: result.name },
-      "user",
+      jwtSecret,
       { expiresIn: "1h" }
     );
 
@@ -56,8 +56,12 @@ export async function POST(req) {
     }
 
     const response = new Response(
-      JSON.stringify({ success: false, error: "Internal server error" }),
-      { status: 500 } // Set a status code indicating an internal server error
+      JSON.stringify({
+        success: false,
+        error: "Internal server error",
+        details: error.message,
+      }),
+      { status: 500 }
     );
     return setCorsHeaders(response);
   }

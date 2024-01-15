@@ -13,6 +13,8 @@ function setCorsHeaders(response) {
   return response;
 }
 
+const jwtSecret = process.env.JWT_SECRET;
+
 export async function POST(req) {
   const { username, password } = await req.json();
   try {
@@ -33,7 +35,7 @@ export async function POST(req) {
     if (match) {
       const token = jwt.sign(
         { userId: user.id, username: user.username },
-        "user",
+        jwtSecret,
         { expiresIn: "1h" }
       );
       const responseBody = {

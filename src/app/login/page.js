@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { Space } from "@/app/components/space/Space";
 import { Image } from "@nextui-org/react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 function Page() {
   const [username, setUsername] = useState("");
@@ -19,106 +19,70 @@ function Page() {
   const [register, setRegister] = useState(false);
 
   const router = useRouter();
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+  const handleInputFocus = (setter) => {
+    setter(true);
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const handleInputBlur = (setter) => {
+    setter(false);
   };
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleLocationChange = (e) => {
-    setLocation(e.target.value);
-  };
-
-  const handlePhoneNumberChange = (e) => {
-    setPhoneNumber(e.target.value);
-  };
-
-  const handleUsernameFocus = () => {
-    setUsernameFocus(true);
-  };
-
-  const handlePasswordFocus = () => {
-    setPasswordFocus(true);
-  };
-
-  const handleNameFocus = () => {
-    setNameFocus(true);
-  };
-
-  const handleLocationFocus = () => {
-    setLocationFocus(true);
-  };
-
-  const handlePhoneNumberFocus = () => {
-    setPhoneNumberFocus(true);
-  };
-
-  const handelUsernameBlur = () => {
-    setUsernameFocus(false);
-  };
-
-  const handlePasswordBlur = () => {
-    setPasswordFocus(false);
-  };
-
-  const handleNameBlur = () => {
-    setNameFocus(false);
-  };
-
-  const handleLocationBlur = () => {
-    setLocationFocus(false);
-  };
-
-  const handlePhoneNumberBlur = () => {
-    setPhoneNumberFocus(false);
-  };
-
-  const handleRegister = async () => {
-    try {
-      const response = await axios.post("http://localhost:3000/api/register", {
-        name,
-        password,
-        phoneNumber,
-        location,
-        username,
-      });
-      const token = response.data.token;
-      localStorage.setItem("token", token);
-      router.push("/kitchens/1");
-    } catch (error) {
-      console.error("Error during registration:", error);
-
-      if (error.response && error.response.data && error.response.data.error) {
-        // If the server returns an error message, display it to the user
-        alert(error.response.data.error);
-      } else {
-        // For other errors, display a generic message
-        alert("Registration failed. Please try again later.");
-      }
-    }
-  };
   const handleLogin = async () => {
     try {
       const response = await axios.post("http://localhost:3000/api/login", {
         username,
         password,
       });
+
+      // Handle successful login
       const token = response.data.token;
       localStorage.setItem("token", token);
+      alert("Login successful");
       router.push("/kitchens/1");
     } catch (error) {
-      console.error("Error during registration:", error);
+      console.error("Error logging in", error);
 
-      if (error.response && error.response.data && error.response.data.error) {
-        alert(error.response.data.error);
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        console.error("Response headers:", error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response received. Request:", error.request);
       } else {
-        alert("login failed. Please try again later.");
+        // Something happened in setting up the request
+        console.error("Error setting up the request:", error.message);
+      }
+    }
+  };
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/api/register", {
+        username,
+        password,
+        name,
+        location,
+        phoneNumber,
+      });
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      alert("Registration successful");
+      router.push("/kitchens/1");
+    } catch (error) {
+      console.log("Error registering user", error);
+
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        console.error("Response headers:", error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response received. Request:", error.request);
+      } else {
+        // Something happened in setting up the request
+        console.error("Error setting up the request:", error.message);
       }
     }
   };
@@ -145,9 +109,9 @@ function Page() {
               type="text"
               placeholder={usernameFocus ? "" : "اسم المستخدم"}
               value={username}
-              onChange={handleUsernameChange}
-              onFocus={handleUsernameFocus}
-              onBlur={handelUsernameBlur}
+              onChange={(e) => setUsername(e.target.value)}
+              onFocus={() => handleInputFocus(setUsernameFocus)}
+              onBlur={() => handleInputBlur(setUsernameFocus)}
               className="w-[400px] h-12 border rounded-xl bg-[#FFE559] text-black placeholder-[#000000] focus:outline-none text-end p-2 "
               dir="auto"
             />
@@ -156,9 +120,9 @@ function Page() {
               type="text"
               placeholder={nameFocus ? "" : "الاسم الحقيقي"}
               value={name}
-              onChange={handleNameChange}
-              onFocus={handleNameFocus}
-              onBlur={handleNameBlur}
+              onChange={(e) => setName(e.target.value)}
+              onFocus={() => handleInputFocus(setNameFocus)}
+              onBlur={() => handleInputBlur(setNameFocus)}
               className="w-[400px] h-12 border rounded-xl bg-[#FFE559] text-black placeholder-[#000000] focus:outline-none text-end p-2 "
               dir="auto"
             />
@@ -167,9 +131,9 @@ function Page() {
               type="password"
               placeholder={passwordFocus ? "" : "كلمة المرور"}
               value={password}
-              onChange={handlePasswordChange}
-              onFocus={handlePasswordFocus}
-              onBlur={handlePasswordBlur}
+              onChange={(e) => setPassword(e.target.value)}
+              onFocus={() => handleInputFocus(setPasswordFocus)}
+              onBlur={() => handleInputBlur(setPasswordFocus)}
               className="w-[400px] h-12 border rounded-xl bg-[#FFE559] text-black placeholder-[#000000] focus:outline-none text-end p-2 "
               dir="auto"
             />
@@ -178,9 +142,9 @@ function Page() {
               type="text"
               placeholder={locationFocus ? "" : "الموقع"}
               value={location}
-              onChange={handleLocationChange}
-              onFocus={handleLocationFocus}
-              onBlur={handleLocationBlur}
+              onChange={(e) => setLocation(e.target.value)}
+              onFocus={() => handleInputFocus(setLocationFocus)}
+              onBlur={() => handleInputBlur(setLocationFocus)}
               className="w-[400px] h-12 border rounded-xl bg-[#FFE559] text-black placeholder-[#000000] focus:outline-none text-end p-2 "
               dir="auto"
             />
@@ -189,9 +153,9 @@ function Page() {
               type="text"
               placeholder={phoneNumberFocus ? "" : "رقم الهاتف"}
               value={phoneNumber}
-              onChange={handlePhoneNumberChange}
-              onFocus={handlePhoneNumberFocus}
-              onBlur={handlePhoneNumberBlur}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              onFocus={() => handleInputFocus(setPhoneNumberFocus)}
+              onBlur={() => handleInputBlur(setPhoneNumberFocus)}
               className="w-[400px] h-12 border rounded-xl bg-[#FFE559] text-black placeholder-[#000000] focus:outline-none text-end p-2 "
               dir="auto"
             />
@@ -225,20 +189,22 @@ function Page() {
               type="text"
               placeholder={usernameFocus ? "" : "اسم المستخدم"}
               value={username}
-              onChange={handleUsernameChange}
-              onFocus={handleUsernameFocus}
-              onBlur={handelUsernameBlur}
+              onChange={(e) => setUsername(e.target.value)}
+              onFocus={() => handleInputFocus(setUsernameFocus)}
+              onBlur={() => handleInputBlur(setUsernameFocus)}
               className="w-[400px] h-12 border rounded-xl bg-[#FFE559] text-black placeholder-[#000000] focus:outline-none text-end p-2 "
+              dir="auto"
             />
             <Space height={"20px"} />
             <input
               type="password"
               placeholder={passwordFocus ? "" : "كلمة المرور"}
               value={password}
-              onChange={handlePasswordChange}
-              onFocus={handlePasswordFocus}
-              onBlur={handlePasswordBlur}
+              onChange={(e) => setPassword(e.target.value)}
+              onFocus={() => handleInputFocus(setPasswordFocus)}
+              onBlur={() => handleInputBlur(setPasswordFocus)}
               className="w-[400px] h-12 border rounded-xl bg-[#FFE559] text-black placeholder-[#000000] focus:outline-none text-end p-2 "
+              dir="auto"
             />
             <Space height={"20px"} />
             <button
