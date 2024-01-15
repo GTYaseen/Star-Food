@@ -1,7 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { Space } from "@/app/components/space/Space";
-import { Button, Image } from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 function Page() {
   const [username, setUsername] = useState("");
@@ -16,6 +18,7 @@ function Page() {
   const [phoneNumberFocus, setPhoneNumberFocus] = useState(false);
   const [register, setRegister] = useState(false);
 
+  const router = useRouter();
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
   };
@@ -26,15 +29,15 @@ function Page() {
 
   const handleNameChange = (e) => {
     setName(e.target.value);
-  }
+  };
 
   const handleLocationChange = (e) => {
     setLocation(e.target.value);
-  }
+  };
 
   const handlePhoneNumberChange = (e) => {
     setPhoneNumber(e.target.value);
-  }
+  };
 
   const handleUsernameFocus = () => {
     setUsernameFocus(true);
@@ -58,33 +61,81 @@ function Page() {
 
   const handelUsernameBlur = () => {
     setUsernameFocus(false);
-  }
+  };
 
   const handlePasswordBlur = () => {
     setPasswordFocus(false);
-  }
+  };
 
   const handleNameBlur = () => {
     setNameFocus(false);
-  }
+  };
 
   const handleLocationBlur = () => {
     setLocationFocus(false);
-  }
+  };
 
   const handlePhoneNumberBlur = () => {
     setPhoneNumberFocus(false);
-  }
+  };
 
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/userRegister",
+        {
+          name,
+          password,
+          phoneNumber,
+          location,
+          username,
+        }
+      );
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      router.push("/kitchens/1");
+    } catch (error) {
+      console.error("Error during registration:", error);
+
+      if (error.response && error.response.data && error.response.data.error) {
+        // If the server returns an error message, display it to the user
+        alert(error.response.data.error);
+      } else {
+        // For other errors, display a generic message
+        alert("Registration failed. Please try again later.");
+      }
+    }
+  };
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/api/userLogin", {
+        username,
+        password,
+      });
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      router.push("/kitchens/1");
+    } catch (error) {
+      console.error("Error during registration:", error);
+
+      if (error.response && error.response.data && error.response.data.error) {
+        alert(error.response.data.error);
+      } else {
+        alert("login failed. Please try again later.");
+      }
+    }
+  };
   return (
     <div className="bg-gradient-to-r from-yellow-200 via-yellow-300 to-yellow-500 h-screen flex items-center justify-center">
       <div className="w-full max-w-screen-sm bg-[#fff9e6] rounded-[41px] shadow-[13px_17px_9.2px_#ffe50040] p-8">
         <Space height={"15px"} />
-        <Image
+        <center>
+          <Image
             className="flex justify-center items-center"
             alt="Vector"
             src="https://ucarecdn.com/7430de67-5e06-447a-9a27-386343f0f4cf/"
           />
+        </center>
         <Space height={"10px"} />
         {register ? (
           // Register Section
@@ -148,6 +199,14 @@ function Page() {
               dir="auto"
             />
             <Space height={"20px"} />
+            <button
+              className="w-[110px] h-12 bg-[#FFE559] rounded-xl hover:scale-105 duration-300"
+              onClick={handleRegister}
+            >
+              {" "}
+              تسجيل
+            </button>
+            <Space height={"20px"} />
             <p>
               I already have an account{" "}
               <span
@@ -185,7 +244,10 @@ function Page() {
               className="w-[400px] h-12 border rounded-xl bg-[#FFE559] text-black placeholder-[#000000] focus:outline-none text-end p-2 "
             />
             <Space height={"20px"} />
-            <button className="w-[110px] h-12 bg-[#FFE559] rounded-xl ">
+            <button
+              className="w-[110px] h-12 bg-[#FFE559] rounded-xl hover:scale-105 duration-300"
+              onClick={handleLogin}
+            >
               {" "}
               تسجيل الدخول
             </button>

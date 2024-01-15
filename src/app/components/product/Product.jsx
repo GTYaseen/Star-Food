@@ -40,7 +40,7 @@ const Product = () => {
           <Card
             key={index}
             shadow="sm"
-            className="bg-white border-none rounded-3xl w-[230px] drop-shadow-[0_35px_35px_rgba(0,0,0,0.09)]"
+            className="bg-white border-none rounded-3xl w-[230px] shadow-custom"
           >
             <CardBody className="overflow-visible p-0">
               <Image

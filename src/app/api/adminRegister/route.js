@@ -12,6 +12,7 @@ function setCorsHeaders(response) {
   );
   return response;
 }
+
 export async function POST(req) {
   const { name, username, password } = await req.json();
   try {
@@ -32,11 +33,21 @@ export async function POST(req) {
     );
     return setCorsHeaders(response);
   } catch (error) {
+    console.error("Error during processing:", error);
+
+    // Log the specific Prisma error if available
+    if (error instanceof Error && error.code === "P2002") {
+      console.error("Prisma error:", error.code);
+      const response = new Response(
+        JSON.stringify({ success: false, error: "Username already taken" }),
+        { status: 400 } // Set a status code indicating a bad request
+      );
+      return setCorsHeaders(response);
+    }
+
     const response = new Response(
-      JSON.stringify({
-        success: false,
-        error,
-      })
+      JSON.stringify({ success: false, error: "Internal server error" }),
+      { status: 500 } // Set a status code indicating an internal server error
     );
     return setCorsHeaders(response);
   }

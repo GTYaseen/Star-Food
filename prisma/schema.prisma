@@ -42,7 +42,7 @@ model Users {
   username    String   @unique
   password    String
   location    String
-  phoneNumber BigInt
+  phoneNumber String
   orders      Orders[]
 }
 
