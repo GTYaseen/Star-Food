@@ -11,8 +11,7 @@ function setCorsHeaders(response) {
   return response;
 }
 export async function GET(req) {
-  const searchParams = req.nextUrl.searchParams;
-  const id = searchParams.get("id");
+  const id = req.params; // Extract id from the path
 
   let whereClause = {};
 
