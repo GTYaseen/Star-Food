@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { GrFormPrevious } from "react-icons/gr";
 import { useState, useEffect } from "react";
