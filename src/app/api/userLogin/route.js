@@ -51,4 +51,5 @@ export async function POST(req) {
             JSON.stringify({ success: false, error: "Internal server error" })
         );
         return setCorsHeaders(response);
-        }}
+    }
+}

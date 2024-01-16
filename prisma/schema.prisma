@@ -8,10 +8,12 @@ generator client {
 }
 
 model Kitchen {
-  id      Int       @id @default(autoincrement())
-  name    String
-  image   String?
-  Product Product[]
+  id          Int        @id @default(autoincrement())
+  name        String
+  image       String?
+  description String
+  Product     Product[]
+  Category    Category[]
 }
 
 model Product {
@@ -27,10 +29,12 @@ model Product {
 }
 
 model Category {
-  id       Int       @id @default(autoincrement())
-  name     String
-  image    String?
-  products Product[]
+  id        Int       @id @default(autoincrement())
+  name      String
+  image     String?
+  kitchenId Int
+  kitchen   Kitchen   @relation(fields: [kitchenId], references: [id])
+  products  Product[]
 }
 
 model Users {
