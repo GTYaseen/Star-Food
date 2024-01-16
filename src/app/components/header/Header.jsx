@@ -2,7 +2,7 @@ import React from "react";
 import Container from "@/app/components/container/container";
 import { FiMenu } from "react-icons/fi";
 import { Space } from "../space/Space";
-//import { SideMenu } from "../sideMenu/sideMenu";
+import SideMenu from "./sideMenu/sideMenu";
 import { useState } from "react";
 
 
@@ -33,12 +33,12 @@ function Header() {
             </Container>
           </div>
         </div>
-        {/* {openSideMenu && (
-          // <SideMenu
-          //   onMenuItemClick={handleMenuItemClick}
-          //   onClose={() => setOpenSideMenu(false)}
-          // />
-        )} */}
+        {openSideMenu && (
+          <SideMenu
+            onMenuItemClick={handleMenuItemClick}
+            onClose={() => setOpenSideMenu(false)}
+          />
+        )}
         <Space height={"1rem"} />
       </>
   );
