@@ -8,11 +8,12 @@ generator client {
 }
 
 model Kitchen {
-  id       Int        @id @default(autoincrement())
-  name     String
-  image    String?
-  Product  Product[]
-  Category Category[]
+  id          Int        @id @default(autoincrement())
+  name        String
+  image       String?
+  description String
+  Product     Product[]
+  Category    Category[]
 }
 
 model Product {
