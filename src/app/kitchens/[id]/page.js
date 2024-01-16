@@ -8,32 +8,7 @@ import Product from "@/app/components/product/Product";
 import Category from "@/app/components/category/Category";
 import { decodeToken } from "@/app/auth";
 
-async function getData(id) {
-  const product = await fetch(`https://localhost:3000/api/kitchens/${id}`);
-  if (!product.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  return product.json();
-}
-
-export async function generateMetadata({ params, searchParams }, parent) {
-  const id = params.id;
-
-  const data = await getData(id);
-
-  const previousImages = (await parent).openGraph?.images || [];
-
-  return {
-    title: data.name,
-    description: data.description,
-    openGraph: {
-      images: [data.image, ...previousImages],
-    },
-  };
-}
-
-export default async function kitchens({ params }) {
-  let data = await getData(params.id);
+function Page() {
   const [user, setUser] = useState(null);
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -49,13 +24,15 @@ export default async function kitchens({ params }) {
       <Container>
         <Space height={"3rem"} />
         <p className="text-6xl font-normal flex justify-end items-end">
-          {data.name}
+          مطبخ نجمة
         </p>
         <Space height={"3rem"} />
-        <Category data={data} />
+        <Category />
         <Space height={"3rem"} />
-        <Product data={data} />
+        <Product />
       </Container>
     </div>
   );
 }
+
+export default Page;
