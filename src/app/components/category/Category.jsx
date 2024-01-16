@@ -6,7 +6,7 @@ import { Card, Image } from "@nextui-org/react";
 import { Space } from "@/app/components/space/Space";
 import axios from "axios";
 
-const Category = ({data}) => {
+const Category = ({id}) => {
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -14,7 +14,7 @@ const Category = ({data}) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:3000/api/category/${data.id}`);
+        const response = await axios.get(`http://localhost:3000/api/category/${id}`);
         setCategory(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
