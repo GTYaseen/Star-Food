@@ -1,18 +1,19 @@
 "use client";
 import React from 'react';
 import { useState, useEffect } from 'react';
-import Container from './components/container/container';
+
 import Header from './components/header/Header';
 import FavButton from './components/favBtn/favBtn';
 import { Card, CardBody, CardFooter, Image, Button } from "@nextui-org/react";
 import { Space } from './components/space/Space';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { GrFormPrevious } from "react-icons/gr";
 import axios from 'axios';
 
 
 function Home() {
-  const [data, setData] = useState([]);
+  const [kitchens, setKitchens] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [refresh, setRefresh] = useState(0);
@@ -22,9 +23,9 @@ function Home() {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:3000/api/kitchen?cat=${search}`
+        `http://localhost:3000/api/kitchen`
       );
-      setData(response);
+      setKitchens(response.data || []);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -33,11 +34,11 @@ function Home() {
   }
 
   const handleToggleFavorite = (id) => {
-    const updatedKitchens = data.map((kitchen) =>
+    const updatedKitchens = kitchens.map((kitchen) =>
       kitchen.id === id ? { ...kitchen, isFavorite: !kitchen.isFavorite } : kitchen
     );
 
-    setData(updatedKitchens);
+    setKitchens(updatedKitchens);
 
     const updatedFavorites = updatedKitchens.filter((kitchen) => kitchen.isFavorite);
     setFavorites(updatedFavorites);
@@ -52,7 +53,7 @@ function Home() {
   return (
     <Router>
       <>
-
+      
         <Header />
 
         <div className=" ml-6 rounded-[45px]  overflow-hidden w-[98%] h-[25vh] drop-shadow-lg" style={{ backgroundColor: '#FFE559', margin: '5px 5px' }}>
@@ -78,14 +79,13 @@ function Home() {
         <Space height={"1rem"} />
         {/* Kitchens */}
         <div className="gap-[10px] grid grid-cols-2 sm:grid-cols-4 rounded-3xl mx-4">
-          {data.map((item) => (
+          {kitchens.map((item) => (
 
             <Link key={item.id} to={`/kitchens/${item.id}`}>
               <Card
+                key={item.id}
                 shadow="3xl"
-                className="bg-white border-none rounded-3xl w-[200px] h-[250px] custom-shadow ml-6"
-              >
-
+                className="bg-white border-none rounded-3xl w-[200px] h-[250px] custom-shadow ml-6">
                 <CardBody className="overflow-visible p-0">
                   <Image
                     shadow="xl"
