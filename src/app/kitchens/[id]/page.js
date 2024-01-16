@@ -1,11 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Container } from "@/app/components/container/container";
-import Navpar, { Header } from "@/app/components/header/Navpar";
+import AppContainer from "@/app/components/container/container";
+import Navpar from "@/app/components/header/Navpar";
 import { Space } from "@/app/components/space/Space";
 import Category from "@/app/components/category/Category";
 import Product from "@/app/components/product/Product";
 import { decodeToken } from "@/app/auth";
+
+
 
 function Page({ params }) {
   const id = params.id;
@@ -38,12 +40,12 @@ function Page({ params }) {
     fetchData();
   }, [id]);
 
-  const width = 1000;
+  const width = 500;
 
   return (
     <div className="bg-[#FBFAF4] h-screen">
       <Navpar user={user} />
-      <div className={`w-full max-w-[${width}px] mx-auto`}>
+      <AppContainer width={width}>
         <Space height={"3rem"} />
         {/* Use conditional rendering to check if data exists before accessing */}
         {data.length > 0 && (
@@ -56,7 +58,7 @@ function Page({ params }) {
         <Space height={"3rem"} />
         <Product id={id} />
         <Space height={"3rem"} />
-      </div>
+      </AppContainer>
     </div>
   );
 }
