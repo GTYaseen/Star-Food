@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { FaQuestion, FaSignInAlt } from "react-icons/fa";
-import { TbCategory2 } from "react-icons/tb";
 import { MdOutlineContacts } from "react-icons/md";
 import { Image, Link } from "@nextui-org/react";
 import { Space } from "@/app/components/space/Space";
 
-export default function SideMenu({ isMenuOpen, setIsMenuOpen, user }) {
+function SideMenu({ isMenuOpen, setIsMenuOpen, user }) {
   const [name, setName] = useState("");
   const [isLogin, setIsLogin] = useState(false);
 
@@ -64,11 +63,6 @@ export default function SideMenu({ isMenuOpen, setIsMenuOpen, user }) {
                 <FaQuestion />
               </li>
               <li className="flex items-center cursor-pointer">
-                الاصناف
-                <Space width={"5px"} />
-                <TbCategory2 />
-              </li>
-              <li className="flex items-center cursor-pointer">
                 تواصل معنا
                 <Space width={"5px"} />
                 <MdOutlineContacts />
@@ -96,3 +90,4 @@ export default function SideMenu({ isMenuOpen, setIsMenuOpen, user }) {
     </div>
   );
 }
+export default SideMenu;

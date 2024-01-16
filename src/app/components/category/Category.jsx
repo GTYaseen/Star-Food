@@ -14,7 +14,7 @@ const Category = ({id}) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:3000/api/category/${id}`);
+        const response = await axios.get(`https://starserver.onrender.com/api/client/category?id=${id}`);
         setCategory(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

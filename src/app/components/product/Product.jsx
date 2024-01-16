@@ -7,14 +7,14 @@ import { GrFormPrevious } from "react-icons/gr";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { Space } from "@/app/components/space/Space";
 
-const Product = () => {
+const Product = ({id}) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:3000/api/product`);
+        const response = await axios.get(`https://starserver.onrender.com/api/client/product?id=${id}`);
         setProducts(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
