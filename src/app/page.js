@@ -24,7 +24,7 @@ function Home() {
       if(response.data.success === true) {
         setKitchens(response.data.kitchens);
       }
-      console.log(response.data);
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -58,10 +58,11 @@ function Home() {
 
   return (
     <div className="w-full h-full bg-[#FBFAF4] h-screen">
+      
       <Navpar />
       <AppContainer>
         {/*Modal*/}
-        <Space height={"2rem"} />
+        <Space height={"3rem"} />
         <div
           className=" ml-6 rounded-[45px]  overflow-hidden w-[98%] h-[25vh] drop-shadow-lg flex justify-end items-center"
           style={{ backgroundColor: "#FFE559", margin: "5px 5px" }}
