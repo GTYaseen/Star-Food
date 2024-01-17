@@ -1,71 +1,77 @@
 "use client";
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React from "react";
+import { useState, useEffect } from "react";
 
-import Header from './components/header/Header';
-import FavButton from './components/favBtn/favBtn';
+import FavButton from "./components/favBtn/favBtn";
 import { Card, CardBody, CardFooter, Image, Button } from "@nextui-org/react";
-import { Space } from './components/space/Space';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Space } from "./components/space/Space";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { GrFormPrevious } from "react-icons/gr";
-import axios from 'axios';
-
+import axios from "axios";
+import Navpar from "./components/header/Navpar";
+import { useRouter } from "next/navigation";
 
 function Home() {
   const [kitchens, setKitchens] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [search, setSearch] = useState("");
-  const [refresh, setRefresh] = useState(0);
   const [favorites, setFavorites] = useState([]);
+  const router = useRouter();
 
   const getKitchens = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `http://localhost:3000/api/kitchen`
-      );
-      setKitchens(response.data || []);
+      const response = await axios.get(`http://localhost:3000/api/kitchen`);
+      if(response.data.success === true) {
+        setKitchens(response.data.kitchens);
+      }
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const handleToggleFavorite = (id) => {
     const updatedKitchens = kitchens.map((kitchen) =>
-      kitchen.id === id ? { ...kitchen, isFavorite: !kitchen.isFavorite } : kitchen
+      kitchen.id === id
+        ? { ...kitchen, isFavorite: !kitchen.isFavorite }
+        : kitchen
     );
 
     setKitchens(updatedKitchens);
 
-    const updatedFavorites = updatedKitchens.filter((kitchen) => kitchen.isFavorite);
+    const updatedFavorites = updatedKitchens.filter(
+      (kitchen) => kitchen.isFavorite
+    );
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
   useEffect(() => {
     getKitchens();
-  }, [search, refresh]);
-
+  }, []);
+  const width = 1000;
+  const handleCardClick = (id) => {
+    router.push(`/kitchens/${id}`);
+  };
 
   return (
-    <Router>
-      <>
-      
-        <Header />
-
-        <div className=" ml-6 rounded-[45px]  overflow-hidden w-[98%] h-[25vh] drop-shadow-lg" style={{ backgroundColor: '#FFE559', margin: '5px 5px' }}>
-          <Card style={{ paddingRight: '5rem' }}>
-            <Space height={"2rem"} />
-            <CardBody className="text-right">
-              <p className="text-xl">تخفيضات تصل الى %20</p>
-              <p className="text-lg mt-2">..أطلب الان</p>
-            </CardBody>
-          </Card>
+    <div className="w-full h-full bg-[#FBFAF4] h-screen">
+      <Navpar />
+      <div className={`w-full max-w-[${width}px] mx-auto my-auto`}>
+        {/*Modal*/}
+        <Space height={"2rem"} />
+        <div
+          className=" ml-6 rounded-[45px]  overflow-hidden w-[98%] h-[25vh] drop-shadow-lg flex justify-end items-center"
+          style={{ backgroundColor: "#FFE559", margin: "5px 5px" }}
+        >
+          <div className="flex flex-col items-end mr-9">
+            <p className="text-3xl">تخفيضات تصل الى %20</p>
+            <p className="text-2xl mt-2">..أطلب الان</p>
+          </div>
         </div>
-
         <Space height={"2rem"} />
         <div className="flex justify-between mx-5">
           <div className="flex items-center">
@@ -80,12 +86,12 @@ function Home() {
         {/* Kitchens */}
         <div className="gap-[10px] grid grid-cols-2 sm:grid-cols-4 rounded-3xl mx-4">
           {kitchens.map((item) => (
-
-            <Link key={item.id} to={`/kitchens/${item.id}`}>
+            <div key={item.id}>
               <Card
                 key={item.id}
                 shadow="3xl"
-                className="bg-white border-none rounded-3xl w-[200px] h-[250px] custom-shadow ml-6">
+                className="bg-white border-none rounded-3xl w-[200px] h-[250px] ml-6 shadow-custom"
+              >
                 <CardBody className="overflow-visible p-0">
                   <Image
                     shadow="xl"
@@ -93,30 +99,35 @@ function Home() {
                     width="100%"
                     height="100%"
                     alt={item.image}
-                    className="w-full object-cover h-[160px] rounded-t-2xl rounded-b-none"
+                    className="w-full object-cover h-[160px] rounded-t-2xl rounded-b-none cursor-pointer"
                     src={item.image}
+                    onClick={() => handleCardClick(item.id)}
                   />
                 </CardBody>
                 <Space height={"4px"} />
                 <CardFooter className="text-small justify-between">
-                  <FavButton className=" mt-[20px]"
+                  <FavButton
+                    className=" mt-[20px]"
                     onToggleFavorite={() => handleToggleFavorite(item.id)}
                   />
-                  <div className="flex flex-col items-end mr-[10px]">
+                  <div
+                    className="flex flex-col items-end mr-[10px] cursor-pointer"
+                    onClick={() => handleCardClick(item.id)}
+                  >
                     <p className="text-[20px]">{item.name}</p>
 
-                    <span className="text-[16px] mt-[10px]">{item.description}</span>
+                    <span className="text-[16px] mt-[10px]">
+                      {item.description}
+                    </span>
                   </div>
                 </CardFooter>
                 <Space height={"5px"} />
               </Card>
-            </Link>
-
+            </div>
           ))}
-
         </div>
-      </>
-    </Router>
+      </div>
+    </div>
   );
 }
 

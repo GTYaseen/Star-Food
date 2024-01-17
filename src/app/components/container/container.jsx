@@ -1,8 +1,8 @@
 import React from "react";
 
-function AppContainer({ children, width=1000, ...props }) {
+function AppContainer({ children, width, ...props }) {
   return (
-    <div className={`w-full max-w-[1000px] mx-auto my-auto`} {...props}>
+    <div className={`w-full max-w-[${width}px] mx-auto my-auto`} {...props}>
       {children}
     </div>
   );
