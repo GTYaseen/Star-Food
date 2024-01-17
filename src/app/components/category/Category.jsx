@@ -70,7 +70,7 @@ const Category = ({id}) => {
                     width={200}
                   />
                 </Card>
-                <p className="text-3xl font-normal text-center">{item.name}</p>
+                <p className="text-2xl font-normal text-center">{item.name}</p>
                 <Space height={"1rem"} />
               </div>
             </li>

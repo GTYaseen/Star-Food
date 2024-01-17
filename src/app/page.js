@@ -5,12 +5,11 @@ import { useState, useEffect } from "react";
 import FavButton from "./components/favBtn/favBtn";
 import { Card, CardBody, CardFooter, Image, Button } from "@nextui-org/react";
 import { Space } from "./components/space/Space";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { GrFormPrevious } from "react-icons/gr";
 import axios from "axios";
 import Navpar from "./components/header/Navpar";
 import { useRouter } from "next/navigation";
+import AppContainer from "./components/container/container";
 
 function Home() {
   const [kitchens, setKitchens] = useState([]);
@@ -60,7 +59,7 @@ function Home() {
   return (
     <div className="w-full h-full bg-[#FBFAF4] h-screen">
       <Navpar />
-      <div className={`w-full max-w-[${width}px] mx-auto my-auto`}>
+      <AppContainer>
         {/*Modal*/}
         <Space height={"2rem"} />
         <div
@@ -126,7 +125,7 @@ function Home() {
             </div>
           ))}
         </div>
-      </div>
+      </AppContainer>
     </div>
   );
 }

@@ -5,12 +5,15 @@ import { useState, useEffect } from "react";
 import { Card, CardFooter, Image, CardBody } from "@nextui-org/react";
 import { GrFormPrevious } from "react-icons/gr";
 import { IoAddCircleSharp } from "react-icons/io5";
+import { IoIosCheckmarkCircle } from "react-icons/io";
 import { Space } from "@/app/components/space/Space";
+import userStore from "@/app/store";
 
-const Product = ({ id, onCartUpdate }) => {
+const Product = ({ id }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useState([]);
+  const [productStates, setProductStates] = useState({});
+  const { cart, setCart } = userStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +23,12 @@ const Product = ({ id, onCartUpdate }) => {
           `https://starserver.onrender.com/api/client/product?id=${id}`
         );
         setProducts(response.data);
+        // Initialize productStates with isAdded for each product as false
+        const initialProductStates = response.data.reduce((acc, product) => {
+          acc[product.id] = false;
+          return acc;
+        }, {});
+        setProductStates(initialProductStates);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -28,6 +37,7 @@ const Product = ({ id, onCartUpdate }) => {
     };
     fetchData();
   }, [id]);
+
   return (
     <div>
       <div className="flex justify-between">
@@ -73,12 +83,31 @@ const Product = ({ id, onCartUpdate }) => {
                 <Space height={"5px"} />
                 <CardFooter className="text-small justify-between">
                   {/* Add to cart button */}
-                  <IoAddCircleSharp
-                    className="text-2xl flex items-end justify-center ml-[10px] mt-[15px] cursor-pointer text-[#FFD143] drop-shadow lg:hover:scale-150 duration-300"
-                    onClick={() => {
-                      onCartUpdate([...cart, item]);
-                    }}
-                  />
+                  {productStates[item.id] ? (
+                    // Content for true condition
+                    <IoIosCheckmarkCircle
+                      className="text-3xl flex items-end justify-center ml-[10px] mt-[15px] text-black lg:hover:scale-150 duration-300"
+                      onClick={() => {
+                        setCart(cart.filter((c) => c.id !== item.id));
+                        setProductStates({
+                          ...productStates,
+                          [item.id]: false,
+                        });
+                      }}
+                    />
+                  ) : (
+                    // Content for false condition
+                    <IoAddCircleSharp
+                      className="text-3xl flex items-end justify-center ml-[10px] mt-[15px] cursor-pointer text-[#FFD143] lg:hover:scale-150 duration-300"
+                      onClick={() => {
+                        setCart([...cart, item]);
+                        setProductStates({
+                          ...productStates,
+                          [item.id]: true,
+                        });
+                      }}
+                    />
+                  )}
                   <div className="flex flex-col items-end mr-[10px]">
                     <p className="text-[20px]">{item.name}</p>
                     <p>{item.price}</p>
