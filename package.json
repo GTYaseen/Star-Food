@@ -23,7 +23,8 @@
     "react-dom": "^18",
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.21.2",
-    "typeface-rubik": "^1.1.13"
+    "typeface-rubik": "^1.1.13",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "prisma": "^5.8.1",

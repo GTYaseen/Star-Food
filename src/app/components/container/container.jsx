@@ -1,8 +1,9 @@
 import React from "react";
+import styles from "./container.module.css";
 
-function AppContainer({ children, width, ...props }) {
+function AppContainer({ children, width=1000, ...props }) {
   return (
-    <div className={`w-full max-w-[${width}px] mx-auto my-auto`} {...props}>
+    <div className={styles.container} style={{width: width}}>
       {children}
     </div>
   );
