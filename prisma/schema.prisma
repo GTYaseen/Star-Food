@@ -57,10 +57,9 @@ model Admins {
 model Orders {
   id         Int         @id @default(autoincrement())
   items      Json
-  quantity   Int
   totalPrice Float
   date       DateTime   @default(now())
-  note       String
+  note       String?
   status     OrderStatus
   userId     Int
   user       Users       @relation(fields: [userId], references: [id])

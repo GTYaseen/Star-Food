@@ -1,18 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: process.env.DATABASE_URL,
-      options: {
-        ssl: {
-          rejectUnauthorized: true,
-        },
-      },
-    },
-  },
-});
+const prisma = new PrismaClient();
 
 export async function GET(req) {
   try {

@@ -9,7 +9,7 @@ import { FaTrash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { MdArrowForwardIos } from "react-icons/md";
 import { decodeToken } from "@/app/auth";
-import {Modal} from "@/app/components/modal/Modal"
+import { Modal } from "@/app/components/modal/Modal";
 import axios from "axios";
 
 function Page() {
@@ -20,6 +20,7 @@ function Page() {
   const [id, setId] = useState("");
   const [user, setUser] = useState(null);
   const [kicker, setKicker] = useState(false);
+  const [note, setNote] = useState(null);
   useEffect(() => {
     // Calculate total price whenever quantities or cart items change
     const newTotalPrice = cart.reduce((acc, item) => {
@@ -74,19 +75,47 @@ function Page() {
       setKicker(true);
     }
   }, []);
+  console.log(cart);
   const handelSingIn = () => {
     router.push("/login");
-  }
+  };
   const handelHome = () => {
-    router.push(`/kitchens/${id}`)
-  }
-  const handelOrder = () => {
-    axios.post(`https://localhost:3000/api/order`, 
-      {
-        cart,
+    router.push(`/kitchens/${id}`);
+  };
+  const handelOrder = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setIsModalOpen(true);
+        return;
       }
-      )
-  }
+
+      const newCart = cart.map((item) => ({
+        ...item,
+        quantity: quantities[item.id] || 1,
+      }));
+
+      setCart(newCart);
+      localStorage.setItem("cart", JSON.stringify(newCart));
+
+      const response = await axios.post("http://localhost:3000/api/orders", {
+        items: newCart,
+        userId: user.userId,
+        totalPrice: totalPrice,
+        note: note,
+        status: "Pending",
+      });
+
+      console.log("Order placed successfully:", response.data);
+    } catch (error) {
+      console.error("Error placing order:", error);
+    } finally {
+      setCart([]);
+      localStorage.setItem("cart", JSON.stringify([]));
+      router.push("/kitchens/" + id);
+    }
+  };
+
   return (
     <div className="bg-[#FBFAF4] h-fit">
       <Space height={"2rem"} />
@@ -176,9 +205,13 @@ function Page() {
             <input
               placeholder="الملاحظات"
               dir="rtl"
+              onChange={(e) => setNote(e.target.value)}
               className="placeholder:text-center outline-none placeholder:text-gray-700 p-2 rounded-2xl bg-gray-300 mt-3"
             />
-            <button className="text-3xl font-bold p-2 bg-yellow-400 rounded-2xl">
+            <button
+              className="text-3xl font-bold p-2 bg-yellow-400 rounded-2xl"
+              onClick={handelOrder}
+            >
               تأكيد الطلب
             </button>
           </div>
@@ -207,8 +240,8 @@ function Page() {
           </div>
         </div>
       )}
-      <Modal open={kicker} onOk={handelSingIn} onClose={handelHome}>  
-          You are not signed in, please sign in
+      <Modal open={kicker} onOk={handelSingIn} onClose={handelHome}>
+        You are not signed in, please sign in
       </Modal>
     </div>
   );
