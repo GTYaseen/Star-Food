@@ -1,10 +1,10 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
 }
 
 model Kitchen {
@@ -12,8 +12,8 @@ model Kitchen {
   name        String
   image       String?
   description String
-  Category    Category[]
   Product     Product[]
+  Category    Category[]
 }
 
 model Product {
@@ -58,10 +58,10 @@ model Orders {
   id         Int         @id @default(autoincrement())
   items      Json
   totalPrice Float
-  date       DateTime    @default(now())
+  date       DateTime   @default(now())
+  note       String?
   status     OrderStatus
   userId     Int
-  note       String?
   user       Users       @relation(fields: [userId], references: [id])
 }
 

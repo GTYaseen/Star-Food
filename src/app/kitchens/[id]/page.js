@@ -16,7 +16,6 @@ function Page({ params }) {
   const [data, setData] = useState([]);
   const { cart, setCart } = useStore();
 
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -44,15 +43,13 @@ function Page({ params }) {
         setLoading(false);
       }
     };
-    // useEffect(() => {
-    //   let id=params.id
-    //   localStorage.setItem("id", id);
-    // }, []);
 
     fetchData();
   }, [id]);
-
-  const width = 1000;
+  useEffect(() => {
+    let id = params.id;
+    localStorage.setItem("id", id);
+  }, []);
   console.log(cart);
   return (
     <div className="bg-[#FBFAF4] h-[100vh]">
