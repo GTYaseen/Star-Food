@@ -4,16 +4,14 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Card, CardFooter, Image, CardBody } from "@nextui-org/react";
 import { GrFormPrevious } from "react-icons/gr";
-import { IoAddCircleSharp } from "react-icons/io5";
-import { IoIosCheckmarkCircle } from "react-icons/io";
 import { Space } from "@/app/components/space/Space";
 import userStore from "@/app/store";
+import AddCart from "@/app/components/addCart/AddCart";
 
 const Product = ({ id }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [productStates, setProductStates] = useState({});
-  const { cart, setCart } = userStore();
+  const { setProductStates, productStates } = userStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,32 +80,7 @@ const Product = ({ id }) => {
                 </CardBody>
                 <Space height={"5px"} />
                 <CardFooter className="text-small justify-between">
-                  {/* Add to cart button */}
-                  {productStates[item.id] ? (
-                    // Content for true condition
-                    <IoIosCheckmarkCircle
-                      className="text-3xl flex items-end justify-center ml-[10px] mt-[15px] text-black lg:hover:scale-150 duration-300"
-                      onClick={() => {
-                        setCart(cart.filter((c) => c.id !== item.id));
-                        setProductStates({
-                          ...productStates,
-                          [item.id]: false,
-                        });
-                      }}
-                    />
-                  ) : (
-                    // Content for false condition
-                    <IoAddCircleSharp
-                      className="text-3xl flex items-end justify-center ml-[10px] mt-[15px] cursor-pointer text-[#FFD143] lg:hover:scale-150 duration-300"
-                      onClick={() => {
-                        setCart([...cart, item]);
-                        setProductStates({
-                          ...productStates,
-                          [item.id]: true,
-                        });
-                      }}
-                    />
-                  )}
+                  <AddCart item={item} />
                   <div className="flex flex-col items-end mr-[10px]">
                     <p className="text-[20px]">{item.name}</p>
                     <p>{item.price}</p>

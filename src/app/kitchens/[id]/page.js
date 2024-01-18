@@ -6,8 +6,8 @@ import { Space } from "@/app/components/space/Space";
 import Category from "@/app/components/category/Category";
 import Product from "@/app/components/product/Product";
 import { decodeToken } from "@/app/auth";
-import { IoCartSharp } from "react-icons/io5";
 import useStore from "@/app/store";
+import Cart from "@/app/components/cart/Cart";
 
 function Page({ params }) {
   const id = params.id;
@@ -16,13 +16,18 @@ function Page({ params }) {
   const [data, setData] = useState([]);
   const { cart, setCart } = useStore();
 
-  const handleCartModal = (product) => {};
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setUser(decodeToken(token));
     }
+  }, []);
+  useEffect(() => {
+    let cart = localStorage.getItem("cart");
+    console.log(cart);
+    if (cart) setCart(JSON.parse(cart));
+    console.log(cart);
   }, []);
 
   useEffect(() => {
@@ -46,7 +51,7 @@ function Page({ params }) {
   const width = 1000;
   console.log(cart);
   return (
-    <div className="bg-[#FBFAF4] h-full">
+    <div className="bg-[#FBFAF4] h-[100vh]">
       <Navpar user={user} />
       <AppContainer>
         <Space height={"3rem"} />
@@ -56,7 +61,6 @@ function Page({ params }) {
             <div className="h-9 bg-yellow-200 w-[250px] rounded-3xl"></div>
           </div>
         ) : (
-          // Actual content when data is loaded
           <>
             {data.length > 0 && (
               <p className="text-6xl font-normal flex justify-end items-end">
@@ -67,25 +71,8 @@ function Page({ params }) {
             <Category id={id} />
             <Space height={"3rem"} />
             <Product id={id} />
-            {/* Add to cart button */}
-            {cart.length > 0 && (
-              <div className="bg-white border-t-2 fixed bottom-0 left-0 right-0 z-10 flex items-center justify-center ">
-                <AppContainer>
-                  <div className="text-3xl flex items-center justify-between h-12">
-                    <div className="flex items-center justify-center bg-yellow-400 border-none rounded-3xl w-10 h-10">
-                      <p className="text-3xl font-normal font-sans pr-[2px] pb-[2px]">
-                        {cart.length}
-                      </p>
-                    </div>{" "}
-                    <p>عرض السلة</p>
-                    <IoCartSharp
-                      onClick={handleCartModal}
-                      className="cursor-pointer text-yellow-400 text-3xl flex items-center justify-center ml-[10px] mt-[15px] cursor-pointer text-[#FFD143] drop-shadow"
-                    />
-                  </div>
-                </AppContainer>
-              </div>
-            )}
+            <Cart />
+
           </>
         )}
       </AppContainer>
