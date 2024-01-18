@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { IoMdHeartEmpty } from "react-icons/io";
 import { FaQuestion, FaSignInAlt } from "react-icons/fa";
 import { MdOutlineContacts } from "react-icons/md";
 import { Image, Link } from "@nextui-org/react";
 import { Space } from "@/app/components/space/Space";
+import { FaRegHeart } from "react-icons/fa";
 
-function SideMenu({ isMenuOpen, setIsMenuOpen, user }) {
+function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
   const [name, setName] = useState("");
   const [isLogin, setIsLogin] = useState(false);
 
@@ -53,9 +53,19 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user }) {
           <div className="bg-[#FBFAF4] h-[100vh]">
             <ul className="flex flex-col gap-5 p-4 text-2xl items-end justify-end mr-7 ">
               <li className="flex items-center mr-[-4px] cursor-pointer">
-                المطابخ المفضلة
-                <Space width={"0px"} />
-                <IoMdHeartEmpty className="text-3xl" />
+                <Link href="/favorites">
+                  المطابخ المفضلة
+                  <Space width={"0px"} />
+                  <FaRegHeart className="text-3xl" />
+                </Link>
+                {Array.isArray(favoriteKitchens) &&
+                  favoriteKitchens.length > 0 && (
+                    <ul>
+                      {favoriteKitchens.map((kitchen) => (
+                        <li key={kitchen.id}>{kitchen.name}</li>
+                      ))}
+                    </ul>
+                  )}
               </li>
               <li className="flex items-center cursor-pointer">
                 من نحن

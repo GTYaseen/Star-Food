@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
+
 function setCorsHeaders(response) {
   response.headers.set("Access-Control-Allow-Origin", "*");
   response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -26,5 +27,10 @@ export async function GET(req) {
         error: error.message,
       })
     );
+    const response = NextResponse.json({
+      success: false,
+      error: error.message,
+    });
+    return setCorsHeaders(response);
   }
 }
