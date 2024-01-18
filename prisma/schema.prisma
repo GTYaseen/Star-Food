@@ -59,7 +59,8 @@ model Orders {
   items      Json
   quantity   Int
   totalPrice Float
-  date       DateTime
+  date       DateTime   @default(now())
+  note       String
   status     OrderStatus
   userId     Int
   user       Users       @relation(fields: [userId], references: [id])

@@ -1,30 +1,30 @@
 import { PrismaClient } from "@prisma/client";
+import { NextResponse } from "next/server";
 
-const prisma = new PrismaClient();
-
-function setCorsHeaders(response) {
-  response.headers.set("Access-Control-Allow-Origin", "*"); 
-  response.headers.set("Access-Control-Allow-Methods", "GET, OPTIONS");
-  response.headers.set(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization"
-  );
-  return response;
-}
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL,
+      options: {
+        ssl: {
+          rejectUnauthorized: true,
+        },
+      },
+    },
+  },
+});
 
 export async function GET(req) {
   try {
-    const orders = await prisma.orders.findMany();
-    const response = new Response(JSON.stringify(orders));
-    return setCorsHeaders(response);
+    return NextResponse.json({
+      success: true,
+      orders: await prisma.orders.findMany(),
+    });
   } catch (error) {
-    const response = new Response(
-      JSON.stringify({
-        success: false,
-        error,
-      })
-    );
-    return setCorsHeaders(response);
+    return NextResponse.json({
+      success: false,
+      error: error.message,
+    });
   }
 }
 
@@ -34,21 +34,14 @@ export async function POST(req) {
     let order = await prisma.orders.create({
       data: body,
     });
-
-    const response = new Response(
-      JSON.stringify({
-        success: true,
-        order,
-      })
-    );
-    return setCorsHeaders(response);
+    return NextResponse.json({
+      success: true,
+      order,
+    });
   } catch (error) {
-    const response = new Response(
-      JSON.stringify({
-        success: false,
-        error,
-      })
-    );
-    return setCorsHeaders(response);
+    return NextResponse.json({
+      success: false,
+      error: error.message,
+    });
   }
 }

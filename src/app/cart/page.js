@@ -1,11 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  Image,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 import useStore from "@/app/store";
 import AppContainer from "../components/container/container";
 import { Space } from "../components/space/Space";
@@ -13,12 +8,18 @@ import { TiPlus, TiMinus } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { MdArrowForwardIos } from "react-icons/md";
+import { decodeToken } from "@/app/auth";
+import {Modal} from "@/app/components/modal/Modal"
+import axios from "axios";
 
 function Page() {
   const { cart, setCart } = useStore();
   const [totalPrice, setTotalPrice] = useState(0);
   const [quantities, setQuantities] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [id, setId] = useState("");
+  const [user, setUser] = useState(null);
+  const [kicker, setKicker] = useState(false);
   useEffect(() => {
     // Calculate total price whenever quantities or cart items change
     const newTotalPrice = cart.reduce((acc, item) => {
@@ -30,10 +31,12 @@ function Page() {
   useEffect(() => {
     let storedCart = localStorage.getItem("cart");
     if (storedCart) setCart(JSON.parse(storedCart));
+    setId(localStorage.getItem("id"));
   }, []);
   const handleDelete = () => {
     setCart([]);
     localStorage.setItem("cart", JSON.stringify(cart));
+    router.push("/kitchens/" + id);
   };
 
   const handleQuantityChange = (itemId, newQuantity) => {
@@ -54,7 +57,7 @@ function Page() {
   };
   const router = useRouter();
   const sideClick = () => {
-    router.push("/kitchens");
+    router.push("/kitchens/" + id);
   };
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
 
@@ -63,7 +66,27 @@ function Page() {
     setModalPosition({ top: rect.bottom + window.scrollY, left: rect.left });
     setIsModalOpen(!isModalOpen);
   };
-
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setUser(decodeToken(token));
+    } else {
+      setKicker(true);
+    }
+  }, []);
+  const handelSingIn = () => {
+    router.push("/login");
+  }
+  const handelHome = () => {
+    router.push(`/kitchens/${id}`)
+  }
+  const handelOrder = () => {
+    axios.post(`https://localhost:3000/api/order`, 
+      {
+        cart,
+      }
+      )
+  }
   return (
     <div className="bg-[#FBFAF4] h-fit">
       <Space height={"2rem"} />
@@ -147,7 +170,7 @@ function Page() {
         </div>
         <Space height={"10px"} />
       </AppContainer>
-      <div className="bg-white border-t-2 w-full bottom-0 left-0 right-0 z-10 flex items-center justify-center h-[fit-content]">
+      <div className="bg-white border-t-2 fixed w-full bottom-0 left-0 right-0 z-10 flex items-center justify-center h-[fit-content]">
         <AppContainer>
           <div className="text-3xl flex flex-col gap-3">
             <input
@@ -169,15 +192,24 @@ function Page() {
           {/* Your modal content goes here */}
           <div className="text-3xl">هل تريد مسح السلة؟</div>
           <div className="flex justify-end mt-4 gap-3">
-            <button className="text-2xl font-bold h-[40px] w-[60px] bg-yellow-400 rounded-xl" onClick={() => setIsModalOpen(false)}>
+            <button
+              className="text-2xl font-bold h-[40px] w-[60px] bg-yellow-400 rounded-xl"
+              onClick={() => setIsModalOpen(false)}
+            >
               الغاء
             </button>
-            <button className="text-2xl font-bold h-[40px] w-[60px] bg-yellow-400 rounded-xl" onClick={handleDelete}>
+            <button
+              className="text-2xl font-bold h-[40px] w-[60px] bg-yellow-400 rounded-xl"
+              onClick={handleDelete}
+            >
               مسح
             </button>
           </div>
         </div>
       )}
+      <Modal open={kicker} onOk={handelSingIn} onClose={handelHome}>  
+          You are not signed in, please sign in
+      </Modal>
     </div>
   );
 }
