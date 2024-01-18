@@ -2,41 +2,35 @@ import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
-export async function GET(req) {
-  try {
-    return NextResponse.json({
-      success: true,
-      kitchens: await prisma.kitchen.findMany(),
-    });
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error.message,
-    })
-  }
+function setCorsHeaders(response) {
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  response.headers.set(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+  return response;
 }
 
-export async function POST(req) {
-  const body = await req.json();
+export async function GET(req) {
   try {
-    const kitchen = await prisma.kitchen.create({
-      data: body,
-    });
-
-    const response = new Response(
-      JSON.stringify({
+    return setCorsHeaders(
+      NextResponse.json({
         success: true,
-        kitchen,
+        kitchens: await prisma.kitchen.findMany(),
       })
     );
-    return setCorsHeaders(response);
   } catch (error) {
-    const response = new Response(
-      JSON.stringify({
+    return setCorsHeaders(
+      NextResponse.json({
         success: false,
         error: error.message,
       })
     );
+    const response = NextResponse.json({
+      success: false,
+      error: error.message,
+    });
     return setCorsHeaders(response);
   }
 }

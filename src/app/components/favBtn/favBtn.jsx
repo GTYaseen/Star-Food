@@ -1,19 +1,31 @@
-import React, { useState } from 'react';
-import { FaRegHeart, FaHeart } from 'react-icons/fa';
+"use client";
+import React, { useState } from "react";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
+import useStore from "@/app/store";
 
-const FavButton = ({ onToggleFavorite }) => {
-  const [isFavorite, setIsFavorite] = useState(false);
+const FavButton = ({ item }) => {
+  const { Favorite, setFavorite } = useStore();
 
-  const toggleFavorite = () => {
-    setIsFavorite((prev) => !prev);
-    onToggleFavorite();
+  let fav = Favorite.find((el) => el.id === item.id);
+  
+  const handleFavorite = () => {
+    let newArr = [];
+    if (fav) newArr = Favorite.filter((el) => el.id !== item.id);
+    else newArr = [...Favorite, item];
+
+    setFavorite(newArr);
+    localStorage.setItem("test", JSON.stringify(newArr));
   };
-
-  return (
-    <div onClick={toggleFavorite} className="text-2xl flex items-end justify-center ml-[10px] mt-[15px] cursor-pointer text-[#FFD143] drop-shadow">
-      {isFavorite ? <FaHeart /> : <FaRegHeart />}
-    </div>
+  const heartIcon = fav ? (
+    <FaHeart className="hover:scale-150 duration-300 text-yellow-500 shadow-custom" />
+  ) : (
+    <FaRegHeart className="hover:scale-150 duration-300 shadow-custom" />
   );
-};
 
+  return <button onClick={handleFavorite}
+  className=" ml-auto mr-2"
+  
+  >{heartIcon}</button>;
+};
 export default FavButton;
+

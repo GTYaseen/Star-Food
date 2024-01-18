@@ -5,27 +5,27 @@ import { useState, useEffect } from "react";
 import FavButton from "./components/favBtn/favBtn";
 import { Card, CardBody, CardFooter, Image, Button } from "@nextui-org/react";
 import { Space } from "./components/space/Space";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { GrFormPrevious } from "react-icons/gr";
 import axios from "axios";
 import Navpar from "./components/header/Navpar";
 import { useRouter } from "next/navigation";
+import AppContainer from "./components/container/container";
+import useStore from "@/app/store";
 
 function Home() {
   const [kitchens, setKitchens] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [favorites, setFavorites] = useState([]);
+  const { Favorite, setFavorite } = useStore();
+
   const router = useRouter();
 
   const getKitchens = async () => {
     try {
       setLoading(true);
       const response = await axios.get(`http://localhost:3000/api/kitchen`);
-      if(response.data.success === true) {
+      if (response.data.success === true) {
         setKitchens(response.data.kitchens);
       }
-      console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -33,38 +33,29 @@ function Home() {
     }
   };
 
-  const handleToggleFavorite = (id) => {
-    const updatedKitchens = kitchens.map((kitchen) =>
-      kitchen.id === id
-        ? { ...kitchen, isFavorite: !kitchen.isFavorite }
-        : kitchen
-    );
-
-    setKitchens(updatedKitchens);
-
-    const updatedFavorites = updatedKitchens.filter(
-      (kitchen) => kitchen.isFavorite
-    );
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-  };
-
   useEffect(() => {
     getKitchens();
   }, []);
-  const width = 1000;
+
+  const handleFavoritesClick = (id) => {
+    router.push(`/favorites/${id}`);
+  };
+
   const handleCardClick = (id) => {
     router.push(`/kitchens/${id}`);
   };
+  useEffect(() => {
+    let fav = localStorage.getItem("blog-fav");
+    if (fav) setFavorite(JSON.parse(fav));
+  }, []);
 
   return (
     <div className="w-full h-full bg-[#FBFAF4] h-screen">
       <Navpar />
-      <div className={`w-full max-w-[${width}px] mx-auto my-auto`}>
-        {/*Modal*/}
-        <Space height={"2rem"} />
+      <AppContainer>
+        <Space height={"3rem"} />
         <div
-          className=" ml-6 rounded-[45px]  overflow-hidden w-[98%] h-[25vh] drop-shadow-lg flex justify-end items-center"
+          className=" ml-6 rounded-[45px]  overflow-hidden w-[98%] h-[25vh] drop-shadow-lg flex justify-end items-center shadow-custom"
           style={{ backgroundColor: "#FFE559", margin: "5px 5px" }}
         >
           <div className="flex flex-col items-end mr-9">
@@ -107,9 +98,15 @@ function Home() {
                 <Space height={"4px"} />
                 <CardFooter className="text-small justify-between">
                   <FavButton
-                    className=" mt-[20px]"
-                    onToggleFavorite={() => handleToggleFavorite(item.id)}
+                    item={item}
+                    // onToggleFavorite={() => handleToggleFavorite(item.id)}
+                    onClick={() => handleFavoritesClick(item.id)}
                   />
+
+                  <div
+                    className="flex flex-col items-end mr-[10px] cursor-pointer"
+                    onClick={() => handleCardClick(item.id)}
+                  ></div>
                   <div
                     className="flex flex-col items-end mr-[10px] cursor-pointer"
                     onClick={() => handleCardClick(item.id)}
@@ -126,7 +123,7 @@ function Home() {
             </div>
           ))}
         </div>
-      </div>
+      </AppContainer>
     </div>
   );
 }
