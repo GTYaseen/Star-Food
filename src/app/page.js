@@ -15,7 +15,7 @@ import useStore from "@/app/store";
 function Home() {
   const [kitchens, setKitchens] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { Favorite, setFavorite } = useStore();
+  const {Favorite, setFavorite } = useStore();
 
   const router = useRouter();
 
@@ -45,9 +45,10 @@ function Home() {
     router.push(`/kitchens/${id}`);
   };
   useEffect(() => {
-    let fav = localStorage.getItem("blog-fav");
+    let fav = localStorage.getItem("fav");
     if (fav) setFavorite(JSON.parse(fav));
   }, []);
+
 
   return (
     <div className="w-full h-full bg-[#FBFAF4] h-screen">
@@ -81,7 +82,8 @@ function Home() {
               <Card
                 key={item.id}
                 shadow="3xl"
-                className="bg-white border-none rounded-3xl w-[200px] h-[250px] ml-6 shadow-custom"
+                onClick={()=> handleCardClick(item.id)}
+                className="bg-white border-none rounded-3xl w-[200px] h-[250px] ml-6 shadow-custom transition-transform transform hover:scale-105 active:scale-110"
               >
                 <CardBody className="overflow-visible p-0">
                   <Image
@@ -99,7 +101,6 @@ function Home() {
                 <CardFooter className="text-small justify-between">
                   <FavButton
                     item={item}
-                    // onToggleFavorite={() => handleToggleFavorite(item.id)}
                     onClick={() => handleFavoritesClick(item.id)}
                   />
 

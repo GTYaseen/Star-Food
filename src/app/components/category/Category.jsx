@@ -60,7 +60,7 @@ const Category = ({id}) => {
                   key={item.id}
                   isFooterBlurred
                   radius="lg"
-                  className="border-none h-[150px] w-[150px]"
+                  className="border-none h-[150px] w-[150px] transition-transform transform hover:scale-105 active:scale-110"
                 >
                   <Image
                     alt={item.name}

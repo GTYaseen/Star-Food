@@ -7,6 +7,7 @@ import { GrFormPrevious } from "react-icons/gr";
 import { Space } from "@/app/components/space/Space";
 import userStore from "@/app/store";
 import AddCart from "@/app/components/addCart/AddCart";
+import { useRouter } from "next/navigation";
 
 const Product = ({ id }) => {
   const [products, setProducts] = useState([]);
@@ -35,6 +36,10 @@ const Product = ({ id }) => {
     };
     fetchData();
   }, [id]);
+
+  const handelCardClick=(productId)=>{
+    router.push(`/product/${productId}`);
+  }
 
   return (
     <div>
@@ -66,7 +71,8 @@ const Product = ({ id }) => {
               <Card
                 key={index}
                 shadow="sm"
-                className="bg-white border-none rounded-3xl w-[230px] shadow-custom m-[10px]"
+                className="bg-white border-none rounded-3xl w-[230px] shadow-custom m-[10px] transition-transform transform hover:scale-105 active:scale-110"
+                onClick={()=>handelCardClick(item.id)}
               >
                 <CardBody className="overflow-visible p-0">
                   <Image
