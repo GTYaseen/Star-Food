@@ -44,6 +44,10 @@ function Page({ params }) {
         setLoading(false);
       }
     };
+    useEffect(() => {
+      let id=params.id
+      localStorage.setItem("id", id);
+    }, []);
 
     fetchData();
   }, [id]);
@@ -71,8 +75,7 @@ function Page({ params }) {
             <Category id={id} />
             <Space height={"3rem"} />
             <Product id={id} />
-            <Cart />
-
+            <Cart id={id} />
           </>
         )}
       </AppContainer>
