@@ -4,6 +4,8 @@ import { MdOutlineContacts } from "react-icons/md";
 import { Image, Link } from "@nextui-org/react";
 import { Space } from "@/app/components/space/Space";
 import { FaRegHeart } from "react-icons/fa";
+import { MdDeliveryDining } from "react-icons/md";
+import { LuChefHat } from "react-icons/lu";
 
 function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
   const [name, setName] = useState("");
@@ -69,9 +71,9 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
               </li>
               <li className="flex items-center cursor-pointer">
                 <Link href="/about" className="flex items-center">
-                  من نحن
+                  من نحن ؟
                   <Space width={"5px"} />
-                  <FaQuestion />
+                  <LuChefHat />
                 </Link>
               </li>
               <li className="flex items-center cursor-pointer">
@@ -81,6 +83,14 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
                   <MdOutlineContacts />
                 </Link>
               </li>
+              <li className="flex items-center cursor-pointer">
+                <Link href="delivery" className="flex items-center">
+                 .. تتبع الطلب
+                  <Space width={"5px"} />
+                  <MdDeliveryDining />
+                </Link>
+              </li>
+
               {isLogin ? (
                 <li className="flex items-center">
                   {/* Content for logged-in user */}
