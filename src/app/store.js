@@ -2,9 +2,7 @@ import {create} from "zustand";
 
 const useStore = create((set) => ({
   cart: [],
-  setCart: (newCart) => set({ cart: newCart }),
-  isAdded: false,
-  setIsAdded: (newIsAdded) => set({ isAdded: newIsAdded }),
+  setCart: (data) => set({ cart: data }),
 }));
 
 export default useStore;
