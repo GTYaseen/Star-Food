@@ -4,7 +4,7 @@ import { MdOutlineContacts } from "react-icons/md";
 import { Image, Link } from "@nextui-org/react";
 import { Space } from "@/app/components/space/Space";
 import { FaRegHeart } from "react-icons/fa";
-import { MdDeliveryDining } from "react-icons/md";
+import { PiSignOutBold } from "react-icons/pi";
 import { LuChefHat } from "react-icons/lu";
 
 function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
@@ -24,6 +24,10 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
   const sideClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const handelSignOut = () => {
+    localStorage.clear();
+    location.reload();
+  }
 
   return (
     <div>
@@ -54,7 +58,7 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
           </div>
           <div className="bg-[#FBFAF4] h-[100vh]">
             <ul className="flex flex-col gap-5 p-4 text-2xl items-end justify-end mr-7 ">
-              <li className="flex items-center mr-[-4px] cursor-pointer">
+              <li className="flex items-center cursor-pointer">
                 <Link href="/favorites" className="flex item-center">
                   المطابخ المفضلة
                   <Space width={"5px"} />
@@ -77,23 +81,17 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
                 </Link>
               </li>
               <li className="flex items-center cursor-pointer">
-                <Link href="connect" className="flex items-center">
+                <Link href="/contact" className="flex items-center">
                   تواصل معنا
                   <Space width={"5px"} />
                   <MdOutlineContacts />
                 </Link>
               </li>
-              <li className="flex items-center cursor-pointer">
-                <Link href="delivery" className="flex items-center">
-                 .. تتبع الطلب
-                  <Space width={"5px"} />
-                  <MdDeliveryDining />
-                </Link>
-              </li>
-
               {isLogin ? (
-                <li className="flex items-center">
-                  {/* Content for logged-in user */}
+                <li className="flex items-center cursor-pointer" onClick={handelSignOut}>
+                  تسجيل الخروج
+                  <Space width={"5px"} />
+                  <PiSignOutBold />
                 </li>
               ) : (
                 <li className="flex items-center">
