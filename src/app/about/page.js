@@ -8,6 +8,7 @@ import { GiPointing } from "react-icons/gi";
 function About() {
   return (
     <>
+    {/* لا توجد عبقرية دون مسحة الجنون */}
       <Navpar />
       <Space height={"3rem"} />
       <AppContainer>
