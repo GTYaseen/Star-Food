@@ -7,7 +7,7 @@ import { LuChefHat } from "react-icons/lu";
 function About() {
   return (
     <>
-      {/* لا توجد عبقرية دون مسحة الجنون */}
+      {/* :) لا توجد عبقرية دون مسحة الجنون */}
       <Navpar />
       <Space height={"3rem"} />
       <AppContainer>
