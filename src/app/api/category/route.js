@@ -1,42 +1,47 @@
 import { PrismaClient } from "@prisma/client";
+import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
-function setCorsHeaders(response) {
-  response.headers.set("Access-Control-Allow-Origin", "*");
-  response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  response.headers.set(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization"
-  );
-  return response;
-}
 export async function GET(req) {
   const searchParams = req.nextUrl.searchParams;
-  const cat = searchParams.get("cat");
-  const query = searchParams.get("query");
+  const id = searchParams.get("id") || undefined;
 
-  let whereClause = {};
+  try {
+    let whereClause = {};
 
-  if (query) {
-    whereClause = {
-      name: {
-        contains: query,
+    if (id !== undefined) {
+      whereClause = {
+        kitchenId: parseInt(id),
+      };
+    }
+
+    const category = await prisma.category.findMany({
+      where: whereClause,
+      orderBy: {
+        id: "asc",
       },
-    };
+    });
+
+    return NextResponse.json(category, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      {
+        status: 500,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+  } finally {
+    await prisma.$disconnect();
   }
-  let category = await prisma.category.findMany({
-    where: cat
-      ? {
-          categoryId: parseInt(cat),
-          ...whereClause,
-        }
-      : whereClause,
-    orderBy: {
-      id: "asc",
-    },
-  });
-  const response = new Response(JSON.stringify(category));
-  return setCorsHeaders(response);
 }
 export async function POST(req) {
   const body = await req.json();
@@ -45,20 +50,11 @@ export async function POST(req) {
       data: body,
     });
 
-    const response = new Response(
-      JSON.stringify({
-        success: true,
-        category,
-      })
-    );
-    return setCorsHeaders(response);
+    return NextResponse.json({
+      success: true,
+      category,
+    });
   } catch (error) {
-    const response = new Response(
-      JSON.stringify({
-        success: false,
-        error,
-      })
-    );
-    return setCorsHeaders(response);
+    return NextResponse.json({ success: false, error: error.message });
   }
 }

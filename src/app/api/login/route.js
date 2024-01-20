@@ -1,33 +1,24 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
+import { NextResponse } from "next/server";
+
 const prisma = new PrismaClient();
-
-function setCorsHeaders(response) {
-  response.headers.set("Access-Control-Allow-Origin", "*");
-  response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  response.headers.set(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization"
-  );
-  return response;
-}
-
-const jwtSecret = process.env.JWT_SECRET;
+const jwtSecret = process.env.JWT_SECRET_USER;
 
 export async function POST(req) {
   const { username, password } = await req.json();
+
   try {
     const user = await prisma.users.findUnique({
       where: { username },
     });
 
     if (!user) {
-      const response = new Response(
-        JSON.stringify({ success: false, msg: "User not found" }),
-        { status: 404 }
-      );
-      return setCorsHeaders(response);
+      return NextResponse.json({
+        success: false,
+        msg: "User not found",
+      });
     }
 
     const match = await bcrypt.compare(password, user.password);
@@ -38,19 +29,18 @@ export async function POST(req) {
         jwtSecret,
         { expiresIn: "1h" }
       );
-      const responseBody = {
+
+      return NextResponse.json({
         success: true,
-        token,
+        token: token, // Make sure the token is defined
         user: { id: user.id, username: user.username },
-      };
-      const response = new Response(JSON.stringify(responseBody));
-      return setCorsHeaders(response);
+      });
     } else {
-      const response = new Response(
-        JSON.stringify({ success: false, msg: "Wrong password!" }),
+      // Handle the case where the password doesn't match
+      return NextResponse.json(
+        { success: false, msg: "Wrong password!" },
         { status: 401 }
       );
-      return setCorsHeaders(response);
     }
   } catch (error) {
     console.error("Error during processing:", error);
@@ -59,11 +49,10 @@ export async function POST(req) {
       console.error("Prisma error:", error.code);
     }
 
-    const response = new Response(
-      JSON.stringify({ success: false, error: "Internal server error" }),
+    return NextResponse.json(
+      { success: false, error: "Internal server error" },
       { status: 500 }
     );
-    return setCorsHeaders(response);
   } finally {
     await prisma.$disconnect();
   }

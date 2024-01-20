@@ -1,19 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-function setCorsHeaders(response) {
-  response.headers.set("Access-Control-Allow-Origin", "*");
-  response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  response.headers.set(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization"
-  );
-  return response;
-}
-const jwtSecret = process.env.JWT_SECRET;
+const jwtSecret = process.env.JWT_SECRET_USER;
 export async function POST(req) {
   const { name, username, password, phoneNumber, location } = await req.json();
   try {
@@ -34,35 +26,26 @@ export async function POST(req) {
       { expiresIn: "1h" }
     );
 
-    const response = new Response(
-      JSON.stringify({
-        success: true,
-        result,
-        token,
-      })
-    );
-    return setCorsHeaders(response);
+    return NextResponse.json({
+      success: true,
+      token: token,
+      user: { id: result.id, username: result.name },
+    });
   } catch (error) {
     console.error("Error during processing:", error);
 
     // Log the specific Prisma error if available
     if (error instanceof Error && error.code === "P2002") {
       console.error("Prisma error:", error.code);
-      const response = new Response(
-        JSON.stringify({ success: false, error: "Username already taken" }),
-        { status: 400 } // Set a status code indicating a bad request
+      return NextResponse.json(
+        { success: false, msg: "User already exists" },
+        { status: 400 }
       );
-      return setCorsHeaders(response);
     }
 
-    const response = new Response(
-      JSON.stringify({
-        success: false,
-        error: "Internal server error",
-        details: error.message,
-      }),
+    return NextResponse.json(
+      { success: false, error: "Internal server error" },
       { status: 500 }
     );
-    return setCorsHeaders(response);
   }
 }
