@@ -17,15 +17,18 @@ const FavButton = ({ item }) => {
     localStorage.setItem("test", JSON.stringify(newArr));
   };
   const heartIcon = fav ? (
-    <FaHeart className="hover:scale-150 duration-300 text-yellow-500 shadow-custom" />
+    <FaHeart className="hover:scale-150 duration-300 text-yellow-500 shadow-custom text-xl absolute right-2 -top-2" />
   ) : (
-    <FaRegHeart className="hover:scale-150 duration-300 shadow-custom" />
+    <FaRegHeart className="hover:scale-150 duration-300 shadow-custom text-xl absolute right-2 -top-2" />
   );
 
   return <button onClick={handleFavorite}
-  className=" ml-auto mr-2"
+  className="ml-auto mr-2 relative">
+     <div className="relative">
+    {heartIcon}
+    </div>
+    </button>;
   
-  >{heartIcon}</button>;
 };
 export default FavButton;
 

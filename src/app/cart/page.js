@@ -21,6 +21,7 @@ function Page() {
   const [user, setUser] = useState(null);
   const [kicker, setKicker] = useState(false);
   const [note, setNote] = useState(null);
+  
   useEffect(() => {
     // Calculate total price whenever quantities or cart items change
     const newTotalPrice = cart.reduce((acc, item) => {

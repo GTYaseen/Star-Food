@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 const Product = ({ id }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { setProductStates, productStates } = userStore();
+  const { productStates, setProductStates } = userStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,9 +37,9 @@ const Product = ({ id }) => {
     fetchData();
   }, [id]);
 
-  const handelCardClick=(productId)=>{
+  const handelCardClick = (productId) => {
     router.push(`/product/${productId}`);
-  }
+  };
 
   return (
     <div>
@@ -72,7 +72,7 @@ const Product = ({ id }) => {
                 key={index}
                 shadow="sm"
                 className="bg-white border-none rounded-3xl w-[230px] shadow-custom m-[10px] transition-transform transform hover:scale-105 active:scale-110"
-                onClick={()=>handelCardClick(item.id)}
+                onClick={() => handelCardClick(item.id)}
               >
                 <CardBody className="overflow-visible p-0">
                   <Image
