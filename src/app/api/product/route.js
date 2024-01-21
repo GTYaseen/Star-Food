@@ -1,50 +1,47 @@
 import { PrismaClient } from "@prisma/client";
-
+import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
-function setCorsHeaders(response) {
-  response.headers.set("Access-Control-Allow-Origin", "*");
-  response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  return response;
-}
 
 export async function GET(req) {
   const searchParams = req.nextUrl.searchParams;
-  const cat = searchParams.get("cat");
-  const query = searchParams.get("query");
-
-  let whereClause = {};
-
-  if (query) {
-    whereClause = {
-      name: {
-        contains: query,
-      },
-    };
-  }
+  const id = searchParams.get("id") || undefined;
 
   try {
-    const products = await prisma.product.findMany({
-      where: cat
-        ? {
-            categoryId: parseInt(cat),
-            ...whereClause,
-          }
-        : whereClause,
+    let whereClause = {};
+
+    if (id !== undefined) {
+      whereClause = {
+        kitchenId: parseInt(id),
+      };
+    }
+
+    const product = await prisma.product.findMany({
+      where: whereClause,
       orderBy: {
         id: "asc",
       },
     });
 
-    const response = new Response(JSON.stringify(products));
-    return setCorsHeaders(response);
+    return NextResponse.json(product, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
   } catch (error) {
-    const response = new Response(JSON.stringify({
-      success: false,
-      error: error.message, // Include only the error message for security
-    }));
-    return setCorsHeaders(response);
+    console.error("Error fetching data:", error);
+
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      {
+        status: 500,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
@@ -55,16 +52,11 @@ export async function POST(req) {
       data: body,
     });
 
-    const response = new Response(JSON.stringify({
+    return NextResponse.json({
       success: true,
       product,
-    }));
-    return setCorsHeaders(response);
+    });
   } catch (error) {
-    const response = new Response(JSON.stringify({
-      success: false,
-      error: error.message,
-    }));
-    return setCorsHeaders(response);
+    return NextResponse.json({ success: false, error: error.message });
   }
 }
