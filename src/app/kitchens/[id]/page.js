@@ -34,7 +34,7 @@ function Page({ params }) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/kitchen/id=${id}`
+          `http://localhost:3000/api/kitchen?id=${id}`
         );
         const responseData = await response.json();
         setData(responseData);
@@ -51,7 +51,7 @@ function Page({ params }) {
     let id = params.id;
     localStorage.setItem("id", id);
   }, []);
-  console.log(cart);
+
   return (
     <div className="bg-[#FBFAF4] h-[100vh]">
       <Navpar user={user} />

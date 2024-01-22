@@ -2,17 +2,18 @@
 import React, { useEffect, useState } from "react";
 import { Image } from "@nextui-org/react";
 import useStore from "@/app/store";
-import AppContainer from "../components/container/container";
-import { Space } from "../components/space/Space";
+import AppContainer from "../../components/container/container";
+import { Space } from "../../components/space/Space";
 import { TiPlus, TiMinus } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { MdArrowForwardIos } from "react-icons/md";
-import { decodeToken } from "@/app/auth";
+import { jwtDecode } from "jwt-decode";
 import { Modal } from "@/app/components/modal/Modal";
 import axios from "axios";
 
-function Page() {
+function Page({ params }) {
+  const idP = params.id;
   const { cart, setCart } = useStore();
   const [totalPrice, setTotalPrice] = useState(0);
   const [quantities, setQuantities] = useState({});
@@ -70,12 +71,11 @@ function Page() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      setUser(decodeToken(token));
+      setUser(jwtDecode(token));
     } else {
       setKicker(true);
     }
   }, []);
-  console.log(cart);
   const handelSingIn = () => {
     router.push("/login");
   };
@@ -103,17 +103,16 @@ function Page() {
         userId: user.userId,
         totalPrice: totalPrice,
         note: note,
+        kitchenId: parseInt(idP),
         status: "Pending",
       });
-
-      console.log("Order placed successfully:", response.data);
     } catch (error) {
       console.error("Error placing order:", error);
-    } finally {
-      setCart([]);
-      localStorage.setItem("cart", JSON.stringify([]));
-      router.push("/kitchens/" + id);
-    }
+    } // finally {
+    //   setCart([]);
+    //   localStorage.setItem("cart", JSON.stringify([]));
+    //   router.push("/kitchens/" + id);
+    // }
   };
 
   return (

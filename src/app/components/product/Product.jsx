@@ -55,7 +55,7 @@ const Product = ({ id }) => {
           <GrFormPrevious className="text-4xl text-[#FFD143]" />
           <p className="text-3xl text-[#FFD143] drop-shadow-lg">مشاهدة الكل</p>
         </div>
-        <p className="text-3xl font-normal drop-shadow-lg">ألاطباق</p>
+        <p className="text-3xl font-normal drop-shadow-lg">الأطباق</p>
       </div>
       <Space height={"1rem"} />
       {/* product */}

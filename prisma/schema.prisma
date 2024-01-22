@@ -14,6 +14,7 @@ model Kitchen {
   description String
   Product     Product[]
   Category    Category[]
+  Orders      Orders[]
 }
 
 model Product {
@@ -58,9 +59,11 @@ model Orders {
   id         Int         @id @default(autoincrement())
   items      Json
   totalPrice Float
-  date       DateTime   @default(now())
+  date       DateTime    @default(now())
   note       String?
   status     OrderStatus
+  kitchenId  Int
+  kitchen    Kitchen     @relation(fields: [kitchenId], references: [id])
   userId     Int
   user       Users       @relation(fields: [userId], references: [id])
 }

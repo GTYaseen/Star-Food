@@ -77,7 +77,6 @@ function Page() {
       localStorage.setItem("token", token);
       router.push("/kitchens/1");
     } catch (error) {
-      console.log("Error registering user", error);
 
       if (error.response) {
         // The request was made and the server responded with a status code

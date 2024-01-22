@@ -7,11 +7,9 @@ import axios from "axios";
 import { signIn } from "next-auth/react";
 
 function Page() {
-  const [formValues, setFormValues] = useState({
-    name: "",
-    username: "",
-    password: "",
-  });
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [usernameFocus, setUsernameFocus] = useState(false);
   const [usernameFocusR, setUsernameFocusR] = useState(false);
   const [passwordFocusR, setPasswordFocusR] = useState(false);
@@ -86,7 +84,7 @@ function Page() {
       localStorage.setItem("token", token);
       router.push("/dashboard/kitchen");
     } catch (error) {
-      console.log("Error registering user", error);
+
 
       if (error.response) {
         // The request was made and the server responded with a status code

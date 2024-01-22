@@ -1,17 +1,15 @@
 "use client";
 import Header from "@/app/components/dashborad/Header/header";
-import { Image, Card, CardBody, CardFooter } from "@nextui-org/react";
-import AppContainer from "@/app/components/dashborad/Contaner/container";
+import { Image } from "@nextui-org/react";
+import AppContainer from "@/app/components/dashborad/Container/container";
 import { useEffect, useState } from "react";
-import { Space } from "../../components/space/Space";
+import { Space } from "@/app/components/space/Space";
 import { Button, Modal, Table, Input, Typography, Popconfirm } from "antd";
 import { FaEdit } from "react-icons/fa";
 import { IoIosRefresh } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { FaFileUpload } from "react-icons/fa";
-import { FaSearch } from "react-icons/fa";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import { useRouter } from "next/navigation";
 import { Link } from "@nextui-org/react";
 import axios from "axios";
 
@@ -76,7 +74,6 @@ export default function Home() {
     try {
       let url = `http://localhost:3000/api/kitchen`;
       axios.post(url, newData);
-      console.log(newData);
       setRefresh((prevRefresh) => prevRefresh + 1);
     } catch (error) {
       console.error("Error updating data:", error);
@@ -87,7 +84,7 @@ export default function Home() {
   //delete
   const handleDeleteClick = async (id) => {
     try {
-      axios.delete(`http://localhost:3000/api/kitchen/${id}`);
+      axios.delete(`http://localhost:3000/api/dashboard/kitchen/${id}`);
       setRefresh((prevRefresh) => prevRefresh + 1);
     } catch (error) {
       console.error("Error deleting data:", error);
@@ -96,7 +93,7 @@ export default function Home() {
   //edit
   const handleEditClick = () => {
     try {
-      let url = `http://localhost:3000/api/kitchen/${selectedProductId}`;
+      let url = `http://localhost:3000/api/dashboard/kitchen/${selectedProductId}`;
       axios
         .put(url, editFormData)
         .then((response) => {
@@ -181,17 +178,6 @@ export default function Home() {
         <Link href={`/dashboard/category/${record.id}`}>
           <button className="border-2 p-2 rounded-xl hover:scale-110 hover:bg-slate-300 hover:text-black">
             Category
-          </button>
-        </Link>
-      ),
-    },
-    {
-      title: "Products",
-      key: "products",
-      render: (_, record) => (
-        <Link href={`/dashboard/product/${record.id}`}>
-          <button className="border-2 p-2 rounded-xl hover:scale-110 hover:bg-slate-300 hover:text-black">
-            product
           </button>
         </Link>
       ),

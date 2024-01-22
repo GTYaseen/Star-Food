@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AppContainer from "../Contaner/container";
+import AppContainer from "../Container/container";
 import styles from "./header.module.css";
 import { RiRestartLine } from "react-icons/ri";
 

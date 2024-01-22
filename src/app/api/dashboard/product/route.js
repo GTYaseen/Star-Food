@@ -12,7 +12,7 @@ export async function GET(req) {
 
     if (id !== undefined) {
       whereClause = {
-        kitchenId: parseInt(id),
+        categoryId: parseInt(id),
       };
     }
 
@@ -23,10 +23,9 @@ export async function GET(req) {
       },
     });
 
-    return NextResponse.json(product, {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
+    return NextResponse.json({
+      success: true,
+      product: product,
     });
   } catch (error) {
     console.error("Error fetching data:", error);

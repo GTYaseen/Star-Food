@@ -16,14 +16,14 @@ import axios from "axios";
 const { Text } = Typography;
 
 export default function Home({ params }) {
-  const kitchenId = params.id;
-  const [kitchenName, setKitchens] = useState("");
+  const id = params.id;
+  const [user, setUser] = useState("");
   const [search, setSearch] = useState("");
   const [refresh, setRefresh] = useState(0);
   const [list, setList] = useState([]);
   const [selectedProductId, setSelectedProductId] = useState(null);
-  const [editFormData, setEditFormData] = useState({}); // Define state for edit form data
-  const [selectedImage, setSelectedImage] = useState(null); // Define state for selected image
+  const [editFormData, setEditFormData] = useState({});
+  const [selectedImage, setSelectedImage] = useState(null);
   const [open, setOpen] = useState(false);
   const [newData, setNewData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -53,15 +53,15 @@ export default function Home({ params }) {
       [e.target.name]: e.target.value,
     }));
   };
-  // get category
+  // get product
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
 
-        let url = `http://localhost:3000/api/dashboard/category?id=${kitchenId}`;
+        let url = `http://localhost:3000/api/dashboard/orders?id=${id}`;
         let response = await axios.get(url);
-        setList(response.data.category);
+        setList(response.data.orders);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -69,28 +69,28 @@ export default function Home({ params }) {
       }
     };
     const getName = async () => {
-        try {
-            setLoading(true);
-            let response = await axios.get(
-                `http://localhost:3000/api/dashboard/kitchen?id=${kitchenId}`
-            );
-            if (response.data.kitchens.length > 0) {
-                setKitchens(response.data.kitchens[0].name); // Extract the name from the first kitchen in the array
-                console.log(response.data.kitchens[0].name); // Log the name
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        } finally {
-            setLoading(false);
+      try {
+        setLoading(true);
+        let response = await axios.get(
+          `http://localhost:3000/api/dashboard/users?id=${id}`
+        );
+        if (response.data.category.length > 0) {
+          setUser(response.data.category[0].name); // Extract the name from the first kitchen in the array
+          console.log(response.data.category[0].name); // Log the name
         }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
     getName();
     fetchData();
   }, [search, refresh]);
-  //add category
+  //add product
   const handleAddClick = () => {
     try {
-      let url = `http://localhost:3000/api/dashboard/category`;
+      let url = `http://localhost:3000/api/dashboard/orders`;
       axios.post(url, newData);
       console.log(newData);
       setRefresh((prevRefresh) => prevRefresh + 1);
@@ -103,7 +103,7 @@ export default function Home({ params }) {
   //delete
   const handleDeleteClick = async (id) => {
     try {
-      axios.delete(`http://localhost:3000/api/dashboard/category/${id}`);
+      axios.delete(`http://localhost:3000/api/dashboard/orders/${id}`);
       setRefresh((prevRefresh) => prevRefresh + 1);
     } catch (error) {
       console.error("Error deleting data:", error);
@@ -112,7 +112,7 @@ export default function Home({ params }) {
   //edit
   const handleEditClick = () => {
     try {
-      let url = `http://localhost:3000/api/dashboard/category/${selectedProductId}`;
+      let url = `http://localhost:3000/api/dashboard/orders/${selectedProductId}`;
       axios
         .put(url, editFormData)
         .then((response) => {
@@ -129,7 +129,7 @@ export default function Home({ params }) {
     }
     setSelectedProductId(null);
   };
-
+  const kitchen = localStorage.getItem("kitchenId");
   const columns = [
     {
       title: "ID",
@@ -149,6 +149,12 @@ export default function Home({ params }) {
           height={70}
         />
       ),
+    },
+    {
+        title: "User",
+        key: "user",
+        render:(_,record)=>(
+            
     },
     {
       title: "name",
@@ -190,30 +196,7 @@ export default function Home({ params }) {
         </Popconfirm>
       ),
     },
-    {
-      title: "Kitchen",
-      key: "Kitchen",
-      render: () => (
-        <Link href={`/dashboard/kitchen`}>
-          <button className="border-2 p-2 rounded-xl hover:scale-110 hover:bg-slate-300 hover:text-black">
-            <p>{kitchenName}</p>
-          </button>
-        </Link>
-      ),
-    },
-    {
-      title: "Products",
-      key: "products",
-      render: (_, record) => (
-        <Link href={`/dashboard/product/${record.id}`}>
-          <button className="border-2 p-2 rounded-xl hover:scale-110 hover:bg-slate-300 hover:text-black">
-            product
-          </button>
-        </Link>
-      ),
-    },
   ];
-  localStorage.setItem("kitchenId", kitchenId);
   return (
     <>
       <Header />
