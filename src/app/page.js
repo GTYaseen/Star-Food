@@ -76,7 +76,7 @@ function Home() {
         {/* Kitchens */}
         <Space height={"1rem"} />
         <div className="gap-[10px] grid grid-cols-2 sm:grid-cols-4 rounded-3xl mx-4">
-        {/*add Loading skeletons for card kitchens */}
+          {/*add Loading skeletons for card kitchens */}
           {loading
             ? Array.from({ length: 8 }).map((_, index) => (
                 <div key={index} className="animate-pulse">
@@ -119,7 +119,7 @@ function Home() {
                         onClick={() => handleCardClick(item.id)}
                       >
                         <p className="text-[20px]">{item.name}</p>
-                        
+
                         <span className="text-[16px] mt-[10px]">
                           {item.description}
                         </span>

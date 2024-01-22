@@ -17,7 +17,7 @@ const FavButton = ({ item }) => {
     localStorage.setItem("test", JSON.stringify(newArr));
   };
   const heartIcon = fav ? (
-    <FaHeart className="hover:scale-150 duration-300 text-yellow-500 shadow-custom text-xl absolute right-2 -top-2" />
+    <FaHeart className="text-1xl hover:scale-150 duration-300 text-yellow-500 shadow-custom text-xl absolute right-2 -top-2" />
   ) : (
     <FaRegHeart className="hover:scale-150 duration-300 shadow-custom text-xl absolute right-2 -top-2" />
   );

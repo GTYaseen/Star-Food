@@ -2,16 +2,20 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Card, CardFooter, Image, CardBody } from "@nextui-org/react";
+import { Card, CardFooter, Image, CardBody, Button } from "@nextui-org/react";
 import { GrFormPrevious } from "react-icons/gr";
 import { Space } from "@/app/components/space/Space";
 import userStore from "@/app/store";
 import AddCart from "@/app/components/addCart/AddCart";
+import { BiDish } from "react-icons/bi";
+import ProductModal from "../ProductModal/ProductModal";
 import { useRouter } from "next/navigation";
 
 const Product = ({ id }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState(null); 
+  const [isModalOpen, setIsModalOpen] = useState(false); 
   const { productStates, setProductStates } = userStore();
 
   useEffect(() => {
@@ -37,10 +41,17 @@ const Product = ({ id }) => {
     fetchData();
   }, [id]);
 
+  const router = useRouter();
+
   const handelCardClick = (productId) => {
     router.push(`/product/${productId}`);
   };
 
+  const handleBiDishClick = (product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+  
   return (
     <div>
       <div className="flex justify-between">
@@ -91,11 +102,22 @@ const Product = ({ id }) => {
                     <p className="text-[20px]">{item.name}</p>
                     <p>{item.price}</p>
                   </div>
+                  <Space height={"3px"}/>
+                  <BiDish className="text-1xl flex items-end justify-center cursor-pointer" 
+                    onClick={()=> handleBiDishClick(item)}
+                    />
                 </CardFooter>
                 <Space height={"5px"} />
               </Card>
             ))}
       </div>
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
       <Space height={"3rem"} />
     </div>
   );
