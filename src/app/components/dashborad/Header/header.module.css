@@ -1,0 +1,33 @@
+.logo {
+  font-size: 40px;
+  animation: spin 4s infinite linear; /* Adjust the duration and animation type as needed */
+}
+.header {
+  background-color: #eee;
+}
+
+.header .content {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header .content ul {
+  display: flex;
+  gap: 20px;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+    scale: 0.5;
+  }
+  50% {
+    transform: rotate(360deg);
+    scale: 1;
+  }
+  100% {
+    transform: rotate(0deg);
+    scale: 0.5;
+  }
+}

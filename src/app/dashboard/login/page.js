@@ -4,13 +4,14 @@ import { Space } from "@/app/components/space/Space";
 import { Image } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { signIn } from "next-auth/react";
 
 function Page() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [formValues, setFormValues] = useState({
+    name: "",
+    username: "",
+    password: "",
+  });
   const [usernameFocus, setUsernameFocus] = useState(false);
   const [usernameFocusR, setUsernameFocusR] = useState(false);
   const [passwordFocusR, setPasswordFocusR] = useState(false);
@@ -18,8 +19,6 @@ function Page() {
   const [passwordR, setPasswordR] = useState("");
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [nameFocus, setNameFocus] = useState(false);
-  const [locationFocus, setLocationFocus] = useState(false);
-  const [phoneNumberFocus, setPhoneNumberFocus] = useState(false);
   const [register, setRegister] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -35,30 +34,39 @@ function Page() {
   const handleLogin = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:3000/api/login", {
-        username,
-        password,
+      axios({
+        method: "post",
+        url: "http://localhost:3000/api/dashboard/adminLogin",
+        data: {
+          name,
+          username,
+          password,
+        },
+      }).then((response) => {
+        const token = response.data.token;
+
+        axios({
+          method: "post",
+          url: "http://localhost:3000/api/dashboard/adminLogin",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          data: {
+            name,
+            username,
+            password,
+          },
+        });
       });
 
       // Handle successful login
       const token = response.data.token;
       localStorage.setItem("token", token);
-      router.push("/kitchens/1");
+
+      router.push("/dashboard/kitchen");
     } catch (error) {
       console.error("Error logging in", error);
-
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
-        console.error("Response headers:", error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.error("No response received. Request:", error.request);
-      } else {
-        // Something happened in setting up the request
-        console.error("Error setting up the request:", error.message);
-      }
+      // Handle error as needed
     } finally {
       setLoading(false);
     }
@@ -66,16 +74,17 @@ function Page() {
   const handleRegister = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:3000/api/register", {
-        username,
-        password,
-        name,
-        location,
-        phoneNumber,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/dashboard/adminRegister",
+        {
+          username,
+          password,
+          name,
+        }
+      );
       const token = response.data.token;
       localStorage.setItem("token", token);
-      router.push("/kitchens/1");
+      router.push("/dashboard/kitchen");
     } catch (error) {
       console.log("Error registering user", error);
 
@@ -145,28 +154,6 @@ function Page() {
                 onChange={(e) => setName(e.target.value)}
                 onFocus={() => handleInputFocus(setNameFocus)}
                 onBlur={() => handleInputBlur(setNameFocus)}
-                className="w-[400px] h-12 border rounded-xl bg-[#FFE559] text-black placeholder-[#000000] focus:outline-none text-end p-2 "
-                dir="auto"
-              />
-              <Space height={"20px"} />
-              <input
-                type="text"
-                placeholder={locationFocus ? "" : "الموقع"}
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                onFocus={() => handleInputFocus(setLocationFocus)}
-                onBlur={() => handleInputBlur(setLocationFocus)}
-                className="w-[400px] h-12 border rounded-xl bg-[#FFE559] text-black placeholder-[#000000] focus:outline-none text-end p-2 "
-                dir="auto"
-              />
-              <Space height={"20px"} />
-              <input
-                type="text"
-                placeholder={phoneNumberFocus ? "" : "رقم الهاتف"}
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                onFocus={() => handleInputFocus(setPhoneNumberFocus)}
-                onBlur={() => handleInputBlur(setPhoneNumberFocus)}
                 className="w-[400px] h-12 border rounded-xl bg-[#FFE559] text-black placeholder-[#000000] focus:outline-none text-end p-2 "
                 dir="auto"
               />
