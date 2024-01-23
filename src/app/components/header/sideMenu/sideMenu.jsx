@@ -6,6 +6,7 @@ import { Space } from "@/app/components/space/Space";
 import { FaRegHeart } from "react-icons/fa";
 import { PiSignOutBold } from "react-icons/pi";
 import { LuChefHat } from "react-icons/lu";
+import { MdDeliveryDining } from "react-icons/md";
 
 function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
   const [name, setName] = useState("");
@@ -85,6 +86,13 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
                   تواصل معنا
                   <Space width={"5px"} />
                   <MdOutlineContacts />
+                </Link>
+              </li>
+              <li className="flex items-center cursor-pointer">
+                <Link href="/delivery" className="flex items-center">
+                 تتبع الطلب
+                  <Space width={"5px"} />
+                  <MdDeliveryDining />
                 </Link>
               </li>
               {isLogin ? (

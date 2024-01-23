@@ -28,25 +28,23 @@ function AddCart({ item }) {
     // Save updated cart to localStorage
     localStorage.setItem("cart", JSON.stringify(newArr));
   };
+return(
+  <div>
+    {/* Add to cart button */}
+    {isItemAdded ? (
+      // Content for true condition
+      <IoIosCheckmarkCircle
+        className="text-2xl flex items-end justify-center ml-[10px] mt-[15px] text-black lg:hover:scale-150 duration-300"
+        onClick={handleCart}
+      />
+    ) : (
+      // Content for false condition
+      <IoAddCircleSharp
+        className="text-2xl flex items-end justify-center ml-[8px] mt-[15px] cursor-pointer text-[#FFD143] lg:hover:scale-150 duration-300"
+        onClick={handleCart}
+      />
+    )}
+  </div>
+);}
 
-  return (
-    <div>
-      {/* Add to cart button */}
-      {isItemAdded ? (
-        // Content for true condition
-        <IoIosCheckmarkCircle
-          className="text-3xl flex items-end justify-center ml-[10px] mt-[15px] text-black lg:hover:scale-150 duration-300"
-          onClick={handleCart}
-        />
-      ) : (
-        // Content for false condition
-        <IoAddCircleSharp
-          className="text-3xl flex items-end justify-center ml-[10px] mt-[15px] cursor-pointer text-[#FFD143] lg:hover:scale-150 duration-300"
-          onClick={handleCart}
-        />
-      )}
-    </div>
-  );
-}
-
-export default AddCart;
+export default AddCart ;

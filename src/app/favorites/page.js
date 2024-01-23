@@ -20,6 +20,7 @@ const FavoritesPage = () => {
     <>
       <div className="w-full h-full bg-[#FBFAF4] h-screen">
         <Navpar />
+        <Space height={"2rem"}/>
         <AppContainer>
           <div className="gap-[10px] grid grid-cols-2 sm:grid-cols-4 rounded-3xl mx-4">
             {Favorite?.map((item) => (

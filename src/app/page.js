@@ -14,8 +14,8 @@ import useStore from "@/app/store";
 
 function Home() {
   const [kitchens, setKitchens] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const {Favorite, setFavorite } = useStore();
+  const [loading, setLoading] = useState(true);
+  const { Favorite, setFavorite } = useStore();
 
   const router = useRouter();
 
@@ -49,7 +49,6 @@ function Home() {
     if (fav) setFavorite(JSON.parse(fav));
   }, []);
 
-
   return (
     <div className="w-full h-full bg-[#FBFAF4] h-screen">
       <Navpar />
@@ -74,59 +73,66 @@ function Home() {
           </div>
           <p className="text-2xl font-normal drop-shadow-lg ">المطابخ</p>
         </div>
-        <Space height={"1rem"} />
         {/* Kitchens */}
+        <Space height={"1rem"} />
         <div className="gap-[10px] grid grid-cols-2 sm:grid-cols-4 rounded-3xl mx-4">
-          {kitchens.map((item) => (
-            <div key={item.id}>
-              <Card
-                key={item.id}
-                shadow="3xl"
-                onClick={()=> handleCardClick(item.id)}
-                className="bg-white border-none rounded-3xl w-[200px] h-[250px] ml-6 shadow-custom transition-transform transform hover:scale-105 active:scale-110"
-              >
-                <CardBody className="overflow-visible p-0">
-                  <Image
-                    shadow="xl"
-                    radius="lg"
-                    width="100%"
-                    height="100%"
-                    alt={item.image}
-                    className="w-full object-cover h-[160px] rounded-t-2xl rounded-b-none cursor-pointer"
-                    src={item.image}
+          {/*add Loading skeletons for card kitchens */}
+          {loading
+            ? Array.from({ length: 8 }).map((_, index) => (
+                <div key={index} className="animate-pulse">
+                  <div className="bg-yellow-200 border-none rounded-3xl w-[200px] h-[250px]"></div>
+                  <Space height={"5px"} />
+                  <div className="bg-yellow-200 border-none rounded-3xl w-[200px] h-3"></div>
+                  <Space height={"5px"} />
+                  <div className="bg-yellow-200 border-none rounded-3xl w-[200px] h-3"></div>
+                  <Space height={"5px"} />
+                </div>
+              ))
+            : kitchens.map((item) => (
+                <div key={item.id}>
+                  <Card
+                    key={item.id}
+                    shadow="3xl"
                     onClick={() => handleCardClick(item.id)}
-                  />
-                </CardBody>
-                <Space height={"4px"} />
-                <CardFooter className="text-small justify-between">
-                  <FavButton
-                    item={item}
-                    onClick={() => handleFavoritesClick(item.id)}
-                  />
-
-                  <div
-                    className="flex flex-col items-end mr-[10px] cursor-pointer"
-                    onClick={() => handleCardClick(item.id)}
-                  ></div>
-                  <div
-                    className="flex flex-col items-end mr-[10px] cursor-pointer"
-                    onClick={() => handleCardClick(item.id)}
+                    className="bg-white border-none rounded-3xl w-[200px] h-[250px] ml-6 shadow-custom transition-transform transform hover:scale-105 active:scale-110"
                   >
-                    <p className="text-[20px]">{item.name}</p>
+                    <CardBody className="overflow-visible p-0">
+                      <Image
+                        shadow="xl"
+                        radius="lg"
+                        width="100%"
+                        height="100%"
+                        alt={item.image}
+                        className="w-full object-cover h-[160px] rounded-t-2xl rounded-b-none cursor-pointer"
+                        src={item.image}
+                        onClick={() => handleCardClick(item.id)}
+                      />
+                    </CardBody>
+                    <Space height={"4px"} />
+                    <CardFooter className="text-small justify-between">
+                      <FavButton
+                        item={item}
+                        onClick={() => handleFavoritesClick(item.id)}
+                      />
+                      <div
+                        className="flex flex-col items-end mr-[10px] cursor-pointer"
+                        onClick={() => handleCardClick(item.id)}
+                      >
+                        <p className="text-[20px]">{item.name}</p>
 
-                    <span className="text-[16px] mt-[10px]">
-                      {item.description}
-                    </span>
-                  </div>
-                </CardFooter>
-                <Space height={"5px"} />
-              </Card>
-            </div>
-          ))}
+                        <span className="text-[16px] mt-[10px]">
+                          {item.description}
+                        </span>
+                      </div>
+                    </CardFooter>
+                    <Space height={"5px"} />
+                  </Card>
+                </div>
+              ))}
         </div>
       </AppContainer>
     </div>
   );
 }
-
+//asd
 export default Home;

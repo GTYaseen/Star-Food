@@ -5,7 +5,9 @@ import { Card, CardFooter, Image, CardBody } from "@nextui-org/react";
 import { GrFormPrevious } from "react-icons/gr";
 import { Space } from "@/app/components/space/Space";
 import userStore from "@/app/store";
+import { BiDish } from "react-icons/bi";
 import { useRouter } from "next/navigation";
+import ProductModal from "../productModal/ProductModal";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import AddCart from "../addCart/AddCart";
 
@@ -14,6 +16,8 @@ const Product = ({ id }) => {
   const [loading, setLoading] = useState(true);
   const { setProductStates, productStates } = userStore();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -47,7 +51,10 @@ const Product = ({ id }) => {
     console.error("Image failed to load");
     setImageLoaded(true); // Set to true to stop showing the loading indicator in case of an error
   };
-
+  const handleBiDishClick = (product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
   return (
     <div>
       <div className="flex justify-between">
@@ -78,7 +85,7 @@ const Product = ({ id }) => {
               <Card
                 key={index}
                 shadow="sm"
-                className="bg-white border-none rounded-3xl w-[230px] shadow-custom m-[10px] transition-transform transform hover:scale-105 active:scale-110"
+                className="bg-white border-none rounded-3xl w-[230px] shadow-custom m-[10px] "
               >
                 <CardBody className="overflow-visible p-0">
                   {/* Lazy load the Image component */}
@@ -110,7 +117,16 @@ const Product = ({ id }) => {
                 </CardBody>
                 <Space height={"5px"} />
                 <CardFooter className="text-small justify-between">
-                  <AddCart item={item} />
+                  <div className="w-[4rem] flex items-center justify-between">
+                    <AddCart
+                      item={item}
+                      className="flex items-center justify-center"
+                    />
+                    <BiDish
+                      className="text-2xl flex items-end justify-center ml-[10px] mt-[15px] text-[#FFD143] lg:hover:scale-150 duration-300"
+                      onClick={() => handleBiDishClick(item)}
+                    />
+                  </div>
                   <div className="flex flex-col items-end mr-[10px]">
                     <p className="text-[20px]">{item.name}</p>
                     <p>{item.price}</p>
@@ -120,6 +136,13 @@ const Product = ({ id }) => {
               </Card>
             ))}
       </div>
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
       <Space height={"3rem"} />
     </div>
   );
