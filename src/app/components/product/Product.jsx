@@ -8,14 +8,14 @@ import { Space } from "@/app/components/space/Space";
 import userStore from "@/app/store";
 import AddCart from "@/app/components/addCart/AddCart";
 import { BiDish } from "react-icons/bi";
-import ProductModal from "../ProductModal/ProductModal";
+import ProductModal from "../productModal/ProductModal";
 import { useRouter } from "next/navigation";
 
 const Product = ({ id }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProduct, setSelectedProduct] = useState(null); 
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { productStates, setProductStates } = userStore();
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const Product = ({ id }) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
-  
+
   return (
     <div>
       <div className="flex justify-between">
@@ -95,18 +95,24 @@ const Product = ({ id }) => {
                     src={item.image}
                   />
                 </CardBody>
-                <Space height={"5px"} />
                 <CardFooter className="text-small justify-between">
-                  <AddCart item={item} />
+                  <div className="flex items-center">
+                  <Space height={"10px"} /> 
+                    <AddCart item={item} />
+                    <Space width={"5px"} /> 
+                    <BiDish
+                      className="text-2xl text-[#FFD143]  cursor-pointer lg:hover:scale-150"
+                      onClick={() => handleBiDishClick(item)}
+                    />
+                  </div>
+
                   <div className="flex flex-col items-end mr-[10px]">
                     <p className="text-[20px]">{item.name}</p>
                     <p>{item.price}</p>
                   </div>
-                  <Space height={"3px"}/>
-                  <BiDish className="text-1xl flex items-end justify-center cursor-pointer" 
-                    onClick={()=> handleBiDishClick(item)}
-                    />
+                  <Space height={"3px"} />
                 </CardFooter>
+
                 <Space height={"5px"} />
               </Card>
             ))}

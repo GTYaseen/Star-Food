@@ -169,7 +169,6 @@ function Page() {
               <div className="flex items-center justify-between">
                 <div className="flex flex-col items-end justify-end mr-3">
                   <p className="text-2xl">{item.name}</p>
-                  <p className="text-xl text-gray-700">{item.description}</p>
                   <p>
                     د.ع
                     <span className="text-red-500 font-sans font-semibold text-xl">

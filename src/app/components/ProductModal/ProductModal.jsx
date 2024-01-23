@@ -5,15 +5,22 @@ const ProductModal = ({ product, isOpen, onClose }) => {
   return (
     <Modal
       title={product.name}
-      visible={isOpen}
+      open={isOpen}
       onCancel={onClose}
+      width={"400px"}
       footer={[
-        <Button key="back" onClick={onClose} className="bg-yellow-200 modbtn">
+        <Button
+          key="back"
+          onClick={onClose}
+          className="text-1xl font-bold h-[40px] w-[60px] bg-yellow-400 rounded-xl"
+        >
           الرجوع
         </Button>,
       ]}
-     >
-      <p className="text-2xl"> {product.description}</p>
+    >
+      <div style={{ border: "2px solid #eee", padding: "16px" }}>
+        <p className="text-2xl"> {product.description}</p>
+      </div>
     </Modal>
   );
 };
