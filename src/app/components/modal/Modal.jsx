@@ -12,7 +12,6 @@ let topTitle = ""
   if(title){
     topTitle = title
   }
-  console.log(open);
   return (
     <div className="modal" style={modalStyle}>
       <div className="modal-content">

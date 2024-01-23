@@ -15,7 +15,7 @@ export async function GET(req) {
       };
     }
 
-    const kitchen = await prisma.kitchen.findMany({
+    const users = await prisma.users.findMany({
       where: whereClause,
       orderBy: {
         id: "asc",
@@ -24,7 +24,7 @@ export async function GET(req) {
 
     return NextResponse.json(
       {
-        kitchens: kitchen,
+        users: users,
         success: true,
       },
       {
@@ -47,22 +47,5 @@ export async function GET(req) {
     );
   } finally {
     await prisma.$disconnect();
-  }
-}
-export async function POST(req) {
-  const body = await req.json();
-  try {
-    let kitchen = await prisma.kitchen.create({
-      data: body,
-    });
-    return NextResponse.json({
-      success: true,
-      kitchen,
-    });
-  } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error.message,
-    });
   }
 }

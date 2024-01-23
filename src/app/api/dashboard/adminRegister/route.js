@@ -5,18 +5,17 @@ import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-const jwtSecret = process.env.JWT_SECRET_USER;
+const jwtSecret = process.env.JWT_SECRET_ADMIN;
 export async function POST(req) {
-  const { name, usernameR, passwordR, phoneNumber, location } = await req.json();
+  const { name, username, password } = await req.json();
   try {
-    const hashedPassword = await bcrypt.hash(passwordR, 10);
-    let result = await prisma.users.create({
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    let result = await prisma.admins.create({
       data: {
         name,
-        username: usernameR,
+        username,
         password: hashedPassword,
-        phoneNumber,
-        location,
       },
     });
 
@@ -33,7 +32,7 @@ export async function POST(req) {
     });
   } catch (error) {
     console.error("Error during processing:", error);
-    console.error("Error stack trace:", error.stack);
+
     // Log the specific Prisma error if available
     if (error instanceof Error && error.code === "P2002") {
       console.error("Prisma error:", error.code);

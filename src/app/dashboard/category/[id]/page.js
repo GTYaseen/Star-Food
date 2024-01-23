@@ -1,0 +1,289 @@
+"use client";
+import Header from "@/app/components/dashborad/Header/header";
+import { Image } from "@nextui-org/react";
+import AppContainer from "@/app/components/dashborad/Container/container";
+import { useEffect, useState } from "react";
+import { Space } from "@/app/components/space/Space";
+import { Button, Modal, Table, Input, Typography, Popconfirm } from "antd";
+import { FaEdit } from "react-icons/fa";
+import { IoIosRefresh } from "react-icons/io";
+import { MdDelete } from "react-icons/md";
+import { FaFileUpload } from "react-icons/fa";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Link } from "@nextui-org/react";
+import axios from "axios";
+
+const { Text } = Typography;
+
+export default function Home({ params }) {
+  const kitchenId = params.id;
+  const [kitchenName, setKitchens] = useState("");
+  const [search, setSearch] = useState("");
+  const [refresh, setRefresh] = useState(0);
+  const [list, setList] = useState([]);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [editFormData, setEditFormData] = useState({}); // Define state for edit form data
+  const [selectedImage, setSelectedImage] = useState(null); // Define state for selected image
+  const [open, setOpen] = useState(false);
+  const [newData, setNewData] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  const showModal = (id) => {
+    setSelectedProductId(id);
+    const selectedProduct = list.find((product) => product.id === id);
+    setEditFormData(selectedProduct);
+    setSelectedImage(selectedProduct.image);
+  };
+
+  const handleCancel = () => {
+    setSelectedProductId(null);
+    setOpen(false);
+  };
+
+  const handleEditInputChange = (e) => {
+    // Update the edit form data on input change
+    setEditFormData({
+      ...editFormData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleAddInputChange = (e) => {
+    setNewData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+  };
+  // get category
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        let url = `http://localhost:3000/api/dashboard/category?id=${kitchenId}`;
+        let response = await axios.get(url);
+        setList(response.data.category);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    const getName = async () => {
+        try {
+            setLoading(true);
+            let response = await axios.get(
+                `http://localhost:3000/api/dashboard/kitchen?id=${kitchenId}`
+            );
+            if (response.data.kitchens.length > 0) {
+                setKitchens(response.data.kitchens[0].name); // Extract the name from the first kitchen in the array
+                console.log(response.data.kitchens[0].name); // Log the name
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    getName();
+    fetchData();
+  }, [search, refresh]);
+  //add category
+  const handleAddClick = () => {
+    try {
+      let url = `http://localhost:3000/api/dashboard/category`;
+      axios.post(url, newData);
+      console.log(newData);
+      setRefresh((prevRefresh) => prevRefresh + 1);
+    } catch (error) {
+      console.error("Error updating data:", error);
+    }
+    setOpen(false);
+    setRefresh(refresh + 1);
+  };
+  //delete
+  const handleDeleteClick = async (id) => {
+    try {
+      axios.delete(`http://localhost:3000/api/dashboard/category/${id}`);
+      setRefresh((prevRefresh) => prevRefresh + 1);
+    } catch (error) {
+      console.error("Error deleting data:", error);
+    }
+  };
+  //edit
+  const handleEditClick = () => {
+    try {
+      let url = `http://localhost:3000/api/dashboard/category/${selectedProductId}`;
+      axios
+        .put(url, editFormData)
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          setRefresh((prevRefresh) => prevRefresh + 1);
+        })
+        .catch((error) => {
+          console.error("Error updating data:", error);
+        });
+    } catch (error) {
+      console.error("Error updating data:", error);
+    }
+    setSelectedProductId(null);
+  };
+
+  const columns = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+      render: (text) => (
+        <Image
+          src={text}
+          alt={text}
+          className="rounded-3xl h-20 w-20"
+          width={80}
+          height={70}
+        />
+      ),
+    },
+    {
+      title: "name",
+      key: "name",
+      render: (_, record) => <p className="text-2xl">{record.name}</p>,
+    },
+    {
+      title: "Edit",
+      key: "edit",
+      render: (_, record) => (
+        <>
+          <Button onClick={() => showModal(record.id)} size="large">
+            <FaEdit />
+          </Button>
+        </>
+      ),
+    },
+    {
+      title: "Delete",
+      key: "delete",
+      render: (_, record) => (
+        <Popconfirm
+          title="Delete the item"
+          description="Are you sure to delete this item?"
+          okText="Yes"
+          cancelText="No"
+          okType="danger"
+          onConfirm={() => handleDeleteClick(record.id)}
+          icon={<QuestionCircleOutlined className="text-red-500" />}
+        >
+          <Button
+            type="primary"
+            danger
+            size="large"
+            className="hover:scale-110"
+          >
+            <MdDelete />
+          </Button>
+        </Popconfirm>
+      ),
+    },
+    {
+      title: "Kitchen",
+      key: "Kitchen",
+      render: () => (
+        <Link href={`/dashboard/kitchen`}>
+          <button className="border-2 p-2 rounded-xl hover:scale-110 hover:bg-slate-300 hover:text-black">
+            <p>{kitchenName}</p>
+          </button>
+        </Link>
+      ),
+    },
+    {
+      title: "Products",
+      key: "products",
+      render: (_, record) => (
+        <Link href={`/dashboard/product/${record.id}`}>
+          <button className="border-2 p-2 rounded-xl hover:scale-110 hover:bg-slate-300 hover:text-black">
+            product
+          </button>
+        </Link>
+      ),
+    },
+  ];
+  localStorage.setItem("kitchenId", kitchenId);
+  return (
+    <>
+      <Header />
+      <Space height={20} />
+      <AppContainer width={1300}>
+        <Space width="100%" height="20px" />
+        <div className="flex justify-between">
+          <Input
+            placeholder="Search..."
+            //onChange={}
+            onPressEnter={(e) => setSearch(e.target.value)}
+          />
+          <div className="flex">
+            <Space width="150px" />
+            <Button onClick={() => setOpen(true)} size="large">
+              Add +
+            </Button>
+            <Button
+              className="default"
+              onClick={() => setRefresh(refresh + 1)}
+              size="large"
+            >
+              <IoIosRefresh />
+            </Button>
+          </div>
+        </div>
+        <Space width="100%" height="20px" />
+        <Table columns={columns} dataSource={list} loading={loading} />
+        <Modal
+          title="Product Details"
+          open={selectedProductId}
+          onOk={handleEditClick}
+          onCancel={handleCancel}
+        >
+          {selectedImage && (
+            <Image src={selectedImage} alt={"Image"} width={350} height={350} />
+          )}
+          <Text>name</Text>
+          <Input
+            name="name"
+            value={editFormData.name}
+            onChange={handleEditInputChange}
+          />
+          <Text>image</Text>
+          <Input
+            name="image"
+            value={editFormData.image}
+            onChange={handleEditInputChange}
+          />
+          <Space height={10} />
+          <Button type="link" style={{ fontSize: "20px" }}>
+            <FaFileUpload />
+          </Button>
+        </Modal>
+        {/* Add Modal */}
+        <Modal
+          title="Product Details"
+          open={open}
+          onOk={handleAddClick}
+          onCancel={handleCancel}
+          okType="default"
+        >
+          <Text>name</Text>
+          <Input name="name" onChange={handleAddInputChange} />
+          <Text>image</Text>
+          <Input name="image" onChange={handleAddInputChange} />
+          <Text>description</Text>
+          <Input name="description" onChange={handleAddInputChange} />
+        </Modal>
+      </AppContainer>
+    </>
+  );
+}

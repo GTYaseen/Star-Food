@@ -4,13 +4,13 @@ import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
-const jwtSecret = process.env.JWT_SECRET_USER;
+const jwtSecret = process.env.JWT_SECRET_ADMIN;
 
 export async function POST(req) {
   const { username, password } = await req.json();
 
   try {
-    const user = await prisma.users.findUnique({
+    const user = await prisma.admins.findUnique({
       where: { username },
     });
 
@@ -57,3 +57,4 @@ export async function POST(req) {
     await prisma.$disconnect();
   }
 }
+

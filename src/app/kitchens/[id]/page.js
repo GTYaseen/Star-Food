@@ -5,7 +5,8 @@ import Navpar from "@/app/components/header/Navpar";
 import { Space } from "@/app/components/space/Space";
 import Category from "@/app/components/category/Category";
 import Product from "@/app/components/product/Product";
-import { decodeToken } from "@/app/auth";
+//import { decodeToken } from "@/app/auth";
+import { jwtDecode } from "jwt-decode";
 import useStore from "@/app/store";
 import Cart from "@/app/components/cart/Cart";
 
@@ -18,22 +19,22 @@ function Page({ params }) {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      setUser(decodeToken(token));
+    if (token == "undefined" || !token) {
+      return;
+    } else {
+      setUser(jwtDecode(token));
     }
   }, []);
   useEffect(() => {
     let cart = localStorage.getItem("cart");
-    console.log(cart);
     if (cart) setCart(JSON.parse(cart));
-    console.log(cart);
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://starserver.onrender.com/api/client/kitchen?id=${id}`
+          `http://localhost:3000/api/kitchen?id=${id}`
         );
         const responseData = await response.json();
         setData(responseData);
@@ -50,7 +51,7 @@ function Page({ params }) {
     let id = params.id;
     localStorage.setItem("id", id);
   }, []);
-  console.log(cart);
+
   return (
     <div className="bg-[#FBFAF4] h-[100vh]">
       <Navpar user={user} />
@@ -58,9 +59,16 @@ function Page({ params }) {
         <Space height={"3rem"} />
         {/* Loading skeleton */}
         {loading ? (
-          <div className="animate-pulse flex items-center justify-end">
-            <div className="h-9 bg-yellow-200 w-[250px] rounded-3xl"></div>
-          </div>
+          <>
+            <div className="animate-pulse flex items-center justify-end">
+              <div className="h-9 bg-yellow-200 w-[250px] rounded-3xl"></div>
+            </div>
+            <Space height={"3rem"} />
+            <Category id={id} />
+            <Space height={"3rem"} />
+            <Product id={id} />
+            <Cart id={id} />
+          </>
         ) : (
           <>
             {data.length > 0 && (

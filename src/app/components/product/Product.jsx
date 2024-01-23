@@ -1,22 +1,20 @@
 "use client";
-import React from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { Card, CardFooter, Image, CardBody, Button } from "@nextui-org/react";
+import { Card, CardFooter, Image, CardBody } from "@nextui-org/react";
 import { GrFormPrevious } from "react-icons/gr";
 import { Space } from "@/app/components/space/Space";
 import userStore from "@/app/store";
-import AddCart from "@/app/components/addCart/AddCart";
-import { BiDish } from "react-icons/bi";
-import ProductModal from "../productModal/ProductModal";
 import { useRouter } from "next/navigation";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import AddCart from "../addCart/AddCart";
 
 const Product = ({ id }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { productStates, setProductStates } = userStore();
+  const { setProductStates, productStates } = userStore();
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,15 +39,13 @@ const Product = ({ id }) => {
     fetchData();
   }, [id]);
 
-  const router = useRouter();
-
-  const handelCardClick = (productId) => {
-    router.push(`/product/${productId}`);
+  const handleImageLoad = () => {
+    setImageLoaded(true);
   };
 
-  const handleBiDishClick = (product) => {
-    setSelectedProduct(product);
-    setIsModalOpen(true);
+  const handleImageError = () => {
+    console.error("Image failed to load");
+    setImageLoaded(true); // Set to true to stop showing the loading indicator in case of an error
   };
 
   return (
@@ -59,12 +55,12 @@ const Product = ({ id }) => {
           <GrFormPrevious className="text-4xl text-[#FFD143]" />
           <p className="text-3xl text-[#FFD143] drop-shadow-lg">مشاهدة الكل</p>
         </div>
-        <p className="text-3xl font-normal drop-shadow-lg">ألاطباق</p>
+        <p className="text-3xl font-normal drop-shadow-lg">الأطباق</p>
       </div>
       <Space height={"1rem"} />
       {/* product */}
       <Space height={"1rem"} />
-      <div className="gap-[10px] grid grid-cols-5 sm:grid-cols-4 rounded-3xl ">
+      <div className="gap-[10px] grid grid-cols-5 sm:grid-cols-4 rounded-3xl">
         {loading
           ? // Loading skeletons for Cards
             Array.from({ length: 8 }).map((_, index) => (
@@ -83,47 +79,47 @@ const Product = ({ id }) => {
                 key={index}
                 shadow="sm"
                 className="bg-white border-none rounded-3xl w-[230px] shadow-custom m-[10px] transition-transform transform hover:scale-105 active:scale-110"
-                onClick={() => handelCardClick(item.id)}
               >
                 <CardBody className="overflow-visible p-0">
-                  <Image
-                    shadow="sm"
-                    radius="lg"
-                    width="100%"
-                    alt={item.image}
-                    className="w-full object-cover h-[140px] rounded-t-3xl rounded-b-none"
-                    src={item.image}
-                  />
-                </CardBody>
-                <CardFooter className="text-small justify-between">
-                  <div className="flex items-center">
-                  <Space height={"10px"} /> 
-                    <AddCart item={item} />
-                    <Space width={"5px"} /> 
-                    <BiDish
-                      className="text-2xl text-[#FFD143]  cursor-pointer lg:hover:scale-150"
-                      onClick={() => handleBiDishClick(item)}
+                  {/* Lazy load the Image component */}
+                  <Suspense
+                    fallback={
+                      <div>
+                        <div className="w-6 h-6 animate-spin" />
+                      </div>
+                    }
+                  >
+                    <Image
+                      shadow="sm"
+                      radius="lg"
+                      width="100%"
+                      className="w-full object-cover h-[140px] rounded-t-3xl rounded-b-none"
+                      src={item.image}
+                      loading="lazy"
+                      onLoad={handleImageLoad} // Event when the image is loaded
+                      onError={handleImageError}
                     />
-                  </div>
-
+                    {!imageLoaded && (
+                      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black opacity-50">
+                        <div className="w-6 h-6 animate-spin text-[#FFD143] text-2xl font-bold">
+                          <AiOutlineLoading3Quarters />
+                        </div>
+                      </div>
+                    )}
+                  </Suspense>
+                </CardBody>
+                <Space height={"5px"} />
+                <CardFooter className="text-small justify-between">
+                  <AddCart item={item} />
                   <div className="flex flex-col items-end mr-[10px]">
                     <p className="text-[20px]">{item.name}</p>
                     <p>{item.price}</p>
                   </div>
-                  <Space height={"3px"} />
                 </CardFooter>
-
                 <Space height={"5px"} />
               </Card>
             ))}
       </div>
-      {selectedProduct && (
-        <ProductModal
-          product={selectedProduct}
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      )}
       <Space height={"3rem"} />
     </div>
   );
