@@ -4,7 +4,15 @@ import { Image } from "@nextui-org/react";
 import AppContainer from "@/app/components/dashborad/Container/container";
 import { useEffect, useState } from "react";
 import { Space } from "@/app/components/space/Space";
-import { Button, Modal, Table, Input, Typography, Popconfirm } from "antd";
+import {
+  Button,
+  Modal,
+  Table,
+  Input,
+  Typography,
+  Popconfirm,
+  Select,
+} from "antd";
 import { FaEdit } from "react-icons/fa";
 import { IoIosRefresh } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
@@ -17,15 +25,14 @@ const { Text } = Typography;
 
 export default function Home({ params }) {
   const id = params.id;
-  const [user, setUser] = useState("");
+  const [userDetails, setUserDetails] = useState([]);
+  const [status, setStatus] = useState("");
   const [search, setSearch] = useState("");
   const [refresh, setRefresh] = useState(0);
   const [list, setList] = useState([]);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [editFormData, setEditFormData] = useState({});
   const [selectedImage, setSelectedImage] = useState(null);
-  const [open, setOpen] = useState(false);
-  const [newData, setNewData] = useState({});
   const [loading, setLoading] = useState(true);
 
   const showModal = (id) => {
@@ -47,12 +54,6 @@ export default function Home({ params }) {
       [e.target.name]: e.target.value,
     });
   };
-  const handleAddInputChange = (e) => {
-    setNewData((prevData) => ({
-      ...prevData,
-      [e.target.name]: e.target.value,
-    }));
-  };
   // get product
   useEffect(() => {
     const fetchData = async () => {
@@ -61,45 +62,29 @@ export default function Home({ params }) {
 
         let url = `http://localhost:3000/api/dashboard/orders?id=${id}`;
         let response = await axios.get(url);
-        setList(response.data.orders);
+        const orders = response.data.orders;
+
+        // Fetch user details for each order
+        const userDetailsPromises = orders.map(async (order) => {
+          const userId = order.userId;
+          const userResponse = await axios.get(
+            `http://localhost:3000/api/dashboard/users?id=${userId}`
+          );
+          const user = userResponse.data.users;
+          return { ...order, user }; // Combine order data with user details
+        });
+
+        const ordersWithUserDetails = await Promise.all(userDetailsPromises);
+        setList(ordersWithUserDetails);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     };
-    const getName = async () => {
-      try {
-        setLoading(true);
-        let response = await axios.get(
-          `http://localhost:3000/api/dashboard/users?id=${id}`
-        );
-        if (response.data.category.length > 0) {
-          setUser(response.data.category[0].name); // Extract the name from the first kitchen in the array
-          console.log(response.data.category[0].name); // Log the name
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getName();
     fetchData();
   }, [search, refresh]);
-  //add product
-  const handleAddClick = () => {
-    try {
-      let url = `http://localhost:3000/api/dashboard/orders`;
-      axios.post(url, newData);
-      console.log(newData);
-      setRefresh((prevRefresh) => prevRefresh + 1);
-    } catch (error) {
-      console.error("Error updating data:", error);
-    }
-    setOpen(false);
-    setRefresh(refresh + 1);
-  };
+
   //delete
   const handleDeleteClick = async (id) => {
     try {
@@ -110,66 +95,131 @@ export default function Home({ params }) {
     }
   };
   //edit
-  const handleEditClick = () => {
-    try {
-      let url = `http://localhost:3000/api/dashboard/orders/${selectedProductId}`;
-      axios
-        .put(url, editFormData)
-        .then((response) => {
-          if (response.status !== 200) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          setRefresh((prevRefresh) => prevRefresh + 1);
-        })
-        .catch((error) => {
-          console.error("Error updating data:", error);
-        });
-    } catch (error) {
-      console.error("Error updating data:", error);
+  const handleChange = (value, id) => {
+    setSelectedProductId(id);
+
+    if (id) {
+      try {
+        let url = `http://localhost:3000/api/dashboard/orders/${id}`;
+        axios
+          .put(url, { status: value })
+          .then((response) => {
+            if (response.status !== 200) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            setRefresh((prevRefresh) => prevRefresh + 1);
+          })
+          .catch((error) => {
+            console.error("Error updating data:", error);
+          });
+      } catch (error) {
+        console.error("Error updating data:", error);
+      }
     }
+
     setSelectedProductId(null);
   };
-  const kitchen = localStorage.getItem("kitchenId");
+
+  // const kitchen = localStorage.getItem("kitchenId");
+  useEffect(() => {
+    // Log userDetails after userDetails has been updated
+    console.log("Updated UserDetails:", userDetails);
+    console.log(
+      "User Name:",
+      userDetails.length > 0 ? userDetails[0].name : "N/A"
+    );
+  }, [userDetails]);
   const columns = [
     {
-      title: "ID",
+      title: "Order ID",
       dataIndex: "id",
       key: "id",
     },
     {
-      title: "Image",
-      dataIndex: "image",
-      key: "image",
-      render: (text) => (
-        <Image
-          src={text}
-          alt={text}
-          className="rounded-3xl h-20 w-20"
-          width={80}
-          height={70}
-        />
+      title: "User",
+      key: "user",
+      render: (_, record) => (
+        <div className="text-xl flex flex-col text-end">
+          {Array.isArray(record.user) && record.user.length > 0 && (
+            <>
+              <p className="font-sans text-semibold text-2xl">
+                {record.user[0].name}
+              </p>
+              <p>{record.user[0].phoneNumber}</p>
+              <p>{record.user[0].location}</p>
+            </>
+          )}
+        </div>
       ),
     },
     {
-        title: "User",
-        key: "user",
-        render:(_,record)=>(
-            
-    },
-    {
-      title: "name",
-      key: "name",
-      render: (_, record) => <p className="text-2xl">{record.name}</p>,
-    },
-    {
-      title: "Edit",
-      key: "edit",
+      title: "itmes",
+      key: "items",
       render: (_, record) => (
-        <>
-          <Button onClick={() => showModal(record.id)} size="large">
-            <FaEdit />
-          </Button>
-        </>
+        <p className="text-xl text-end">
+          {record.items.map((item) => (
+            <p className="text-xl">{item.name}</p>
+          ))}
+        </p>
+      ),
+    },
+    {
+      title: "Quantity",
+      key: "quantity",
+      render: (_, record) => (
+        <p className="text-xl">
+          {record.items.map((item) => (
+            <p className="text-xl">x{item.quantity}</p>
+          ))}
+        </p>
+      ),
+    },
+    {
+      title: "Price",
+      key: "price",
+      render: (_, record) => (
+        <p className="text-xl">
+          {record.items.map((item) => (
+            <p className="text-xl">
+              <span className="text-red-700">{item.price}</span> د.ع
+            </p>
+          ))}
+        </p>
+      ),
+    },
+    {
+      title: "Total",
+      key: "total",
+      render: (_, record) => (
+        <p className="text-xl">
+          <span className="text-red-700">{record.totalPrice}</span> د.ع
+        </p>
+      ),
+    },
+    {
+      title: "Note",
+      key: "note",
+      render: (_, record) => (
+        <p className="text-xl">
+          {record.note ? record.note : <span className="text-gray-400">N/A</span>}
+        </p>
+      ),
+    },
+    {
+      title: "Status",
+      key: "status",
+      render: (_, record) => (
+        <Select
+          defaultValue={record.status}
+          className="w-32 h-10 text-2xl text-center font-bold font-sans "
+          style={{ width: 120 }}
+          onChange={(value) => handleChange(value, record.id)}
+          options={[
+            { value: "Pending", label: "Pending" },
+            { value: "Preparing", label: "Preparing" },
+            { value: "Delivered", label: "Delivered" },
+          ]}
+        />
       ),
     },
     {
@@ -211,9 +261,6 @@ export default function Home({ params }) {
           />
           <div className="flex">
             <Space width="150px" />
-            <Button onClick={() => setOpen(true)} size="large">
-              Add +
-            </Button>
             <Button
               className="default"
               onClick={() => setRefresh(refresh + 1)}
@@ -224,48 +271,11 @@ export default function Home({ params }) {
           </div>
         </div>
         <Space width="100%" height="20px" />
-        <Table columns={columns} dataSource={list} loading={loading} />
-        <Modal
-          title="Product Details"
-          open={selectedProductId}
-          onOk={handleEditClick}
-          onCancel={handleCancel}
-        >
-          {selectedImage && (
-            <Image src={selectedImage} alt={"Image"} width={350} height={350} />
-          )}
-          <Text>name</Text>
-          <Input
-            name="name"
-            value={editFormData.name}
-            onChange={handleEditInputChange}
-          />
-          <Text>image</Text>
-          <Input
-            name="image"
-            value={editFormData.image}
-            onChange={handleEditInputChange}
-          />
-          <Space height={10} />
-          <Button type="link" style={{ fontSize: "20px" }}>
-            <FaFileUpload />
-          </Button>
-        </Modal>
-        {/* Add Modal */}
-        <Modal
-          title="Product Details"
-          open={open}
-          onOk={handleAddClick}
-          onCancel={handleCancel}
-          okType="default"
-        >
-          <Text>name</Text>
-          <Input name="name" onChange={handleAddInputChange} />
-          <Text>image</Text>
-          <Input name="image" onChange={handleAddInputChange} />
-          <Text>description</Text>
-          <Input name="description" onChange={handleAddInputChange} />
-        </Modal>
+        <Table
+          columns={columns}
+          dataSource={list.map((item) => ({ ...item, key: item.id }))} // Add key prop here
+          loading={loading}
+        />
       </AppContainer>
     </>
   );

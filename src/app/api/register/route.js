@@ -7,13 +7,13 @@ const prisma = new PrismaClient();
 
 const jwtSecret = process.env.JWT_SECRET_USER;
 export async function POST(req) {
-  const { name, username, password, phoneNumber, location } = await req.json();
+  const { name, usernameR, passwordR, phoneNumber, location } = await req.json();
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(passwordR, 10);
     let result = await prisma.users.create({
       data: {
         name,
-        username,
+        username: usernameR,
         password: hashedPassword,
         phoneNumber,
         location,
@@ -33,7 +33,7 @@ export async function POST(req) {
     });
   } catch (error) {
     console.error("Error during processing:", error);
-
+    console.error("Error stack trace:", error.stack);
     // Log the specific Prisma error if available
     if (error instanceof Error && error.code === "P2002") {
       console.error("Prisma error:", error.code);

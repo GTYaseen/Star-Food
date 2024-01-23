@@ -67,8 +67,8 @@ function Page() {
     try {
       setLoading(true);
       const response = await axios.post("http://localhost:3000/api/register", {
-        username,
-        password,
+        usernameR,
+        passwordR,
         name,
         location,
         phoneNumber,

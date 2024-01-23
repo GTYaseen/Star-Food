@@ -108,11 +108,11 @@ function Page({ params }) {
       });
     } catch (error) {
       console.error("Error placing order:", error);
-    } // finally {
-    //   setCart([]);
-    //   localStorage.setItem("cart", JSON.stringify([]));
-    //   router.push("/kitchens/" + id);
-    // }
+    }  finally {
+      setCart([]);
+      localStorage.setItem("cart", JSON.stringify([]));
+      router.push("/kitchens/" + id);
+    }
   };
 
   return (
