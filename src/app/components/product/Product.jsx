@@ -67,7 +67,7 @@ const Product = ({ id }) => {
       <Space height={"1rem"} />
       {/* product */}
       <Space height={"1rem"} />
-      <div className="gap-[10px] grid grid-cols-5 sm:grid-cols-4 rounded-3xl">
+      <div className="gap-[10px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 rounded-3xl">
         {loading
           ? // Loading skeletons for Cards
             Array.from({ length: 8 }).map((_, index) => (
@@ -84,8 +84,7 @@ const Product = ({ id }) => {
             products.map((item, index) => (
               <Card
                 key={index}
-                shadow="sm"
-                className="bg-white border-none rounded-3xl w-[230px] shadow-custom m-[10px] "
+                className="bg-white border-none mx-auto rounded-3xl w-[230px] shadow-custom m-[10px] sm:m-0 sm:mx-auto "
               >
                 <CardBody className="overflow-visible p-0">
                   {/* Lazy load the Image component */}
