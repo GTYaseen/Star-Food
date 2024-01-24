@@ -114,6 +114,8 @@ function Page() {
       setCart([]);
       localStorage.setItem("cart", JSON.stringify([]));
       router.push("/kitchens/" + id);
+      //give the order to page delivery
+      router.push("/delivery");
     }
   };
 

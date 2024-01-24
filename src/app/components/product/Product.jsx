@@ -97,9 +97,8 @@ const Product = ({ id }) => {
                 </CardBody>
                 <CardFooter className="text-small justify-between">
                   <div className="flex items-center">
-                  <Space height={"10px"} /> 
                     <AddCart item={item} />
-                    <Space width={"5px"} /> 
+                    <Space width={"5px"}/> 
                     <BiDish
                       className="text-2xl text-[#FFD143]  cursor-pointer lg:hover:scale-150"
                       onClick={() => handleBiDishClick(item)}

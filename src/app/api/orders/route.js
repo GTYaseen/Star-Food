@@ -15,7 +15,7 @@ export async function GET(req) {
       error: error.message,
     });
   }
-}
+};
 
 export async function POST(req) {
   const body = await req.json();
