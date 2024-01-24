@@ -21,7 +21,10 @@ const ProductModal = ({ product, isOpen, onClose }) => {
       ]}
     >
       <div>
-        <p className="text-2xl text-end"> {product.description}</p>
+        <p className="text-2xl text-end border-2 rounded-2xl bg-white p-3 bg-[url('https://ucarecdn.com/cb2f9d86-3c12-47ed-a4f2-9558ba371319/-/preview/500x500/-/quality/smart_retina/-/format/auto/')]">
+          {" "}
+          {product.description}
+        </p>
       </div>
     </Modal>
   );
