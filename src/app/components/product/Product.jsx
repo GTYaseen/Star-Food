@@ -119,9 +119,14 @@ const Product = ({ id }) => {
                   <div className="flex items-center">
                   <Space height={"10px"} /> 
                     <AddCart item={item} />
+<<<<<<< Updated upstream
                     <Space width={"5px"} /> 
                     <BiDish
                       className="text-2xl flex items-end justify-center ml-[10px] mt-[15px] text-[#FFD143] lg:hover:scale-150 duration-300"
+=======
+                    <BiDish
+                      className="text-2xl flex items-end justify-center cursor-pointer ml-[10px] mt-[15px] text-[#FFD143] lg:hover:scale-150 duration-300"
+>>>>>>> Stashed changes
                       onClick={() => handleBiDishClick(item)}
                     />
                   </div>
