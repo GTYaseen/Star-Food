@@ -116,11 +116,10 @@ const Product = ({ id }) => {
                 </CardBody>
                 <Space height={"5px"} />
                 <CardFooter className="text-small justify-between">
-                  <div className="w-[4rem] flex items-center justify-between">
-                    <AddCart
-                      item={item}
-                      className="flex items-center justify-center"
-                    />
+                  <div className="flex items-center">
+                  <Space height={"10px"} /> 
+                    <AddCart item={item} />
+                    <Space width={"5px"} /> 
                     <BiDish
                       className="text-2xl flex items-end justify-center ml-[10px] mt-[15px] text-[#FFD143] lg:hover:scale-150 duration-300"
                       onClick={() => handleBiDishClick(item)}
