@@ -11,7 +11,7 @@ function Delivery() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/orders");
+        const response = await axios.get("http://localhost:3000/api/dashboard/orders");
         if (response.data.success) {
           setOrders(response.data.orders);
         } else {
