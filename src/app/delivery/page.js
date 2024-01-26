@@ -13,21 +13,6 @@ function Delivery() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchOrders = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3000/api/orders`);
-      if (response.data.success) {
-        setOrders(response.data.orders);
-      } else {
-        console.error("Failed to fetch orders:", response.data.error);
-      }
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     const fetchOrders = async () => {
       try {
