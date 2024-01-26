@@ -1,4 +1,4 @@
-import { Modal, Button } from "antd";
+import { Modal } from "antd";
 import React from "react";
 
 const ProductModal = ({ product, isOpen, onClose }) => {

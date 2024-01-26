@@ -107,14 +107,15 @@ function Page({ params }) {
         kitchenId: parseInt(idP),
         status: "Pending",
       });
+      //take order into delivery page
+        router.push(`/delivery?orderId=${response.data.orderId}`);
     } catch (error) {
       console.error("Error placing order:", error);
     }  finally {
       setCart([]);
       localStorage.setItem("cart", JSON.stringify([]));
       router.push("/kitchens/" + id);
-      //give the order to page delivery
-      router.push("/delivery");
+
     }
   };
 
