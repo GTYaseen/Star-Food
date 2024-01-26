@@ -15,7 +15,16 @@ function Delivery() {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/orders`);
+      if (!router.query || !router.query.userId) {
+        console.error("Missing userId in router.query");
+        return;
+      }
+      const { userId } = router.query;
+
+      const response = await axios.get(
+        `http://localhost:3000/api/orders?userId=${userId}`
+      );
+
       if (response.data.success) {
         setOrders(response.data.orders);
       } else {
@@ -29,28 +38,27 @@ function Delivery() {
   };
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    if (router.query && router.query.userId) {
+      fetchOrders();
+    }
+  }, [router.query]);
 
-  const { orderId } = router.query || {};
+  useEffect(()=>{
+    console.log("orders:", orders);
+  },[orders]);
 
-  const getOrderStatus = (orderId) => {
-    const order = orders.find((order) => order.id === parseInt(orderId));
-    return order ? order.status : null;
-  };
   const getStatusMessage = (status) => {
     switch (status) {
       case "Pending":
-        return "Your order is pending.";
+        return "طلبك معلق";
       case "Delivered":
-        return "Your order has been delivered.";
+        return "لقد تم تسليم طلبك";
       case "Preparing":
-        return "Your order is being prepared.";
+        return "طلبك قيد الاعداد";
       default:
-        return "Unknown status.";
+        return "قيد الانتضار";
     }
   };
-  const status = getOrderStatus(orderId);
 
   return (
     <>
@@ -60,15 +68,45 @@ function Delivery() {
 
         <Card className="ml-6 rounded-[30px] overflow-hidden w-[98%] h-[40vh] flex justify-end items-center shadow-custom border-1 border-solid border-gray-300">
           <CardBody className="p-4 items-center">
-            <button className="text-xl bg-gray-300 py-2 rounded-md ml-auto border w-[100%] h-[40px] border-solid border-gray-300">
-               المجموع
-            </button>
+            {loading ? (
+              <p className="text-xl">Loading...</p>
+            ) : (
+              <>
+                {orders.length > 0 ? (
+                  orders.map((order) => (
+                    <div key={order.id}>
+                      {order.kitchen ? (
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <Image
+                              src={order.kitchen.image}
+                              width={100}
+                              height={100}
+                              className="rounded-3xl object-cover h-[100px] w-[100px] z-0"
+                            />
+                            <p className="text-xl">{order.kitchen.name}</p>
+                            <p className="text-xl">{order.kitchen.description}</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="text-xl">
+                          Kitchen information not available for this order.
+                        </p>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-xl">No orders available.</p>
+                )}
+              </>
+            )}
           </CardBody>
           <div
-            style={{ width: "900px", height: "1px", backgroundColor: "#ccc" }}/>
+            style={{ width: "900px", height: "1px", backgroundColor: "#ccc" }}
+          />
           <CardFooter className="p-4 flex justify-end items-center">
             <button className="text-xl bg-gray-300 px-10 py-2 rounded-md w-[450px] h-[40px] border border-solid border-gray-300">
-              قيد الانتضار
+              {getStatusMessage(status)}
             </button>
             <Space width="2rem" />
             <button

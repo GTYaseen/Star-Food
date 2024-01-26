@@ -116,8 +116,7 @@ function Home() {
                       />
                       <div
                         className="flex flex-col items-end mr-[10px] cursor-pointer"
-                        onClick={() => handleCardClick(item.id)}
-                      >
+                        onClick={() => handleCardClick(item.id)}>
                         <p className="text-[20px]">{item.name}</p>
 
                         <span className="text-[16px] mt-[10px]">
@@ -134,5 +133,5 @@ function Home() {
     </div>
   );
 }
-//asd
+
 export default Home;

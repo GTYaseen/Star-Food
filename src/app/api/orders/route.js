@@ -5,9 +5,17 @@ const prisma = new PrismaClient();
 
 export async function GET(req) {
   try {
+    const userId = req.query.userId;
+
+    const orders = await prisma.orders.findMany({
+      where: {
+        userId: parseInt(userId),
+      },
+    });
+
     return NextResponse.json({
       success: true,
-      orders: await prisma.orders.findMany(),
+      orders,
     });
   } catch (error) {
     return NextResponse.json({

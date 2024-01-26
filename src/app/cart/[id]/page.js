@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Image } from "@nextui-org/react";
+import { Image, image } from "@nextui-org/react";
 import useStore from "@/app/store";
 import AppContainer from "../../components/container/container";
 import { Space } from "../../components/space/Space";
@@ -22,7 +22,7 @@ function Page({ params }) {
   const [user, setUser] = useState(null);
   const [kicker, setKicker] = useState(false);
   const [note, setNote] = useState(null);
-  
+
   useEffect(() => {
     // Calculate total price whenever quantities or cart items change
     const newTotalPrice = cart.reduce((acc, item) => {
@@ -31,11 +31,13 @@ function Page({ params }) {
     }, 0);
     setTotalPrice(newTotalPrice);
   }, [quantities, cart]);
+
   useEffect(() => {
     let storedCart = localStorage.getItem("cart");
     if (storedCart) setCart(JSON.parse(storedCart));
     setId(localStorage.getItem("id"));
   }, []);
+
   const handleDelete = () => {
     setCart([]);
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -77,12 +79,15 @@ function Page({ params }) {
       setKicker(true);
     }
   }, []);
+
   const handelSingIn = () => {
     router.push("/login");
   };
+
   const handelHome = () => {
     router.push(`/kitchens/${id}`);
   };
+
   const handelOrder = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -107,15 +112,14 @@ function Page({ params }) {
         kitchenId: parseInt(idP),
         status: "Pending",
       });
-      //take order into delivery page
-        router.push(`/delivery?orderId=${response.data.orderId}`);
     } catch (error) {
       console.error("Error placing order:", error);
-    }  finally {
+    } finally {
       setCart([]);
-      localStorage.setItem("cart", JSON.stringify([]));
-      router.push("/kitchens/" + id);
+      // localStorage.setItem("cart", JSON.stringify([]));
+      // router.push("/kitchens/" + id);
 
+      router.push(`/delivery?userId=${user.userId}`);
     }
   };
 
