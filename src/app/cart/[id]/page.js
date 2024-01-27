@@ -11,6 +11,7 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { jwtDecode } from "jwt-decode";
 import { Modal } from "@/app/components/modal/Modal";
 import axios from "axios";
+import { OrderStatus } from "@prisma/client";
 
 function Page({ params }) {
   const idP = params.id;
@@ -93,6 +94,7 @@ function Page({ params }) {
       const token = localStorage.getItem("token");
       if (!token) {
         setIsModalOpen(true);
+
         return;
       }
 
@@ -103,23 +105,23 @@ function Page({ params }) {
 
       setCart(newCart);
       localStorage.setItem("cart", JSON.stringify(newCart));
-
+  
       const response = await axios.post("http://localhost:3000/api/orders", {
         items: newCart,
         userId: user.userId,
         totalPrice: totalPrice,
         note: note,
         kitchenId: parseInt(idP),
-        status: "Pending",
+        status: OrderStatus,
       });
     } catch (error) {
       console.error("Error placing order:", error);
     } finally {
       setCart([]);
-      // localStorage.setItem("cart", JSON.stringify([]));
-      // router.push("/kitchens/" + id);
 
-      router.push(`/delivery?userId=${user.userId}`);
+      if (totalPrice) {
+        router.push(`/delivery?userId=${user.userId}&totalPrice=${totalPrice}`);
+      }
     }
   };
 

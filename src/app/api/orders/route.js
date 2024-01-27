@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 export async function GET(req) {
   try {
     const userId = req.query.userId;
+    const totalPrice = req.query.totalPrice;
 
     const orders = await prisma.orders.findMany({
       where: {
@@ -16,6 +17,7 @@ export async function GET(req) {
     return NextResponse.json({
       success: true,
       orders,
+      totalPrice,
     });
   } catch (error) {
     return NextResponse.json({
@@ -23,13 +25,22 @@ export async function GET(req) {
       error: error.message,
     });
   }
-};
+}
 
 export async function POST(req) {
   const body = await req.json();
   try {
+    const { items, userId, totalPrice, note, kitchenId, status } = body;
+
     let order = await prisma.orders.create({
-      data: body,
+      data: {
+        items,
+        userId: parseInt(userId),
+        totalPrice: parseFloat(totalPrice),
+        note,
+        kitchenId: parseInt(kitchenId),
+        status,
+      },
     });
     return NextResponse.json({
       success: true,
