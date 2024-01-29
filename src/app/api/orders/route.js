@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-export async function GET(req) {
+export async function GET(req, { params }) {
+  const { id } = params;
   try {
     const userId = req.query.userId;
     const totalPrice = req.query.totalPrice;
