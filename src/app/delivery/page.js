@@ -13,7 +13,7 @@ function Delivery() {
   const { userId } = router.query || {};
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [orderId, setOrderId] = useState(null);
 
   const fetchOrders = async () => {
     try {
@@ -22,6 +22,7 @@ function Delivery() {
       );
       if (response.data.success) {
         setOrders(response.data.orders);
+        
       } else {
         console.error("Failed to fetch orders:", response.data.error);
       }
@@ -31,12 +32,7 @@ function Delivery() {
       setLoading(false);
     }
   };
-  const getTotalPrice = () => {
-    if (orders.length > 0) {
-      return orders[0].totalPrice.toFixed(2);
-    }
-    return 0;
-  };
+
 
   useEffect(() => {
     if (userId) {
@@ -99,15 +95,20 @@ function Delivery() {
               </>
             )}
           </CardBody>
-          <button className="text-xl bg-gray-300 px-10 py-2 rounded-md w-[900px] h-[40px] border border-solid border-gray-300">
-            المجموع {getTotalPrice()} د.ع
+          <button className="text-xl bg-gray-300 px-10 py-2 rounded-md w-[900px] h-[40px] border border-solid border-gray-300"
+          >
+            المجموع د.ع
           </button>
           <Space height={"10px"} />
           <div
             style={{ width: "900px", height: "1px", backgroundColor: "#ccc" }}
           />
           <CardFooter className="p-4 flex justify-end items-center">
-            <button className="text-xl bg-gray-300 px-10 py-2 rounded-md w-[450px] h-[40px] border border-solid border-gray-300"></button>
+            <button className="text-xl bg-gray-300 px-10 py-2 rounded-md w-[450px] h-[40px] border border-solid border-gray-300"
+            >
+              حالة الطلب 
+              {getStatusMessage()}
+            </button>
             <Space width="2rem" />
             <button className="bg-yellow-300 text-xl px-10 py-2 rounded-md w-[450px] h-[40px] border border-solid border-yellow-300">
               متابعة التسوق
