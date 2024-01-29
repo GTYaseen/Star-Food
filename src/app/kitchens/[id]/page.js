@@ -6,7 +6,7 @@ import { Space } from "@/app/components/space/Space";
 import Category from "@/app/components/category/Category";
 import Product from "@/app/components/product/Product";
 //import { decodeToken } from "@/app/auth";
-import { jwtDecode } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import useStore from "@/app/store";
 import Cart from "@/app/components/cart/Cart";
 

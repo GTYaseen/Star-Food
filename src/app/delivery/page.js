@@ -5,7 +5,7 @@ import AppContainer from "../components/container/container";
 import { Space } from "../components/space/Space";
 import { Card, CardBody, CardFooter } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import {jwt_decode} from "jwt-decode";
+import jwt_decode from "jwt-decode";
 import axios from "axios";
 
 function Delivery() {
