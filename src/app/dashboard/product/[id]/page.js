@@ -59,7 +59,7 @@ export default function Home({ params }) {
       try {
         setLoading(true);
 
-        let url = `http://localhost:3000/api/dashboard/product?id=${id}`;
+        let url = `https://star-food-b8w8.vercel.app/api/dashboard/product?id=${id}`;
         let response = await axios.get(url);
         setList(response.data.product);
       } catch (error) {
@@ -72,7 +72,7 @@ export default function Home({ params }) {
       try {
         setLoading(true);
         let response = await axios.get(
-          `http://localhost:3000/api/dashboard/category?catId=${id}`
+          `https://star-food-b8w8.vercel.app/api/dashboard/category?catId=${id}`
         );
         if (response.data.category.length > 0) {
           setCategory(response.data.category[0].name); // Extract the name from the first kitchen in the array
@@ -90,7 +90,7 @@ export default function Home({ params }) {
   //add product
   const handleAddClick = () => {
     try {
-      let url = `http://localhost:3000/api/dashboard/product`;
+      let url = `https://star-food-b8w8.vercel.app/api/dashboard/product`;
       axios.post(url, newData);
       console.log(newData);
       setRefresh((prevRefresh) => prevRefresh + 1);
@@ -103,7 +103,7 @@ export default function Home({ params }) {
   //delete
   const handleDeleteClick = async (id) => {
     try {
-      axios.delete(`http://localhost:3000/api/dashboard/product/${id}`);
+      axios.delete(`https://star-food-b8w8.vercel.app/api/dashboard/product/${id}`);
       setRefresh((prevRefresh) => prevRefresh + 1);
     } catch (error) {
       console.error("Error deleting data:", error);
@@ -112,7 +112,7 @@ export default function Home({ params }) {
   //edit
   const handleEditClick = () => {
     try {
-      let url = `http://localhost:3000/api/dashboard/product/${selectedProductId}`;
+      let url = `https://star-food-b8w8.vercel.app/api/dashboard/product/${selectedProductId}`;
       axios
         .put(url, editFormData)
         .then((response) => {

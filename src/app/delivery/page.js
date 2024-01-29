@@ -24,7 +24,7 @@ function Delivery() {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/orders/${user.userId}`
+          `https://star-food-b8w8.vercel.app/api/orders/${user.userId}`
         );
         if (response.data.success) {
           setOrders(response.data.orders);
