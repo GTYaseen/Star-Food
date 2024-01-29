@@ -3,9 +3,11 @@ import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
+
 export async function GET(req) {
   const searchParams = req.nextUrl.searchParams;
   const id = searchParams.get("id") || undefined;
+
 
   try {
     let whereClause = {};

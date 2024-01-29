@@ -124,11 +124,10 @@ function Page({ params }) {
 
     }
   };
-
   return (
-    <div className="bg-[#FBFAF4] h-fit">
+    <div className="bg-[#FBFAF4] h-fit px-3">
       <Space height={"2rem"} />
-      <div className="bg-white border-b-2 fixed top-0 w-full z-10 h-12">
+      <div className="bg-white border-b-2 fixed top-0 w-full z-10 h-12 px-3">
         <AppContainer>
           <div className="text-3xl flex items-center justify-between h-12">
             <div className="cursor-pointer" onClick={(event) => Model(event)}>
@@ -141,6 +140,7 @@ function Page({ params }) {
           </div>
         </AppContainer>
       </div>
+      <Space height={"1rem"} />
       <AppContainer>
         {cart.map((item) => (
           <div
@@ -208,29 +208,30 @@ function Page({ params }) {
         <Space height={"10px"} />
       </AppContainer>
       <div className="bg-white border-t-2 fixed w-full bottom-0 left-0 right-0 z-10 flex items-center justify-center h-[fit-content]">
-        <AppContainer>
-          <div className="text-3xl flex flex-col gap-3">
+        {/* footer */}
+        <div className="flex items-center justify-center w-full max-w-screen-lg ">
+          <div className="text-3xl flex flex-col w-full gap-3 px-3">
             <input
               placeholder="الملاحظات"
               dir="rtl"
               onChange={(e) => setNote(e.target.value)}
-              className="placeholder:text-center outline-none placeholder:text-gray-700 p-2 rounded-2xl bg-gray-300 mt-3"
+              className="placeholder:text-center w-full outline-none placeholder:text-gray-700 p-2 rounded-2xl bg-gray-300 mt-3"
             />
             <button
-              className="text-3xl font-bold p-2 bg-yellow-400 rounded-2xl"
+              className="text-3xl font-bold p-2 bg-yellow-400 rounded-2xl w-full"
               onClick={handelOrder}
             >
               تأكيد الطلب
             </button>
+            <Space height={"3px"} />
           </div>
-        </AppContainer>
+        </div>
       </div>
       {isModalOpen && (
         <div
           className="fixed bg-white p-4 z-50 mt-2 rounded-2xl shadow-custom"
           style={{ top: modalPosition.top, left: modalPosition.left }}
         >
-          {/* Your modal content goes here */}
           <div className="text-3xl">هل تريد مسح السلة؟</div>
           <div className="flex justify-end mt-4 gap-3">
             <button
