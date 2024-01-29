@@ -7,7 +7,7 @@ import { Space } from "@/app/components/space/Space";
 import userStore from "@/app/store";
 import { BiDish } from "react-icons/bi";
 import { useRouter } from "next/navigation";
-import ProductModal from "../productModal/ProductModal";
+import ProductModal from "@/app/components/ProductModal/ProductModal";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import AddCart from "../addCart/AddCart";
 
