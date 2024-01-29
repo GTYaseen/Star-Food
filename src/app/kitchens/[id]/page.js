@@ -51,10 +51,9 @@ function Page({ params }) {
     let id = params.id;
     localStorage.setItem("id", id);
   }, []);
-
   return (
     <div className="bg-[#FBFAF4] h-[100vh]">
-      <Navpar user={user} />
+      <Navpar user={user} className="z-950" />
       <AppContainer>
         <Space height={"3rem"} />
         {/* Loading skeleton */}
@@ -71,9 +70,9 @@ function Page({ params }) {
           </>
         ) : (
           <>
-            {data.length > 0 && (
+            {data.kitchens.length > 0 && (
               <p className="text-6xl font-normal flex justify-end items-end">
-                {data[0].name}
+                {data.kitchens[0].name}
               </p>
             )}
             <Space height={"3rem"} />

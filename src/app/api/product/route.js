@@ -12,7 +12,7 @@ export async function GET(req) {
 
     if (id !== undefined) {
       whereClause = {
-        categoryId: parseInt(id),
+        kitchenId: parseInt(id),
       };
     }
 

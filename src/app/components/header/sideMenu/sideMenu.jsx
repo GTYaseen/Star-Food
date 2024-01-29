@@ -28,7 +28,7 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
   const handelSignOut = () => {
     localStorage.clear();
     location.reload();
-  }
+  };
 
   return (
     <div>
@@ -48,14 +48,19 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
         <div
           className={`flex flex-col h-full ${isMenuOpen ? "block" : "hidden"}`}
         >
-          <div className="bg-white h-22 flex items-center justify-end p-4 border-b-2 px-4">
-            <p className="text-3xl font-normal drop-shadow-lg">{name}</p>
-            <Image
-              src="https://ucarecdn.com/c7f336d8-3164-4185-844b-d32e28880bef/-/preview/500x500/-/quality/smart_retina/-/format/auto/"
-              alt="logo"
-              width={100}
-              height={100}
-            />
+          <div className="flex border-b-2 items-center justify-between">
+            <div className="bg-white h-12 flex items-center justify-center p-4">
+              <PiSignOutBold />
+            </div>
+            <div className="bg-white h-22 flex items-center justify-end p-4  px-4">
+              <p className="text-3xl font-normal drop-shadow-lg">{name}</p>
+              <Image
+                src="https://ucarecdn.com/c7f336d8-3164-4185-844b-d32e28880bef/-/preview/500x500/-/quality/smart_retina/-/format/auto/"
+                alt="logo"
+                width={100}
+                height={100}
+              />
+            </div>
           </div>
           <div className="bg-[#FBFAF4] h-[100vh]">
             <ul className="flex flex-col gap-5 p-4 text-2xl items-end justify-end mr-7 ">
@@ -90,13 +95,16 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
               </li>
               <li className="flex items-center cursor-pointer">
                 <Link href="/delivery" className="flex items-center">
-                 تتبع الطلب
+                  تتبع الطلب
                   <Space width={"5px"} />
                   <MdDeliveryDining />
                 </Link>
               </li>
               {isLogin ? (
-                <li className="flex items-center cursor-pointer" onClick={handelSignOut}>
+                <li
+                  className="flex items-center cursor-pointer"
+                  onClick={handelSignOut}
+                >
                   تسجيل الخروج
                   <Space width={"5px"} />
                   <PiSignOutBold />
