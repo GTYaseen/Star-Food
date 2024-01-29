@@ -4,26 +4,50 @@ import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
 export async function GET(req) {
-  try {
-    const userId = req.query.userId;
-    const totalPrice = req.query.totalPrice;
+  const searchParams = req.nextUrl.searchParams;
+  const id = searchParams.get("id") || undefined;
 
-    const orders = await prisma.orders.findMany({
-      where: {
-        userId: parseInt(userId),
+  try {
+    let whereClause = {};
+
+    if (id !== undefined) {
+      whereClause = {
+        userId: parseInt(id),
+      };
+    }
+
+    const order = await prisma.orders.findMany({
+      where: whereClause,
+      orderBy: {
+        id: "asc",
       },
     });
 
-    return NextResponse.json({
-      success: true,
-      orders,
-      totalPrice,
-    });
+    return NextResponse.json(
+      {
+        order: order,
+        success: true,
+      },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error.message,
-    });
+    console.error("Error fetching data:", error);
+
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      {
+        status: 500,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+  } finally {
+    await prisma.$disconnect();
   }
 }
 

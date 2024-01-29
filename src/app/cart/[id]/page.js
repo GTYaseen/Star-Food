@@ -94,7 +94,6 @@ function Page({ params }) {
       const token = localStorage.getItem("token");
       if (!token) {
         setIsModalOpen(true);
-
         return;
       }
 
@@ -105,23 +104,24 @@ function Page({ params }) {
 
       setCart(newCart);
       localStorage.setItem("cart", JSON.stringify(newCart));
-  
+
       const response = await axios.post("http://localhost:3000/api/orders", {
         items: newCart,
         userId: user.userId,
         totalPrice: totalPrice,
         note: note,
         kitchenId: parseInt(idP),
-        status: OrderStatus,
+        status: "Pending",
       });
+      //take order into delivery page
+        router.push(`/delivery?orderId=${response.data.orderId}`);
     } catch (error) {
       console.error("Error placing order:", error);
     } finally {
       setCart([]);
+      localStorage.setItem("cart", JSON.stringify([]));
+      router.push("/kitchens/" + id);
 
-      if (totalPrice) {
-        router.push(`/delivery?userId=${user.userId}&totalPrice=${totalPrice}`);
-      }
     }
   };
 
