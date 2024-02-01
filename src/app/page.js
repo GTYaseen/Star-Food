@@ -50,7 +50,7 @@ function Home() {
   }, []);
 
   return (
-    <div className="w-full h-full bg-[#FBFAF4] h-screen">
+    <div className="w-full h-full bg-[#FBFAF4] mih-screen">
       <Navpar />
       <AppContainer>
         <Space height={"3rem"} />

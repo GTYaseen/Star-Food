@@ -114,15 +114,16 @@ function Page({ params }) {
         status: "Pending",
       });
       //take order into delivery page
-        router.push(`/delivery?orderId=${response.data.orderId}`);
+        router.push(`/delivery/id`);
     } catch (error) {
       console.error("Error placing order:", error);
-    } finally {
-      setCart([]);
-      localStorage.setItem("cart", JSON.stringify([]));
-      router.push("/kitchens/" + id);
-
     }
+    //  finally {
+    //   setCart([]);
+    //   localStorage.setItem("cart", JSON.stringify([]));
+    //   router.push("/kitchens/" + id);
+
+    // }
   };
   return (
     <div className="bg-[#FBFAF4] h-fit px-3">

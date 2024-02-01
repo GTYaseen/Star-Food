@@ -94,7 +94,7 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
                 </Link>
               </li>
               <li className="flex items-center cursor-pointer">
-                <Link href="/delivery" className="flex items-center">
+                <Link href="/delivery/id" className="flex items-center">
                   تتبع الطلب
                   <Space width={"5px"} />
                   <MdDeliveryDining />

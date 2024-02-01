@@ -1,29 +1,40 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-
 const prisma = new PrismaClient();
-
 
 export async function GET(req) {
   const searchParams = req.nextUrl.searchParams;
-  const id = searchParams.get("id") || undefined;
-
+  const orderId = searchParams.get("id") || undefined;
 
   try {
-    let whereClause = {};
-
-    if (id !== undefined) {
-      whereClause = {
-        userId: parseInt(id),
-      };
+    if (orderId === undefined) {
+      return NextResponse.json(
+        { error: "Please provide a valid order ID" },
+        {
+          status: 400,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
     }
-
-    const order = await prisma.orders.findMany({
-      where: whereClause,
-      orderBy: {
-        id: "asc",
+    const order = await prisma.orders.findUnique({
+      where: {
+        id: parseInt(orderId),
       },
     });
+
+    if (!order) {
+      return NextResponse.json(
+        { error: "Order not found" },
+        {
+          status: 404,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+    }
 
     return NextResponse.json(
       {
@@ -52,6 +63,7 @@ export async function GET(req) {
     await prisma.$disconnect();
   }
 }
+
 
 export async function POST(req) {
   const body = await req.json();
