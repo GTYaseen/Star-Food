@@ -24,7 +24,7 @@ const FavButton = ({ item }) => {
 
   return <button onClick={handleFavorite}
   className="ml-auto mr-2 relative">
-     <div className="relative">
+     <div className="absolute">
     {heartIcon}
     </div>
     </button>;

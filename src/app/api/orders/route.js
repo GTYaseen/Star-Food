@@ -1,32 +1,69 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-
 const prisma = new PrismaClient();
 
-export async function GET(req, { params }) {
-  const { id } = params;
-  try {
-    const userId = req.query.userId;
-    const totalPrice = req.query.totalPrice;
+export async function GET(req) {
+  const searchParams = req.nextUrl.searchParams;
+  const orderId = searchParams.get("id") || undefined;
 
-    const orders = await prisma.orders.findMany({
+  try {
+    if (orderId === undefined) {
+      return NextResponse.json(
+        { error: "Please provide a valid order ID" },
+        {
+          status: 400,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+    }
+    const order = await prisma.orders.findUnique({
       where: {
-        userId: parseInt(userId),
+        id: parseInt(orderId),
       },
     });
 
-    return NextResponse.json({
-      success: true,
-      orders,
-      totalPrice,
-    });
+    if (!order) {
+      return NextResponse.json(
+        { error: "Order not found" },
+        {
+          status: 404,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        order: order,
+        success: true,
+      },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error.message,
-    });
+    console.error("Error fetching data:", error);
+
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      {
+        status: 500,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+  } finally {
+    await prisma.$disconnect();
   }
 }
+
 
 export async function POST(req) {
   const body = await req.json();

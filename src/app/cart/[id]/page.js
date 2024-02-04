@@ -94,7 +94,6 @@ function Page({ params }) {
       const token = localStorage.getItem("token");
       if (!token) {
         setIsModalOpen(true);
-
         return;
       }
 
@@ -106,7 +105,11 @@ function Page({ params }) {
       setCart(newCart);
       localStorage.setItem("cart", JSON.stringify(newCart));
 <<<<<<< HEAD
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> tabarak
       const response = await axios.post("http://localhost:3000/api/orders", {
 =======
 
@@ -117,17 +120,19 @@ function Page({ params }) {
         totalPrice: totalPrice,
         note: note,
         kitchenId: parseInt(idP),
-        status: OrderStatus,
+        status: "Pending",
       });
+      //take order into delivery page
+        router.push(`/delivery/id`);
     } catch (error) {
       console.error("Error placing order:", error);
-    } finally {
-      setCart([]);
-
-      if (totalPrice) {
-        router.push(`/delivery?userId=${user.userId}&totalPrice=${totalPrice}`);
-      }
     }
+    //  finally {
+    //   setCart([]);
+    //   localStorage.setItem("cart", JSON.stringify([]));
+    //   router.push("/kitchens/" + id);
+
+    // }
   };
   return (
     <div className="bg-[#FBFAF4] h-fit px-3">
