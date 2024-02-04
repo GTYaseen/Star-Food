@@ -13,6 +13,7 @@ function Delivery() {
 
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+<<<<<<< HEAD
 
   const fetchOrders = async () => {
     try {
@@ -21,6 +22,31 @@ function Delivery() {
         setOrders(response.data.orders);
       } else {
         console.error("Failed to fetch orders:", response.data.error);
+=======
+  const [user, setUser] = useState(null);
+  const router = useRouter();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token || token === "undefined" || !user) {
+      return;
+    }
+    setUser(jwt_decode(token));
+  }, []);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(
+          `https://star-food-b8w8.vercel.app/api/orders/${user.userId}`
+        );
+        if (response.data.success) {
+          setOrders(response.data.orders);
+        } else {
+          console.error("Failed to fetch orders:", response.data.error);
+        }
+        setLoading(false); // Set loading to false after data is fetched
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+>>>>>>> 19125d6b7a9f10299949d4faa68b5b13c422307a
       }
     } catch (error) {
       console.error("Error fetching orders:", error);

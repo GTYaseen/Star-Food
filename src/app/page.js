@@ -22,7 +22,7 @@ function Home() {
   const getKitchens = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:3000/api/kitchen`);
+      const response = await axios.get(`https://star-food-b8w8.vercel.app/api/kitchen`);
       if (response.data.success === true) {
         setKitchens(response.data.kitchens);
       }
