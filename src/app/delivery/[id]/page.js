@@ -38,7 +38,6 @@ function Delivery({ params }) {
   useEffect(() => {
     const fetchKitchen = async () => {
       try {
-        if (id !== undefined) {
           const response = await axios.get(
             `http://localhost:3000/api/kitchen?id=${id}`
           );
@@ -47,7 +46,7 @@ function Delivery({ params }) {
           } else {
             console.error("Failed to fetch kitchen:", response.data.error);
           }
-        }
+
       } catch (error) {
         console.error("Error fetching kitchen:", error);
       } finally {
@@ -106,7 +105,8 @@ function Delivery({ params }) {
                           <p className="text-xl">{kitchen.description}</p>
                         </div>
                       </div>
-                    ) : null}
+                    ) : null
+                    }
                   </CardBody>
                   <button className="text-xl bg-gray-300 px-10 py-2 rounded-md w-[900px] h-[40px] border border-solid border-gray-300">
                     المجموع{item.totalPrice} د.ع
@@ -134,7 +134,8 @@ function Delivery({ params }) {
               <p className="text-xl text-right"> ..ليس لديك طلب</p>
             )}
           </>
-        )}
+        )
+        }
       </AppContainer>
     </>
   );

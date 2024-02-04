@@ -1,5 +1,6 @@
+"use client";
 import React, { useEffect, useState } from "react";
-import { FaQuestion, FaSignInAlt } from "react-icons/fa";
+import { FaQuestion, FaSignInAlt, FaArrowRight } from "react-icons/fa";
 import { MdOutlineContacts } from "react-icons/md";
 import { Image, Link } from "@nextui-org/react";
 import { Space } from "@/app/components/space/Space";
@@ -25,13 +26,18 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
   const sideClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
   const handelSignOut = () => {
     localStorage.clear();
     location.reload();
   };
 
+  const handleGoBack = () => {
+    window.history.back();
+  };
+
   return (
-    <div>
+    <>
       {/* Overlay */}
       <div
         className={`fixed top-0 left-0 w-full h-full bg-gray-800 z-40 duration-300 opacity-50 ${
@@ -52,7 +58,7 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
             <div className="bg-white h-12 flex items-center justify-center p-4">
               <PiSignOutBold />
             </div>
-            <div className="bg-white h-22 flex items-center justify-end p-4  px-4">
+            <div className="bg-white h-22 flex items-center justify-end p-4 px-4">
               <p className="text-3xl font-normal drop-shadow-lg">{name}</p>
               <Image
                 src="https://ucarecdn.com/c7f336d8-3164-4185-844b-d32e28880bef/-/preview/500x500/-/quality/smart_retina/-/format/auto/"
@@ -125,7 +131,18 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
+
 export default SideMenu;
+
+{/* <div className="bg-white h-22 flex items-center justify-between p-4 px-7">
+<div
+  className="flex items-center cursor-pointer"
+  onClick={handleGoBack}
+>
+  <FaArrowRight className="text-3xl" />
+  <p className="text-2xl font-normal drop-shadow-lg ml-2">رجوع</p>
+</div>
+</div> */}
