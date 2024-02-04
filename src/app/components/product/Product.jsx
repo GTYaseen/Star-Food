@@ -7,7 +7,7 @@ import { Space } from "@/app/components/space/Space";
 import userStore from "@/app/store";
 import { BiDish } from "react-icons/bi";
 import { useRouter } from "next/navigation";
-import ProductModal from "../productModal/ProductModal";
+import ProductModal from "@/app/components/ProductModal/ProductModal";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import AddCart from "../addCart/AddCart";
 
@@ -24,7 +24,7 @@ const Product = ({ id }) => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `http://localhost:3000/api/product?id=${id}`
+          `https://star-food-b8w8.vercel.app/api/product?id=${id}`
         );
         setProducts(response.data.product);
         console.log(response.data);

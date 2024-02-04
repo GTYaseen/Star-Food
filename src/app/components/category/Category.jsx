@@ -18,7 +18,7 @@ const Category = ({ id }) => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `http://localhost:3000/api/category?id=${id}`
+          `https://star-food-b8w8.vercel.app/api/category?id=${id}`
         );
         setCategory(response.data);
       } catch (error) {

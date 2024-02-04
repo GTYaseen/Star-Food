@@ -5,6 +5,7 @@ import Navpar from "@/app/components/header/Navpar";
 import { Space } from "@/app/components/space/Space";
 import Category from "@/app/components/category/Category";
 import Product from "@/app/components/product/Product";
+//import { decodeToken } from "@/app/auth";
 import { jwtDecode } from "jwt-decode";
 import useStore from "@/app/store";
 import Cart from "@/app/components/cart/Cart";
@@ -34,7 +35,7 @@ function Page({ params }) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/kitchen?id=${id}`
+          `https://star-food-b8w8.vercel.app/api/kitchen?id=${id}`
         );
         const responseData = await response.json();
         setData(responseData);

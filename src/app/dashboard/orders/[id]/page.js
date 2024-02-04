@@ -60,7 +60,7 @@ export default function Home({ params }) {
       try {
         setLoading(true);
 
-        let url = `http://localhost:3000/api/dashboard/orders?id=${id}`;
+        let url = `https://star-food-b8w8.vercel.app/api/dashboard/orders?id=${id}`;
         let response = await axios.get(url);
         const orders = response.data.orders;
 
@@ -68,7 +68,7 @@ export default function Home({ params }) {
         const userDetailsPromises = orders.map(async (order) => {
           const userId = order.userId;
           const userResponse = await axios.get(
-            `http://localhost:3000/api/dashboard/users?id=${userId}`
+            `https://star-food-b8w8.vercel.app/api/dashboard/users?id=${userId}`
           );
           const user = userResponse.data.users;
           return { ...order, user }; // Combine order data with user details
@@ -88,7 +88,7 @@ export default function Home({ params }) {
   //delete
   const handleDeleteClick = async (id) => {
     try {
-      axios.delete(`http://localhost:3000/api/dashboard/orders/${id}`);
+      axios.delete(`https://star-food-b8w8.vercel.app/api/dashboard/orders/${id}`);
       setRefresh((prevRefresh) => prevRefresh + 1);
     } catch (error) {
       console.error("Error deleting data:", error);
@@ -100,7 +100,7 @@ export default function Home({ params }) {
 
     if (id) {
       try {
-        let url = `http://localhost:3000/api/dashboard/orders/${id}`;
+        let url = `https://star-food-b8w8.vercel.app/api/dashboard/orders/${id}`;
         axios
           .put(url, { status: value })
           .then((response) => {

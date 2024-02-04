@@ -104,8 +104,17 @@ function Page({ params }) {
 
       setCart(newCart);
       localStorage.setItem("cart", JSON.stringify(newCart));
+<<<<<<< HEAD
+<<<<<<< HEAD
+  
+=======
 
+>>>>>>> tabarak
       const response = await axios.post("http://localhost:3000/api/orders", {
+=======
+
+      const response = await axios.post("https://star-food-b8w8.vercel.app/api/orders", {
+>>>>>>> 19125d6b7a9f10299949d4faa68b5b13c422307a
         items: newCart,
         userId: user.userId,
         totalPrice: totalPrice,
