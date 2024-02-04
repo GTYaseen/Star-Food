@@ -2,23 +2,13 @@ import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
-export async function GET(req) {
-  const searchParams = req.nextUrl.searchParams;
-  const orderId = searchParams.get("id") || undefined;
-
+export async function GET(req, { params }) {
+  const { id } = params;
   try {
-    if (orderId === undefined) {
-      return NextResponse.json(
-        { error: "Please provide a valid order ID" },
-        {
-          status: 400,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      );
-    }
-    const order = await prisma.orders.findUnique({
+    const userId = req.query.userId;
+    const totalPrice = req.query.totalPrice;
+
+    const orders = await prisma.orders.findMany({
       where: {
         id: parseInt(orderId),
       },
