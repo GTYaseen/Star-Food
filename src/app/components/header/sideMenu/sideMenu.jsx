@@ -8,6 +8,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { PiSignOutBold } from "react-icons/pi";
 import { LuChefHat } from "react-icons/lu";
 import { MdDeliveryDining } from "react-icons/md";
+import { AiOutlineHome } from "react-icons/ai";
 
 function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
   const [name, setName] = useState("");
@@ -70,6 +71,13 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
           </div>
           <div className="bg-[#FBFAF4] h-[100vh]">
             <ul className="flex flex-col gap-5 p-4 text-2xl items-end justify-end mr-7 ">
+              <li className="flex items-center cursor-pointer">
+                <Link href="/" className="flex items-center">
+                  الصفحه الرئيسيه
+                  <Space width={"5px"} />
+                  <AiOutlineHome />
+                </Link>
+              </li>
               <li className="flex items-center cursor-pointer">
                 <Link href="/favorites" className="flex item-center">
                   المطابخ المفضلة
@@ -137,7 +145,8 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
 
 export default SideMenu;
 
-{/* <div className="bg-white h-22 flex items-center justify-between p-4 px-7">
+{
+  /* <div className="bg-white h-22 flex items-center justify-between p-4 px-7">
 <div
   className="flex items-center cursor-pointer"
   onClick={handleGoBack}
@@ -145,4 +154,5 @@ export default SideMenu;
   <FaArrowRight className="text-3xl" />
   <p className="text-2xl font-normal drop-shadow-lg ml-2">رجوع</p>
 </div>
-</div> */}
+</div> */
+}

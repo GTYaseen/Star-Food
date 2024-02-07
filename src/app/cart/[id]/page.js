@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Image, image } from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 import useStore from "@/app/store";
 import AppContainer from "../../components/container/container";
 import { Space } from "../../components/space/Space";
@@ -16,6 +16,7 @@ import { OrderStatus } from "@prisma/client";
 function Page({ params }) {
   const idP = params.id;
   const { cart, setCart } = useStore();
+  const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
   const [quantities, setQuantities] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,6 +24,7 @@ function Page({ params }) {
   const [user, setUser] = useState(null);
   const [kicker, setKicker] = useState(false);
   const [note, setNote] = useState(null);
+  const [showLoader, setShowLoader] = useState(false); // State for showing loader
 
   useEffect(() => {
     // Calculate total price whenever quantities or cart items change
@@ -91,6 +93,8 @@ function Page({ params }) {
 
   const handelOrder = async () => {
     try {
+      setLoading(true);
+      setShowLoader(true); // Show loader when starting order process
       const token = localStorage.getItem("token");
       if (!token) {
         setIsModalOpen(true);
@@ -104,17 +108,7 @@ function Page({ params }) {
 
       setCart(newCart);
       localStorage.setItem("cart", JSON.stringify(newCart));
-<<<<<<< HEAD
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> tabarak
       const response = await axios.post("http://localhost:3000/api/orders", {
-=======
-
-      const response = await axios.post("http://localhost:3000/api/orders", {
->>>>>>> 19125d6b7a9f10299949d4faa68b5b13c422307a
         items: newCart,
         userId: user.userId,
         totalPrice: totalPrice,
@@ -123,19 +117,23 @@ function Page({ params }) {
         status: "Pending",
       });
       //take order into delivery page
-        router.push(`/delivery/id`);
     } catch (error) {
       console.error("Error placing order:", error);
+    } finally {
+      setCart([]);
+      localStorage.setItem("cart", JSON.stringify([]));
+      setLoading(false);
+      setShowLoader(false); // Hide loader after order process is complete
+      router.push(`/delivery/${user.userId}`);
     }
-    //  finally {
-    //   setCart([]);
-    //   localStorage.setItem("cart", JSON.stringify([]));
-    //   router.push("/kitchens/" + id);
-
-    // }
   };
   return (
     <div className="bg-[#FBFAF4] h-fit px-3">
+      {showLoader && ( // Conditionally render loader
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+          <div className="loader"></div>
+        </div>
+      )}
       <Space height={"2rem"} />
       <div className="bg-white border-b-2 fixed top-0 w-full z-10 h-12 px-3">
         <AppContainer>

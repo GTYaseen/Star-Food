@@ -2,23 +2,23 @@ import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
-export async function GET(req, { params }) {
-  const { id } = params;
-  try {
-    const userId = req.query.userId;
-    const totalPrice = req.query.totalPrice;
+export async function GET(req) {
+  const searchParams = req.nextUrl.searchParams;
+  const id = searchParams.get("id") || undefined;
 
+  try {
     const orders = await prisma.orders.findMany({
       where: {
-        id: parseInt(orderId),
+        userId: parseInt(id),
       },
     });
 
-    if (!order) {
+    if (!orders) {
       return NextResponse.json(
         { error: "Order not found" },
         {
           status: 404,
+          success: false,
           headers: {
             "Access-Control-Allow-Origin": "*",
           },
@@ -26,17 +26,10 @@ export async function GET(req, { params }) {
       );
     }
 
-    return NextResponse.json(
-      {
-        order: order,
+    return NextResponse.json({
+        order: orders,
         success: true,
-      },
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    );
+      });
   } catch (error) {
     console.error("Error fetching data:", error);
 
@@ -44,6 +37,7 @@ export async function GET(req, { params }) {
       { error: "Internal Server Error" },
       {
         status: 500,
+        success: false,
         headers: {
           "Access-Control-Allow-Origin": "*",
         },

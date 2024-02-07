@@ -79,7 +79,7 @@ function Page({ params }) {
               radius="50%"
               width="100%"
               height="100%"
-              className="w-[160px] object-cover h-[160px] rounded-full"
+              className="w-[160px] object-cover h-[160px] rounded-full z-0"
               src={data.kitchens[0].image}
             />
                <p className="text-5xl font-normal">
