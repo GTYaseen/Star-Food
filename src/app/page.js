@@ -16,10 +16,20 @@ import Footer from "./components/footer/footer";
 function Home() {
   const [kitchens, setKitchens] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { Favorite, setFavorite } = useStore();
+  const { Favorite, setFavorite, user, setUser } = useStore();
 
   const router = useRouter();
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token || token === "undefined") {
+        return;
+    } else {
+        console.log(token);
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        setUser(decodedToken);
+    }
+}, []);
   const getKitchens = async () => {
     try {
       setLoading(true);

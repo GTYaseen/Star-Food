@@ -6,15 +6,26 @@ import { Space } from "../../components/space/Space";
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import useStore from "@/app/store";
 
 function Delivery({ params }) {
   const id = params.id;
   const router = useRouter();
-
+  const { setUser } = useStore();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [kitchen, setKitchen] = useState([]);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token || token === "undefined") {
+        return;
+    } else {
+        console.log(token);
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        setUser(decodedToken);
+    }
+}, []);
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -137,8 +148,12 @@ function Delivery({ params }) {
                         {getStatusMessage()}
                       </div>
                       <Space width="2rem" />
-                      <button className="bg-yellow-300 text-xl px-10 py-2 rounded-md w-[450px] h-[40px] border border-solid border-yellow-300"
-                      onClick={() => router.push(`/kitchens/${item.kitchenId}`)}>
+                      <button
+                        className="bg-yellow-300 text-xl px-10 py-2 rounded-md w-[450px] h-[40px] border border-solid border-yellow-300"
+                        onClick={() =>
+                          router.push(`/kitchens/${item.kitchenId}`)
+                        }
+                      >
                         متابعة التسوق
                       </button>
                     </CardFooter>

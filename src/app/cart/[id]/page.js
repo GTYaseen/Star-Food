@@ -15,13 +15,12 @@ import { OrderStatus } from "@prisma/client";
 
 function Page({ params }) {
   const idP = params.id;
-  const { cart, setCart } = useStore();
+  const { cart, setCart,setUser,user } = useStore();
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
   const [quantities, setQuantities] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [id, setId] = useState("");
-  const [user, setUser] = useState(null);
   const [kicker, setKicker] = useState(false);
   const [note, setNote] = useState(null);
   const [showLoader, setShowLoader] = useState(false); // State for showing loader

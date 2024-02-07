@@ -6,26 +6,26 @@ import { Space } from "@/app/components/space/Space";
 import Category from "@/app/components/category/Category";
 import Product from "@/app/components/product/Product";
 //import { decodeToken } from "@/app/auth";
-import { jwtDecode } from "jwt-decode";
 import useStore from "@/app/store";
 import Cart from "@/app/components/cart/Cart";
 import { Image } from "@nextui-org/react";
 
 function Page({ params }) {
   const id = params.id;
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const { cart, setCart } = useStore();
+  const { cart, setCart,setUser } = useStore();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token == "undefined" || !token) {
-      return;
+    if (!token || token === "undefined") {
+        return;
     } else {
-      setUser(jwtDecode(token));
+        console.log(token);
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        setUser(decodedToken);
     }
-  }, []);
+}, []);
   useEffect(() => {
     let cart = localStorage.getItem("cart");
     if (cart) setCart(JSON.parse(cart));
@@ -55,7 +55,7 @@ function Page({ params }) {
 
   return (
     <div className="bg-[#FBFAF4] h-[100vh]">
-      <Navpar user={user} className="z-950" />
+      <Navpar className="z-950" />
       <AppContainer>
         <Space height={"3rem"} />
         {/* Loading skeleton */}

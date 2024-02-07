@@ -9,9 +9,11 @@ import { PiSignOutBold } from "react-icons/pi";
 import { LuChefHat } from "react-icons/lu";
 import { MdDeliveryDining } from "react-icons/md";
 import { AiOutlineHome } from "react-icons/ai";
+import useStore from "@/app/store";
 
-function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
+function SideMenu({ isMenuOpen, setIsMenuOpen, favoriteKitchens }) {
   const [name, setName] = useState("");
+  const { user } = useStore();
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
@@ -107,19 +109,23 @@ function SideMenu({ isMenuOpen, setIsMenuOpen, user, favoriteKitchens }) {
                   <MdOutlineContacts />
                 </Link>
               </li>
-              <li className="flex items-center cursor-pointer">
-                <Link href="/delivery/id" className="flex items-center">
+              {!user ? (
+                <></>
+              ) : (
+                <li className="flex items-center cursor-pointer">
+                <Link href={`/delivery/${user.userId}`} className="flex items-center">
                   تتبع الطلب
                   <Space width={"5px"} />
                   <MdDeliveryDining />
                 </Link>
               </li>
+              )}
               {isLogin ? (
                 <li
                   className="flex items-center cursor-pointer"
                   onClick={handelSignOut}
                 >
-                  تسجيل الخروج
+                  تسجيل خروج
                   <Space width={"5px"} />
                   <PiSignOutBold />
                 </li>

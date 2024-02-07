@@ -212,6 +212,17 @@ export default function Home({ params }) {
         </Link>
       ),
     },
+    {
+      title:"Orders",
+      key:"Orders",
+      render: (_, record) => (
+          <Link href={`/dashboard/orders/${record.id}`}>
+            <button className="border-2 p-2 rounded-xl hover:scale-110 hover:bg-slate-300 hover:text-black">
+              <p>Orders</p>
+            </button>
+          </Link>
+        ),
+  }
   ];
   localStorage.setItem("kitchenId", kitchenId);
   return (

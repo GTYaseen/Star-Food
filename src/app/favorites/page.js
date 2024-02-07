@@ -8,14 +8,23 @@ import FavButton from "../components/favBtn/favBtn";
 import useStore from "@/app/store";
 
 const FavoritesPage = () => {
-  const { Favorite, setFavorite } = useStore();
+  const { Favorite, setFavorite, setUser } = useStore();
 
   useEffect(() => {
     let fav = localStorage.getItem("test");
     if (fav) setFavorite(JSON.parse(fav));
   }, []);
 
-
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token || token === "undefined") {
+        return;
+    } else {
+        console.log(token);
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        setUser(decodedToken);
+    }
+}, []);
   return (
     <>
       <div className="w-full h-full bg-[#FBFAF4] h-screen">
