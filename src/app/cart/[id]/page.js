@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Image } from "@nextui-org/react";
+import { Image, image } from "@nextui-org/react";
 import useStore from "@/app/store";
 import AppContainer from "../../components/container/container";
 import { Space } from "../../components/space/Space";
@@ -11,6 +11,7 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { jwtDecode } from "jwt-decode";
 import { Modal } from "@/app/components/modal/Modal";
 import axios from "axios";
+import { OrderStatus } from "@prisma/client";
 
 function Page({ params }) {
   const idP = params.id;
@@ -31,11 +32,13 @@ function Page({ params }) {
     }, 0);
     setTotalPrice(newTotalPrice);
   }, [quantities, cart]);
+
   useEffect(() => {
     let storedCart = localStorage.getItem("cart");
     if (storedCart) setCart(JSON.parse(storedCart));
     setId(localStorage.getItem("id"));
   }, []);
+
   const handleDelete = () => {
     setCart([]);
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -77,12 +80,15 @@ function Page({ params }) {
       setKicker(true);
     }
   }, []);
+
   const handelSingIn = () => {
     router.push("/login");
   };
+
   const handelHome = () => {
     router.push(`/kitchens/${id}`);
   };
+
   const handelOrder = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -98,8 +104,17 @@ function Page({ params }) {
 
       setCart(newCart);
       localStorage.setItem("cart", JSON.stringify(newCart));
+<<<<<<< HEAD
+<<<<<<< HEAD
+  
+=======
 
-      const response = await axios.post("https://star-food-b8w8.vercel.app/api/orders", {
+>>>>>>> tabarak
+      const response = await axios.post("http://localhost:3000/api/orders", {
+=======
+
+      const response = await axios.post("http://localhost:3000/api/orders", {
+>>>>>>> 19125d6b7a9f10299949d4faa68b5b13c422307a
         items: newCart,
         userId: user.userId,
         totalPrice: totalPrice,
@@ -108,15 +123,16 @@ function Page({ params }) {
         status: "Pending",
       });
       //take order into delivery page
-        router.push(`/delivery?orderId=${response.data.orderId}`);
+        router.push(`/delivery/id`);
     } catch (error) {
       console.error("Error placing order:", error);
-    } finally {
-      setCart([]);
-      localStorage.setItem("cart", JSON.stringify([]));
-      router.push("/kitchens/" + id);
-
     }
+    //  finally {
+    //   setCart([]);
+    //   localStorage.setItem("cart", JSON.stringify([]));
+    //   router.push("/kitchens/" + id);
+
+    // }
   };
   return (
     <div className="bg-[#FBFAF4] h-fit px-3">

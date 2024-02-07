@@ -7,53 +7,28 @@ import { LuChefHat } from "react-icons/lu";
 function About() {
   return (
     <>
-      {/* :) لا توجد عبقرية دون مسحة الجنون */}
       <Navpar />
-      <Space height={"3rem"} />
-      <AppContainer>
-        <div
-          style={{
-            textAlign: "center",
-            backgroundColor: "#FFF0A2",
-            padding: "10px",
-          }}
-        >
+      <div
+        className="bg-gradient-to-r from-yellow-100 via-yellow-200 to-yellow-500 h-screen flex"
+        dir="rtl"
+      >
+        <AppContainer>
+          <Space height={"3rem"} />
+
           <p className="text-3xl text-shadow">
-            ولأن النجوم مميزة دائماّ هنالك مطبخ بنكهة عراقية لطاهية نجمة تصنع
+            ولأن النجوم مميزة دائماً هنالك مطبخ بنكهة عراقية لطاهية نجمة تصنع
             الاطباق التقليدية والمطورة بطريقة مميزة ستدمن تجربة تلك الاطباق من
             أول مرة <FaRegStar />
           </p>
-        </div>
-      </AppContainer>
-      <Space height={"2px"} />
-      <AppContainer>
-        <div
-          style={{
-            textAlign: "center",
-            backgroundColor: "#FFF0A2",
-            padding: "10px",
-          }}
-        >
-          <p className="text-3xl text-shadow "> س/ ماهي ميزة المشروع ؟</p>
-          <h1 className="text-2xl text-shadow">
-            تم تصميم هذا التطبيق ليضم اصحاب مطابخ تحب عرض عملها و وصفاتها <br />
-            سيكون لكل مطبخ صفحة تضم مايحب عرضه بشكل مميز <LuChefHat />
+
+          <Space height={"3rem"} />
+
+          <p className="text-3xl text-shadow "> ماهي ميزة التطبيق؟</p>
+          <h1 className="text-3xl text-shadow">
+            تم تصميم هذا التطبيق ليضم مجموعة متنوعة من اصحاب المطابخ السحابية لعرض عملها و وصفاتها, لكل مطبخ صفحة تضم مايحب عرضه الطاهي بشكل يميزه<FaRegStar />
           </h1>
-        </div>
-      </AppContainer>
-      <Space height={"2px"} />
-      <AppContainer>
-        <div
-          style={{
-            textAlign: "center",
-            backgroundColor: "#FFF0A2",
-            padding: "10px",
-          }}
-        >
-          <p className="text-3xl text-shadow "> س/ من هو صاحب المشروع ؟</p>
-          <h1 className="text-4xl text-shadow">?</h1>
-        </div>
-      </AppContainer>
+        </AppContainer>
+      </div>
     </>
   );
 }

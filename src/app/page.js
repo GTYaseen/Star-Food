@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import { useState, useEffect } from "react";
 
 import FavButton from "./components/favBtn/favBtn";
@@ -11,6 +11,7 @@ import Navpar from "./components/header/Navpar";
 import { useRouter } from "next/navigation";
 import AppContainer from "./components/container/container";
 import useStore from "@/app/store";
+import Footer from "./components/footer/footer";
 
 function Home() {
   const [kitchens, setKitchens] = useState([]);
@@ -52,7 +53,8 @@ function Home() {
   }, []);
 
   return (
-    <div className="w-full h-full bg-[#FBFAF4] h-screen">
+
+    <div className="w-full h-full bg-[#FBFAF4] mih-screen">
       <Navpar />
       <AppContainer>
         <Space height={"3rem"} />
@@ -135,6 +137,7 @@ function Home() {
               ))}
         </div>
       </AppContainer>
+      <Footer />
     </div>
   );
 }
