@@ -2,21 +2,9 @@ import React from "react";
 import Navpar from "../components/header/Navpar";
 import AppContainer from "../components/container/container";
 import { Space } from "../components/space/Space";
-import useStore from "@/app/store";
 import Footer from "../components/footer/footer";
 
 function Connect() {
-  const {user, setUser} = useStore();
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token || token === "undefined") {
-        return;
-    } else {
-        console.log(token);
-        const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        setUser(decodedToken);
-    }
-}, []);
   return (
     <>
       <Navpar />
