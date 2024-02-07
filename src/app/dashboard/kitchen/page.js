@@ -57,7 +57,7 @@ export default function Home() {
       try {
         setLoading(true);
 
-        let url = `http://localhost:3000/api/kitchen?id=${search}`;
+        let url = `https://star-food-bay.vercel.app/api/kitchen?id=${search}`;
         let response = await axios.get(url);
         setList(response.data.kitchens);
       } catch (error) {
@@ -72,7 +72,7 @@ export default function Home() {
   //add kitchen
   const handleAddClick = () => {
     try {
-      let url = `http://localhost:3000/api/kitchen`;
+      let url = `https://star-food-bay.vercel.app/api/kitchen`;
       axios.post(url, newData);
       setRefresh((prevRefresh) => prevRefresh + 1);
     } catch (error) {
@@ -84,7 +84,7 @@ export default function Home() {
   //delete
   const handleDeleteClick = async (id) => {
     try {
-      axios.delete(`http://localhost:3000/api/dashboard/kitchen/${id}`);
+      axios.delete(`https://star-food-bay.vercel.app/api/dashboard/kitchen/${id}`);
       setRefresh((prevRefresh) => prevRefresh + 1);
     } catch (error) {
       console.error("Error deleting data:", error);
@@ -93,7 +93,7 @@ export default function Home() {
   //edit
   const handleEditClick = () => {
     try {
-      let url = `http://localhost:3000/api/dashboard/kitchen/${selectedProductId}`;
+      let url = `https://star-food-bay.vercel.app/api/dashboard/kitchen/${selectedProductId}`;
       axios
         .put(url, editFormData)
         .then((response) => {

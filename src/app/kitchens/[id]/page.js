@@ -35,7 +35,7 @@ function Page({ params }) {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/kitchen?id=${id}`
+          `https://star-food-bay.vercel.app/api/kitchen?id=${id}`
         );
         const responseData = await response.json();
         setData(responseData);

@@ -63,7 +63,7 @@ export const Table = ({ columns, list, itemsPerPage = 10 }) => {
     }));
   };
   const handleOkEdit = (editFormData) => {
-    const url = `http://localhost:3000/api/products/${editFormData.id}`;
+    const url = `https://star-food-bay.vercel.app/api/products/${editFormData.id}`;
     fetch(url, {
       method: "PUT",
       headers: {
@@ -80,7 +80,7 @@ export const Table = ({ columns, list, itemsPerPage = 10 }) => {
   };
 
   const handleDelete = (item) => {
-    const url = `http://localhost:3000/api/products/${item.id}`;
+    const url = `https://star-food-bay.vercel.app/api/products/${item.id}`;
     fetch(url, {
       method: "DELETE",
       headers: {
