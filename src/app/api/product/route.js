@@ -17,14 +17,6 @@ export function cors(req, res, next) {
   next();
 }
 
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: "1mb",
-    },
-  },
-};
-
 export async function GET(req, res) {
   cors(req, res, () => {}); // Apply CORS middleware
   const searchParams = req.nextUrl.searchParams;
@@ -82,4 +74,15 @@ export async function POST(req, res) {
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message });
   }
+}
+
+// New approach for configuring API route
+export function __nextRouteConfig() {
+  return {
+    api: {
+      bodyParser: {
+        sizeLimit: "1mb",
+      },
+    },
+  };
 }
