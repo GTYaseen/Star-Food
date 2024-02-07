@@ -19,18 +19,18 @@ function Delivery({ params }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token || token === "undefined") {
-      return;
+        return;
     } else {
-      console.log(token);
-      const decodedToken = JSON.parse(atob(token.split(".")[1]));
-      setUser(decodedToken);
+        console.log(token);
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        setUser(decodedToken);
     }
-  }, []);
+}, []);
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `star-food-bay.vercel.app/api/orders?id=${id}`
+          `https://star-food-bay.vercel.app/api/orders?id=${id}`
         );
         if (response.data.success) {
           setOrders(response.data.order);
@@ -46,7 +46,7 @@ function Delivery({ params }) {
     };
     const fetchKitchen = async () => {
       try {
-        const response = await axios.get(`star-food-bay.vercel.app/api/kitchen`);
+        const response = await axios.get(`https://star-food-bay.vercel.app/api/kitchen`);
         if (response.data.success) {
           setKitchen(response.data.kitchens);
         } else {
