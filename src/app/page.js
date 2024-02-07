@@ -22,7 +22,9 @@ function Home() {
   const getKitchens = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`https://star-food-b8w8.vercel.app/api/kitchen`);
+      const response = await axios.get(
+        `https://star-food-b8w8.vercel.app/api/kitchen`
+      );
       if (response.data.success === true) {
         setKitchens(response.data.kitchens);
       }
@@ -109,13 +111,15 @@ function Home() {
                       />
                     </CardBody>
                     <Space height={"4px"} />
-                    <CardFooter className="text-small justify-between">
-                      <FavButton
-                        item={item}
-                        onClick={() => handleFavoritesClick(item.id)}
-                      />
+                    <div className="flex justify-between w-full p-[10px]">
+                      <div className="flex items-center p-0 justify-center h-[full] w-[30px] pl-3">
+                        <FavButton
+                          item={item}
+                          onClick={() => handleFavoritesClick(item.id)}
+                        />
+                      </div>
                       <div
-                        className="flex flex-col items-end mr-[10px] cursor-pointer"
+                        className="flex flex-col items-end mr-[10px] cursor-pointer text-end w-[150px]"
                         onClick={() => handleCardClick(item.id)}
                       >
                         <p className="text-[20px]">{item.name}</p>
@@ -124,7 +128,7 @@ function Home() {
                           {item.description}
                         </span>
                       </div>
-                    </CardFooter>
+                    </div>
                     <Space height={"5px"} />
                   </Card>
                 </div>
@@ -134,5 +138,23 @@ function Home() {
     </div>
   );
 }
-//asd
+
 export default Home;
+{
+  /* <div>
+<FavButton
+  item={item}
+  onClick={() => handleFavoritesClick(item.id)}
+/>
+<div
+  className="flex flex-col items-end mr-[10px] cursor-pointer"
+  onClick={() => handleCardClick(item.id)}
+>
+  <p className="text-[20px]">{item.name}</p>
+
+  <span className="text-[16px] mt-[10px]">
+    {item.description}
+  </span>
+</div>
+</div> */
+}
