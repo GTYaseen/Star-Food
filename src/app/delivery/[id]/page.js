@@ -30,7 +30,7 @@ function Delivery({ params }) {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `https://star-food-bay.vercel.app/api/orders?id=${id}`
+          `http://localhost:3000/api/orders?id=${id}`
         );
         if (response.data.success) {
           setOrders(response.data.order);
@@ -46,7 +46,7 @@ function Delivery({ params }) {
     };
     const fetchKitchen = async () => {
       try {
-        const response = await axios.get(`https://star-food-bay.vercel.app/api/kitchen`);
+        const response = await axios.get(`http://localhost:3000/api/kitchen`);
         if (response.data.success) {
           setKitchen(response.data.kitchens);
         } else {

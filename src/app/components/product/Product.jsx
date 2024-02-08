@@ -24,7 +24,7 @@ const Product = ({ id }) => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://star-food-bay.vercel.app/api/product?id=${id}`
+          `http://localhost:3000/api/product?id=${id}`
         );
         setProducts(response.data.product);
         console.log(response.data);
