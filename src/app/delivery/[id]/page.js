@@ -19,13 +19,13 @@ function Delivery({ params }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token || token === "undefined") {
-        return;
+      return;
     } else {
-        console.log(token);
-        const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        setUser(decodedToken);
+      console.log(token);
+      const decodedToken = JSON.parse(atob(token.split(".")[1]));
+      setUser(decodedToken);
     }
-}, []);
+  }, []);
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -61,25 +61,6 @@ function Delivery({ params }) {
     fetchOrders();
     fetchKitchen();
   }, [id]);
-
-  const getStatusMessage = () => {
-    if (orders && orders.length > 0) {
-      const orderStatus = orders[0].status;
-      switch (orderStatus) {
-        case "Pending":
-          return "قيد الانتظار";
-        case "Delivered":
-          return "لقد تم تسليم طلبك";
-        case "Preparing":
-          return "طلبك قيد الاعداد";
-        default:
-          return "قيد الانتظار";
-      }
-    } else {
-      // Handle the case where orders is empty or undefined
-      return "No orders available.";
-    }
-  };
 
   return (
     <>
@@ -145,7 +126,13 @@ function Delivery({ params }) {
                     />
                     <CardFooter className="p-4 flex justify-end items-center">
                       <div className="text-xl bg-gray-300 px-10 py-2 rounded-md w-[450px] h-[40px] border border-solid border-gray-300 text-center">
-                        {getStatusMessage()}
+                        {item.status === "Pending"
+                          ? <p>قيد الانتظار</p>
+                          : item.status === "Preparing"
+                          ? <p>جاري التحضير</p>
+                          : item.status === "Delivered"
+                          ? <p>جاري التوصيل</p>
+                          : ""}
                       </div>
                       <Space width="2rem" />
                       <button

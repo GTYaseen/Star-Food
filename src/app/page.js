@@ -1,7 +1,6 @@
 "use client";
 import React, { Suspense } from "react";
 import { useState, useEffect } from "react";
-
 import FavButton from "./components/favBtn/favBtn";
 import { Card, CardBody, CardFooter, Image, Button } from "@nextui-org/react";
 import { Space } from "./components/space/Space";
