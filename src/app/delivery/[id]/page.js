@@ -19,13 +19,13 @@ function Delivery({ params }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token || token === "undefined") {
-        return;
+      return;
     } else {
-        console.log(token);
-        const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        setUser(decodedToken);
+      console.log(token);
+      const decodedToken = JSON.parse(atob(token.split(".")[1]));
+      setUser(decodedToken);
     }
-}, []);
+  }, []);
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -63,7 +63,7 @@ function Delivery({ params }) {
   }, [id]);
 
   const getStatusMessage = () => {
-    if (orders && orders.length > 0) {
+    if (orders.length > 0) {
       const orderStatus = orders[0].status;
       switch (orderStatus) {
         case "Pending":
@@ -161,7 +161,7 @@ function Delivery({ params }) {
                 );
               })
             ) : (
-              <p className="text-xl text-right"> ..ليس لديك طلب</p>
+              <p className="text-2xl text-right"> ..ليس لديك طلب</p>
             )}
           </>
         )}
