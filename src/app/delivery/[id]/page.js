@@ -63,7 +63,7 @@ function Delivery({ params }) {
   }, [id]);
 
   const getStatusMessage = () => {
-    if (orders.length > 0) {
+    if (orders && orders.length > 0) {
       const orderStatus = orders[0].status;
       switch (orderStatus) {
         case "Pending":
@@ -145,7 +145,13 @@ function Delivery({ params }) {
                     />
                     <CardFooter className="p-4 flex justify-end items-center">
                       <div className="text-xl bg-gray-300 px-10 py-2 rounded-md w-[450px] h-[40px] border border-solid border-gray-300 text-center">
-                        {getStatusMessage()}
+                        {item.status === "Pending"
+                          ? <p>قيد الانتظار</p>
+                          : item.status === "Preparing"
+                          ? <p>جاري التحضير</p>
+                          : item.status === "Delivered"
+                          ? <p>جاري التوصيل</p>
+                          : ""}
                       </div>
                       <Space width="2rem" />
                       <button

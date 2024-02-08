@@ -15,7 +15,7 @@ import { OrderStatus } from "@prisma/client";
 
 function Page({ params }) {
   const idP = params.id;
-  const { cart, setCart,setUser,user } = useStore();
+  const { cart, setCart, setUser, user } = useStore();
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
   const [quantities, setQuantities] = useState({});
@@ -24,6 +24,7 @@ function Page({ params }) {
   const [kicker, setKicker] = useState(false);
   const [note, setNote] = useState(null);
   const [showLoader, setShowLoader] = useState(false); // State for showing loader
+  const router = useRouter();
 
   useEffect(() => {
     // Calculate total price whenever quantities or cart items change
@@ -47,25 +48,31 @@ function Page({ params }) {
   };
 
   const handleQuantityChange = (itemId, newQuantity) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [itemId]: newQuantity,
-    }));
-
-    const updatedCart = cart.map((item) => {
-      if (item.id === itemId) {
-        return { ...item, quantity: newQuantity };
-      }
-      return item;
-    });
-
-    setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    // If new quantity is zero, remove the item from the cart
+    if (newQuantity === 0) {
+      const updatedCart = cart.filter((item) => item.id !== itemId);
+      setCart(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    } else {
+      setQuantities((prevQuantities) => ({
+        ...prevQuantities,
+        [itemId]: newQuantity,
+      }));
+      const updatedCart = cart.map((item) => {
+        if (item.id === itemId) {
+          return { ...item, quantity: newQuantity };
+        }
+        return item;
+      });
+      setCart(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    }
   };
-  const router = useRouter();
+
   const sideClick = () => {
     router.push("/kitchens/" + id);
   };
+
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
 
   const Model = (event) => {
@@ -73,6 +80,7 @@ function Page({ params }) {
     setModalPosition({ top: rect.bottom + window.scrollY, left: rect.left });
     setIsModalOpen(!isModalOpen);
   };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -107,14 +115,17 @@ function Page({ params }) {
 
       setCart(newCart);
       localStorage.setItem("cart", JSON.stringify(newCart));
-      const response = await axios.post("http://localhost:3000/api/orders", {
-        items: newCart,
-        userId: user.userId,
-        totalPrice: totalPrice,
-        note: note,
-        kitchenId: parseInt(idP),
-        status: "Pending",
-      });
+      const response = await axios.post(
+        "https://star-food-bay.vercel.app/api/orders",
+        {
+          items: newCart,
+          userId: user.userId,
+          totalPrice: totalPrice,
+          note: note,
+          kitchenId: parseInt(idP),
+          status: "Pending",
+        }
+      );
       //take order into delivery page
     } catch (error) {
       console.error("Error placing order:", error);
@@ -126,6 +137,7 @@ function Page({ params }) {
       router.push(`/delivery/${user.userId}`);
     }
   };
+
   return (
     <div className="bg-[#FBFAF4] h-fit px-3">
       {showLoader && ( // Conditionally render loader
@@ -159,10 +171,8 @@ function Page({ params }) {
                 <p
                   className="hover:scale-110 duration-300 cursor-pointer bg-yellow-100 p-1 rounded-md h-[30px] w-[30px] flex items-center justify-center"
                   onClick={() => {
-                    const newQuantity = Math.max(
-                      1,
-                      quantities[item.id] - 1 || 0
-                    );
+                    const newQuantity =
+                      quantities[item.id] > 1 ? quantities[item.id] - 1 : 0;
                     handleQuantityChange(item.id, newQuantity);
                   }}
                 >

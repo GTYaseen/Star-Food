@@ -34,7 +34,7 @@ function Page() {
       setLoading(true);
       axios({
         method: "post",
-        url: "http://localhost:3000/api/dashboard/adminLogin",
+        url: "https://star-food-bay.vercel.app/api/dashboard/adminLogin",
         data: {
           name,
           username,
@@ -45,7 +45,7 @@ function Page() {
 
         axios({
           method: "post",
-          url: "http://localhost:3000/api/dashboard/adminLogin",
+          url: "https://star-food-bay.vercel.app/api/dashboard/adminLogin",
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -73,7 +73,7 @@ function Page() {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:3000/api/dashboard/adminRegister",
+        "https://star-food-bay.vercel.app/api/dashboard/adminRegister",
         {
           username,
           password,

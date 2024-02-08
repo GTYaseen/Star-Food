@@ -16,7 +16,7 @@ function Navpar({ user }) {
   return (
     <div>
       {/* Header */}
-      <div className="bg-white border-b-2 fixed top-0 w-full z-10 h-12 shadow-custom">
+      <div className="bg-white border-b-2 fixed top-0 w-full z-10 h-12">
         <AppContainer>
         <div className="text-3xl flex items-center justify-between h-12 px-3">
             <div className="flex items-center">
