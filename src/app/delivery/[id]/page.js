@@ -72,7 +72,7 @@ function Delivery({ params }) {
             <div key={index} className="animate-pulse">
               <div className="bg-yellow-200 shadow-custom border-none rounded-[30px] h-[200px]"></div>
               <Space height={"1rem"} />
-              <div className="bg-yellow-100 border-none rounded-[30px] h-[200px]"></div>
+              <div className="bg-yellow-200 border-none rounded-[30px] h-[200px]"></div>
               <Space height={"1rem"} />
             </div>
           ))
