@@ -33,7 +33,7 @@ function Home() {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://star-food-b8w8.vercel.app/api/kitchen`
+        `http://localhost:3000//api/kitchen`
       );
       if (response.data.success === true) {
         setKitchens(response.data.kitchens);

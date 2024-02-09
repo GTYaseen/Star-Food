@@ -36,7 +36,6 @@ export async function POST(req) {
         user: { id: user.id, username: user.username },
       });
     } else {
-      // Handle the case where the password doesn't match
       return NextResponse.json(
         { success: false, msg: "Wrong password!" },
         { status: 401 }

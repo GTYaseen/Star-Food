@@ -13,7 +13,7 @@ export async function GET(req) {
       },
     });
 
-    if (!orders) {
+    if (!orders.length){
       return NextResponse.json(
         { error: "Order not found" },
         {

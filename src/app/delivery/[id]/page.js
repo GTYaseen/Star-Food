@@ -32,9 +32,8 @@ function Delivery({ params }) {
         const response = await axios.get(
           `http://localhost:3000/api/orders?id=${id}`
         );
-        if (response.data.success) {
+        if (response.data && response.data.order) {
           setOrders(response.data.order);
-          console.log(response.data.order);
         } else {
           console.error("Failed to fetch orders:", response.data.error);
         }
@@ -62,24 +61,6 @@ function Delivery({ params }) {
     fetchKitchen();
   }, [id]);
 
-  const getStatusMessage = () => {
-    if (orders && orders.length > 0) {
-      const orderStatus = orders[0].status;
-      switch (orderStatus) {
-        case "Pending":
-          return "قيد الانتظار";
-        case "Delivered":
-          return "لقد تم تسليم طلبك";
-        case "Preparing":
-          return "طلبك قيد الاعداد";
-        default:
-          return "قيد الانتظار";
-      }
-    } else {
-      // Handle the case where orders is empty or undefined
-      return "No orders available.";
-    }
-  };
 
   return (
     <>
@@ -93,7 +74,7 @@ function Delivery({ params }) {
           <>
             {orders.length > 0 ? (
               orders.map((item) => {
-                const kitchenItem = kitchen.find(
+                const kitchenItem = kitchen.find (
                   (k) => k.id === item.kitchenId
                 );
                 return (
