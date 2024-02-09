@@ -29,7 +29,7 @@ export async function POST(req) {
         jwtSecret,
         { expiresIn: "1h" }
       );
-
+      console.log(token);
       return NextResponse.json({
         success: true,
         token: token, // Make sure the token is defined
