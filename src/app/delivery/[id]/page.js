@@ -61,7 +61,6 @@ function Delivery({ params }) {
     fetchKitchen();
   }, [id]);
 
-
   return (
     <>
       <Navpar />
@@ -69,12 +68,19 @@ function Delivery({ params }) {
         <Space height="2rem" />
 
         {loading ? (
-          <p className="text-xl">Loading...</p>
+          Array.from({ length: 1 }).map((_, index) => (
+            <div key={index} className="animate-pulse">
+              <div className="bg-yellow-200 shadow-custom border-none rounded-[30px] h-[200px]"></div>
+              <Space height={"1rem"} />
+              <div className="bg-yellow-100 border-none rounded-[30px] h-[200px]"></div>
+              <Space height={"1rem"} />
+            </div>
+          ))
         ) : (
           <>
             {orders.length > 0 ? (
               orders.map((item) => {
-                const kitchenItem = kitchen.find (
+                const kitchenItem = kitchen.find(
                   (k) => k.id === item.kitchenId
                 );
                 return (
@@ -126,13 +132,15 @@ function Delivery({ params }) {
                     />
                     <CardFooter className="p-4 flex justify-end items-center">
                       <div className="text-xl bg-gray-300 px-10 py-2 rounded-md w-[450px] h-[40px] border border-solid border-gray-300 text-center">
-                        {item.status === "Pending"
-                          ? <p>قيد الانتظار</p>
-                          : item.status === "Preparing"
-                          ? <p>جاري التحضير</p>
-                          : item.status === "Delivered"
-                          ? <p>جاري التوصيل</p>
-                          : ""}
+                        {item.status === "Pending" ? (
+                          <p>قيد الانتظار</p>
+                        ) : item.status === "Preparing" ? (
+                          <p>جاري التحضير</p>
+                        ) : item.status === "Delivered" ? (
+                          <p>جاري التوصيل</p>
+                        ) : (
+                          ""
+                        )}
                       </div>
                       <Space width="2rem" />
                       <button
