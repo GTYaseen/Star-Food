@@ -18,7 +18,7 @@ const Category = ({ id }) => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://star-food-bay.vercel.app/api/category?id=${id}`
+          `http://localhost:3000/api/category?id=${id}`
         );
         setCategory(response.data);
       } catch (error) {
@@ -36,23 +36,27 @@ const Category = ({ id }) => {
 
   const handleImageError = () => {
     console.error("Image failed to load");
-    setImageLoaded(true); // Set to true to stop showing the loading indicator in case of an error
+    setImageLoaded(true); 
   };
 
+  const handelWatchAll=()=>{
+    router.push("/watchAllCategory");
+    }
+    
   return (
     <div>
       <div className="flex justify-between">
         <div className="flex items-center">
-          <GrFormPrevious className="text-4xl text-[#FFD143]" />
-          <p className="text-3xl text-[#FFD143] drop-shadow-lg">مشاهدة الكل</p>
+          <GrFormPrevious className="text-4xl text-[#FFD143] cursor-pointer"
+          onClick={handelWatchAll} />
+          <p className="text-3xl text-[#FFD143] drop-shadow-lg cursor-pointer">مشاهدة الكل</p>
         </div>
         <p className="text-3xl font-normal drop-shadow-lg">الاصناف</p>
       </div>
-      {/*category*/}
       <Space height={"1rem"} />
       <ul className="flex flex-row gap-5 overflow-y-auto">
         {loading
-          ? // Loading skeletons for 6 Cards
+          ? 
             Array.from({ length: 6 }).map((_, index) => (
               <li key={index} className="flex-shrink-0">
                 <div>
@@ -61,7 +65,6 @@ const Category = ({ id }) => {
                     radius="lg"
                     className="border-none h-[150px] w-[150px]"
                   >
-                    {/* You can customize the skeleton style based on your preference */}
                     <div className="animate-pulse bg-yellow-200 rounded-3xl h-32 w-32"></div>
                   </Card>
                   <div className="animate-pulse bg-yellow-200 rounded-3xl h-4 w-32" />
@@ -69,7 +72,7 @@ const Category = ({ id }) => {
                 </div>
               </li>
             ))
-          : // Actual cards when data is loaded
+          :
             category.map((item) => (
               <li key={item.id} className="cursor-pointer flex-shrink-0">
                 <div>

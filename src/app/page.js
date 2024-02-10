@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense } from "react";
+import React from "react";
 import { useState, useEffect } from "react";
 import FavButton from "./components/favBtn/favBtn";
 import { Card, CardBody, CardFooter, Image, Button } from "@nextui-org/react";
@@ -22,19 +22,18 @@ function Home() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token || token === "undefined") {
-        return;
+      return;
     } else {
-        console.log(token);
-        const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        setUser(decodedToken);
+      console.log(token);
+      const decodedToken = JSON.parse(atob(token.split(".")[1]));
+      setUser(decodedToken);
     }
-}, []);
+  }, []);
+
   const getKitchens = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `http://localhost:3000//api/kitchen`
-      );
+      const response = await axios.get(`http://localhost:3000//api/kitchen`);
       if (response.data.success === true) {
         setKitchens(response.data.kitchens);
       }
@@ -61,8 +60,11 @@ function Home() {
     if (fav) setFavorite(JSON.parse(fav));
   }, []);
 
-  return (
+    const handlePreviousClick = () => {
+      router.push(`/watchAllKitchen`);
+    };
 
+  return (
     <div className="w-full h-full bg-[#FBFAF4] mih-screen">
       <Navpar />
       <AppContainer>
@@ -79,10 +81,14 @@ function Home() {
         <Space height={"2rem"} />
         <div className="flex justify-between mx-5">
           <div className="flex items-center">
-            <GrFormPrevious className="text-4xl text-[#FFD143]" />
-            <p className="text-2xl text-[#FFD143] drop-shadow-lg">
-              مشاهدة الكل
-            </p>
+              <div className="flex items-center">
+                <GrFormPrevious className="text-4xl text-[#FFD143] cursor-pointer hover:scale-105 active:scale-110" 
+                onClick={handlePreviousClick}
+                />
+                <p className="text-2xl text-[#FFD143] drop-shadow-lg cursor-pointer">
+                  مشاهدة الكل
+                </p>
+             </div >
           </div>
           <p className="text-2xl font-normal drop-shadow-lg ">المطابخ</p>
         </div>
@@ -152,21 +158,3 @@ function Home() {
 }
 
 export default Home;
-{
-  /* <div>
-<FavButton
-  item={item}
-  onClick={() => handleFavoritesClick(item.id)}
-/>
-<div
-  className="flex flex-col items-end mr-[10px] cursor-pointer"
-  onClick={() => handleCardClick(item.id)}
->
-  <p className="text-[20px]">{item.name}</p>
-
-  <span className="text-[16px] mt-[10px]">
-    {item.description}
-  </span>
-</div>
-</div> */
-}

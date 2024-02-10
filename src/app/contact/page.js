@@ -1,23 +1,23 @@
-import React from "react";
+"use client";
+import React ,{useEffect}from "react";
 import Navpar from "../components/header/Navpar";
 import AppContainer from "../components/container/container";
 import { Space } from "../components/space/Space";
 import useStore from "@/app/store";
 
 function Connect() {
-//   const { setUser } = useStore();
+  const { setUser } = useStore();
 
-// useEffect(() => {
-//   const token = localStorage.getItem("token");
-//   if (!token || token === "undefined") {
-//     return;
-//   } else {
-//     console.log(token);
-//     const decodedToken = JSON.parse(atob(token.split(".")[1]));
-//     setUser(decodedToken);
-//   }
-// }, []);
-
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token || token === "undefined") {
+      return;
+    } else {
+      console.log(token);
+      const decodedToken = JSON.parse(atob(token.split(".")[1]));
+      setUser(decodedToken);
+    }
+  }, []);
 
   return (
     <>

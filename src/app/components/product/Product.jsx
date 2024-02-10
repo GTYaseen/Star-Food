@@ -4,7 +4,6 @@ import axios from "axios";
 import { Card, CardFooter, Image, CardBody } from "@nextui-org/react";
 import { GrFormPrevious } from "react-icons/gr";
 import { Space } from "@/app/components/space/Space";
-import userStore from "@/app/store";
 import { BiDish } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import ProductModal from "@/app/components/ProductModal/ProductModal";
@@ -43,19 +42,25 @@ const Product = ({ id }) => {
 
   const handleImageError = () => {
     console.error("Image failed to load");
-    setImageLoaded(true); // Set to true to stop showing the loading indicator in case of an error
+    setImageLoaded(true);
   };
   const handleBiDishClick = (product) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
   console.log(products);
+
+const handelWatchAll=()=>{
+router.push("/watchAllProduct");
+}
+
   return (
     <div className="bg-[#FBFAF4] px-3">
       <div className="flex justify-between">
         <div className="flex items-center">
-          <GrFormPrevious className="text-4xl text-[#FFD143]" />
-          <p className="text-3xl text-[#FFD143] drop-shadow-lg">مشاهدة الكل</p>
+          <GrFormPrevious className="text-4xl text-[#FFD143] cursor-pointer hover:scale-105 active:scale-110"
+          onClick={handelWatchAll} />
+          <p className="text-3xl text-[#FFD143] drop-shadow-lg cursor-pointer">مشاهدة الكل</p>
         </div>
         <p className="text-3xl font-normal drop-shadow-lg">الأطباق</p>
       </div>
@@ -65,7 +70,7 @@ const Product = ({ id }) => {
       <div className="flex justify-center items-center">
         <div className="gap-[10px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 rounded-3xl sm:w-full md:w-full lg:w-full mx-auto">
           {loading
-            ? // Loading skeletons for Cards
+            ? 
               Array.from({ length: 8 }).map((_, index) => (
                 <div key={index} className="animate-pulse">
                   <div className="bg-yellow-200 border-none rounded-3xl w-[230px] h-[180px]"></div>
