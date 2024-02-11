@@ -78,14 +78,15 @@ function Home() {
           dots={true}
           slidesPerRow={true}
           touchMove={true}
-          speed={600}
+          speed={500}
+          autoplay={true}
+          autoplaySpeed={4000}
           slidesToShow={1}
-          slidesToScroll={2}
+          slidesToScroll={1}
           swipeToSlide={true}
           appendDots={(dots) => (
             <div>
               <div className="flex justify-center items-center">
-                {dots}
                 {dots}
               </div>
             </div>

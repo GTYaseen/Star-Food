@@ -5,8 +5,10 @@ import { Card, CardFooter, Image, CardBody } from "@nextui-org/react";
 import { GrFormPrevious } from "react-icons/gr";
 import { Space } from "@/app/components/space/Space";
 import { BiDish } from "react-icons/bi";
+import { Popover } from "antd";
 import ProductModal from "@/app/components/ProductModal/ProductModal";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { RiQuestionLine } from "react-icons/ri";
 import AddCart from "../addCart/AddCart";
 import { useRouter } from "next/navigation";
 
@@ -50,9 +52,14 @@ const Product = ({ id }) => {
   };
 
 const handelWatchAll=()=>{
-router.push("/watchAllProduct");
+router.push(`/watchAllProduct/`+id);
 }
-
+const content = (
+  <div>
+    <p>Content</p>
+    <p>Content</p>
+  </div>
+);
   return (
     <div className="bg-[#FBFAF4] px-3">
       <div className="flex justify-between">
@@ -118,10 +125,11 @@ router.push("/watchAllProduct");
                   <CardFooter className="text-small justify-between h-fit">
                     <div className="flex items-center justify-start">
                       <AddCart item={item} />
-                      <BiDish
+                      <Popover content={content} title="Title" trigger="click">
+                      <RiQuestionLine
                         className="text-2xl flex items-end justify-center cursor-pointer ml-[10px] mt-[15px] text-[#FFD143] lg:hover:scale-150 duration-300"
-                        onClick={() => handleBiDishClick(item)}
                       />
+                      </Popover>
                     </div>
                     <div className="flex flex-col items-end justify-center mr-[10px] w-full">
                       <p className="text-xl text-end">{item.name}</p>
@@ -132,13 +140,6 @@ router.push("/watchAllProduct");
               ))}
         </div>
       </div>
-      {selectedProduct && (
-        <ProductModal
-          product={selectedProduct}
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      )}
       <Space height={"3rem"} />
     </div>
   );
