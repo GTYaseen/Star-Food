@@ -11,6 +11,9 @@ import { useRouter } from "next/navigation";
 import AppContainer from "./components/container/container";
 import useStore from "@/app/store";
 import Footer from "./components/footer/footer";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function Home() {
   const [kitchens, setKitchens] = useState([]);
@@ -33,7 +36,7 @@ function Home() {
   const getKitchens = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:3000//api/kitchen`);
+      const response = await axios.get(`http://localhost:3000/api/kitchen`);
       if (response.data.success === true) {
         setKitchens(response.data.kitchens);
       }
@@ -60,35 +63,73 @@ function Home() {
     if (fav) setFavorite(JSON.parse(fav));
   }, []);
 
-    const handlePreviousClick = () => {
-      router.push(`/watchAllKitchen`);
-    };
+  const handlePreviousClick = () => {
+    router.push(`/watchAllKitchen`);
+  };
 
   return (
     <div className="w-full h-full bg-[#FBFAF4] mih-screen">
       <Navpar />
       <AppContainer>
         <Space height={"3rem"} />
-        <div
-          className=" ml-6 rounded-[45px]  overflow-hidden w-[98%] h-[25vh] drop-shadow-lg flex justify-end items-center shadow-custom"
-          style={{ backgroundColor: "#FFE559", margin: "5px 5px" }}
+
+        {/* Promotional Section Carousel */}
+        <Slider
+          dots={true}
+          slidesPerRow={true}
+          touchMove={true}
+          speed={600}
+          slidesToShow={1}
+          slidesToScroll={2}
+          swipeToSlide={true}
+          appendDots={(dots) => (
+            <div>
+              <div className="flex justify-center items-center">
+                {dots}
+                {dots}
+              </div>
+            </div>
+          )}
         >
-          <div className="flex flex-col items-end mr-9">
-            <p className="text-3xl">تخفيضات تصل الى %20</p>
-            <p className="text-2xl mt-2">..أطلب الان</p>
+          {/* First promotional slide */}
+          <div>
+            <div
+              className="ml-6 rounded-[45px] overflow-hidden w-[98%] h-[25vh] shadow-lg flex justify-end items-center shadow-custom"
+              style={{ backgroundColor: "#FFE559", margin: "5px 5px" }}
+            >
+              <div className="flex flex-col items-end mr-9">
+                <p className="text-3xl">تخفيضات تصل الى %20</p>
+                <p className="text-2xl mt-2">..أطلب الان</p>
+              </div>
+            </div>
           </div>
-        </div>
+          {/* second slide */}
+          <div>
+            <div
+              className="ml-6 rounded-[45px] overflow-hidden w-[98%] h-[25vh] shadow-lg flex justify-end items-center shadow-custom"
+              style={{ backgroundColor: "#C4C1F9", margin: "5px 5px" }}
+            >
+              <div className="flex flex-col items-end mr-9">
+                <p className="text-3xl">تيست سلايدر</p>
+              </div>
+            </div>
+          </div>
+        </Slider>
+
         <Space height={"2rem"} />
+
+        {/* Kitchens Section */}
         <div className="flex justify-between mx-5">
           <div className="flex items-center">
-              <div className="flex items-center">
-                <GrFormPrevious className="text-4xl text-[#FFD143] cursor-pointer hover:scale-105 active:scale-110" 
+            <div className="flex items-center">
+              <GrFormPrevious
+                className="text-4xl text-[#FFD143] cursor-pointer hover:scale-105 active:scale-110"
                 onClick={handlePreviousClick}
-                />
-                <p className="text-2xl text-[#FFD143] drop-shadow-lg cursor-pointer">
-                  مشاهدة الكل
-                </p>
-             </div >
+              />
+              <p className="text-2xl text-[#FFD143] drop-shadow-lg cursor-pointer">
+                مشاهدة الكل
+              </p>
+            </div>
           </div>
           <p className="text-2xl font-normal drop-shadow-lg ">المطابخ</p>
         </div>

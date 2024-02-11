@@ -39,8 +39,9 @@ const Category = ({ id }) => {
     setImageLoaded(true); 
   };
 
+  const router = useRouter();
   const handelWatchAll=()=>{
-    router.push("/watchAllCategory");
+    router.push(`/watchAllCategory`);
     }
     
   return (

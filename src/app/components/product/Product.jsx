@@ -5,10 +5,10 @@ import { Card, CardFooter, Image, CardBody } from "@nextui-org/react";
 import { GrFormPrevious } from "react-icons/gr";
 import { Space } from "@/app/components/space/Space";
 import { BiDish } from "react-icons/bi";
-import { useRouter } from "next/navigation";
 import ProductModal from "@/app/components/ProductModal/ProductModal";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import AddCart from "../addCart/AddCart";
+import { useRouter } from "next/navigation";
 
 const Product = ({ id }) => {
   const [products, setProducts] = useState([]);
@@ -48,7 +48,6 @@ const Product = ({ id }) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
-  console.log(products);
 
 const handelWatchAll=()=>{
 router.push("/watchAllProduct");

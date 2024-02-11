@@ -31,7 +31,7 @@ function watchAllKitchen() {
   const getKitchens = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:3000//api/kitchen`);
+      const response = await axios.get(`http://localhost:3000/api/kitchen`);
       if (response.data.success === true) {
         setKitchens(response.data.kitchens);
       }
@@ -41,10 +41,10 @@ function watchAllKitchen() {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     getKitchens();
   }, []);
+
   const handleFavoritesClick = (id) => {
     router.push(`/favorites/${id}`);
   };
