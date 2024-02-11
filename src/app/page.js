@@ -91,8 +91,7 @@ function Home() {
               </div>
             </div>
           )}
-        >
-          {/* First promotional slide */}
+        >          {/* First promotional slide */}
           <div>
             <div
               className="ml-6 rounded-[45px] overflow-hidden w-[98%] h-[25vh] shadow-lg flex justify-end items-center shadow-custom"

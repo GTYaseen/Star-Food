@@ -2,14 +2,11 @@
 import React, { Suspense, useState, useEffect } from "react";
 import axios from "axios";
 import { Card, CardFooter, Image, CardBody } from "@nextui-org/react";
-import { GrFormPrevious } from "react-icons/gr";
 import { Space } from "@/app/components/space/Space";
 import { BiDish } from "react-icons/bi";
 import ProductModal from "@/app/components/ProductModal/ProductModal";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import AddCart from "@/app/components/addCart/AddCart";
-import { useRouter } from "next/navigation";
-import App from "next/app";
 import AppContainer from "@/app/components/container/container";
 import Navpar from "@/app/components/header/Navpar";
 
@@ -20,7 +17,7 @@ const AllProduct = ({ params }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const router = useRouter();
+
 
   useEffect(() => {
     const fetchData = async () => {

@@ -51,22 +51,26 @@ const Product = ({ id }) => {
     setIsModalOpen(true);
   };
 
-const handelWatchAll=()=>{
-router.push(`/watchAllProduct/`+id);
-}
-const content = (
-  <div>
-    <p>Content</p>
-    <p>Content</p>
-  </div>
-);
+  const handelWatchAll = () => {
+    router.push(`/watchAllProduct/` + id);
+  };
+  const content = (
+    <div>
+      <p>Content</p>
+      <p>Content</p>
+    </div>
+  );
   return (
     <div className="bg-[#FBFAF4] px-3">
       <div className="flex justify-between">
         <div className="flex items-center">
-          <GrFormPrevious className="text-4xl text-[#FFD143] cursor-pointer hover:scale-105 active:scale-110"
-          onClick={handelWatchAll} />
-          <p className="text-3xl text-[#FFD143] drop-shadow-lg cursor-pointer">مشاهدة الكل</p>
+          <GrFormPrevious
+            className="text-4xl text-[#FFD143] cursor-pointer hover:scale-105 active:scale-110"
+            onClick={handelWatchAll}
+          />
+          <p className="text-3xl text-[#FFD143] drop-shadow-lg cursor-pointer">
+            مشاهدة الكل
+          </p>
         </div>
         <p className="text-3xl font-normal drop-shadow-lg">الأطباق</p>
       </div>
@@ -76,8 +80,7 @@ const content = (
       <div className="flex justify-center items-center">
         <div className="gap-[10px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 rounded-3xl sm:w-full md:w-full lg:w-full mx-auto">
           {loading
-            ? 
-              Array.from({ length: 8 }).map((_, index) => (
+            ? Array.from({ length: 8 }).map((_, index) => (
                 <div key={index} className="animate-pulse">
                   <div className="bg-yellow-200 border-none rounded-3xl w-[230px] h-[180px]"></div>
                   <Space height={"5px"} />
@@ -87,8 +90,7 @@ const content = (
                   <Space height={"5px"} />
                 </div>
               ))
-            : 
-              products.map((item, index) => (
+            : products.map((item, index) => (
                 <Card
                   key={index}
                   className="bg-white border-none mx-auto rounded-3xl w-[230px] shadow-custom m-[10px] sm:m-0 sm:mx-auto "
@@ -125,10 +127,19 @@ const content = (
                   <CardFooter className="text-small justify-between h-fit">
                     <div className="flex items-center justify-start">
                       <AddCart item={item} />
-                      <Popover content={content} title="Title" trigger="click">
-                      <RiQuestionLine
-                        className="text-2xl flex items-end justify-center cursor-pointer ml-[10px] mt-[15px] text-[#FFD143] lg:hover:scale-150 duration-300"
-                      />
+                      <Popover
+                        content={
+                          <div className="w-[250px] h-[120px] text-xl">
+                            {item.description}
+                          </div>
+                        }
+                        title={
+                         <div className="text-xl" dir="rtl">✩مكونات الطبق✩
+                         </div>
+                        }
+                        trigger="click"
+                      >
+                        <RiQuestionLine className="text-2xl flex items-end justify-center cursor-pointer ml-[10px] mt-[15px] text-[#FFD143] lg:hover:scale-150 duration-300" />
                       </Popover>
                     </div>
                     <div className="flex flex-col items-end justify-center mr-[10px] w-full">
