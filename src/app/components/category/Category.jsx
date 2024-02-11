@@ -28,7 +28,7 @@ const Category = ({ id }) => {
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
   
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -40,16 +40,21 @@ const Category = ({ id }) => {
   };
 
   const router = useRouter();
-  const handelWatchAll=()=>{
-    router.push(`/watchAllCategory`);
-    }
+
+  const handleCardClick = () => {
+    router.push(`/products/${id}`);
+  };
+
+  const handleWatchAll = () => {
+    router.push(`/watchAllCategory?id=${id}`);
+  };
     
   return (
     <div>
       <div className="flex justify-between">
         <div className="flex items-center">
           <GrFormPrevious className="text-4xl text-[#FFD143] cursor-pointer"
-          onClick={handelWatchAll} />
+          onClick={handleWatchAll} />
           <p className="text-3xl text-[#FFD143] drop-shadow-lg cursor-pointer">مشاهدة الكل</p>
         </div>
         <p className="text-3xl font-normal drop-shadow-lg">الاصناف</p>
@@ -60,11 +65,12 @@ const Category = ({ id }) => {
           ? 
             Array.from({ length: 6 }).map((_, index) => (
               <li key={index} className="flex-shrink-0">
-                <div>
+               <div onClick={handleCardClick}>
                   <Card
                     isFooterBlurred
                     radius="lg"
                     className="border-none h-[150px] w-[150px]"
+                   
                   >
                     <div className="animate-pulse bg-yellow-200 rounded-3xl h-32 w-32"></div>
                   </Card>

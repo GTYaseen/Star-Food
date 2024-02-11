@@ -80,7 +80,7 @@ router.push("/watchAllProduct");
                   <Space height={"5px"} />
                 </div>
               ))
-            : // Actual Cards when data is loaded
+            : 
               products.map((item, index) => (
                 <Card
                   key={index}
