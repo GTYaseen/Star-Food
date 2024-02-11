@@ -3,12 +3,12 @@ import React, { Suspense, useState, useEffect } from "react";
 import axios from "axios";
 import { Card, CardFooter, Image, CardBody } from "@nextui-org/react";
 import { Space } from "@/app/components/space/Space";
-import { BiDish } from "react-icons/bi";
 import ProductModal from "@/app/components/ProductModal/ProductModal";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import AddCart from "@/app/components/addCart/AddCart";
 import AppContainer from "@/app/components/container/container";
 import Navpar from "@/app/components/header/Navpar";
+import useStore from "@/app/store";
 
 const AllProduct = ({ params }) => {
   const id = params.id;
@@ -17,7 +17,18 @@ const AllProduct = ({ params }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
+  const { setUser } = useStore;
+  
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token || token === "undefined") {
+      return;
+    } else {
+      console.log(token);
+      const decodedToken = JSON.parse(atob(token.split(".")[1]));
+      setUser(decodedToken);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,14 +56,10 @@ const AllProduct = ({ params }) => {
     console.error("Image failed to load");
     setImageLoaded(true);
   };
-  const handleBiDishClick = (product) => {
-    setSelectedProduct(product);
-    setIsModalOpen(true);
-  };
 
   return (
     <>
-    <Navpar/>
+      <Navpar />
       <AppContainer>
         <div className="bg-[#FBFAF4] px-3">
           <Space height={"1rem"} />
@@ -108,10 +115,21 @@ const AllProduct = ({ params }) => {
                       <CardFooter className="text-small justify-between h-fit">
                         <div className="flex items-center justify-start">
                           <AddCart item={item} />
-                          <BiDish
-                            className="text-2xl flex items-end justify-center cursor-pointer ml-[10px] mt-[15px] text-[#FFD143] lg:hover:scale-150 duration-300"
-                            onClick={() => handleBiDishClick(item)}
-                          />
+                          <Popover
+                            content={
+                              <div className="w-[250px] h-[120px] text-xl">
+                                {item.description}
+                              </div>
+                            }
+                            title={
+                              <div className="text-xl" dir="rtl">
+                                ✩مكونات الطبق✩
+                              </div>
+                            }
+                            trigger="click"
+                          >
+                            <RiQuestionLine className="text-2xl flex items-end justify-center cursor-pointer ml-[10px] mt-[15px] text-[#FFD143] lg:hover:scale-150 duration-300" />
+                          </Popover>
                         </div>
                         <div className="flex flex-col items-end justify-center mr-[10px] w-full">
                           <p className="text-xl text-end">{item.name}</p>

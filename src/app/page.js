@@ -121,12 +121,12 @@ function Home() {
         {/* Kitchens Section */}
         <div className="flex justify-between mx-5">
           <div className="flex items-center">
-            <div className="flex items-center">
+            <div className="flex items-center cursor-pointer hover:scale-105 active:scale-110" 
+            onClick={handlePreviousClick}>
               <GrFormPrevious
-                className="text-4xl text-[#FFD143] cursor-pointer hover:scale-105 active:scale-110"
-                onClick={handlePreviousClick}
+                className="text-4xl text-[#FFD143]"
               />
-              <p className="text-2xl text-[#FFD143] drop-shadow-lg cursor-pointer">
+              <p className="text-2xl text-[#FFD143] drop-shadow-lg">
                 مشاهدة الكل
               </p>
             </div>

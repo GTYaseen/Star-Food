@@ -4,9 +4,7 @@ import axios from "axios";
 import { Card, CardFooter, Image, CardBody } from "@nextui-org/react";
 import { GrFormPrevious } from "react-icons/gr";
 import { Space } from "@/app/components/space/Space";
-import { BiDish } from "react-icons/bi";
 import { Popover } from "antd";
-import ProductModal from "@/app/components/ProductModal/ProductModal";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { RiQuestionLine } from "react-icons/ri";
 import AddCart from "../addCart/AddCart";
@@ -46,31 +44,20 @@ const Product = ({ id }) => {
     console.error("Image failed to load");
     setImageLoaded(true);
   };
-  const handleBiDishClick = (product) => {
-    setSelectedProduct(product);
-    setIsModalOpen(true);
-  };
 
   const handelWatchAll = () => {
     router.push(`/watchAllProduct/` + id);
   };
-  const content = (
-    <div>
-      <p>Content</p>
-      <p>Content</p>
-    </div>
-  );
+
   return (
     <div className="bg-[#FBFAF4] px-3">
       <div className="flex justify-between">
-        <div className="flex items-center">
-          <GrFormPrevious
-            className="text-4xl text-[#FFD143] cursor-pointer hover:scale-105 active:scale-110"
-            onClick={handelWatchAll}
-          />
-          <p className="text-3xl text-[#FFD143] drop-shadow-lg cursor-pointer">
-            مشاهدة الكل
-          </p>
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={handelWatchAll}
+        >
+          <GrFormPrevious className="text-4xl text-[#FFD143] " />
+          <p className="text-3xl text-[#FFD143] drop-shadow-lg">مشاهدة الكل</p>
         </div>
         <p className="text-3xl font-normal drop-shadow-lg">الأطباق</p>
       </div>
@@ -134,8 +121,9 @@ const Product = ({ id }) => {
                           </div>
                         }
                         title={
-                         <div className="text-xl" dir="rtl">✩مكونات الطبق✩
-                         </div>
+                          <div className="text-xl" dir="rtl">
+                            ✩مكونات الطبق✩
+                          </div>
                         }
                         trigger="click"
                       >
