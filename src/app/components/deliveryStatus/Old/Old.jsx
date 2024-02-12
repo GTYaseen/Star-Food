@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AppContainer from "@/app/components/container/container";
 import { Space } from "@/app/components/space/Space";
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
-import { Modal } from "antd";
+import { Modal, Rate } from "antd";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import useStore from "@/app/store";
@@ -14,6 +14,9 @@ export default function Old({ id }) {
   const [loading, setLoading] = useState(true);
   const [kitchen, setKitchen] = useState([]);
   const [Open, SetOpen] = useState(false);
+  const [feedback, SetFeedback] = useState("");
+  const [value, setValue] = useState(0.5);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -59,8 +62,23 @@ export default function Old({ id }) {
     fetchOrders();
     fetchKitchen();
   }, [id]);
-  const handleOk = () => {};
-
+  const handleOk = async () => {
+    SetOpen(false);
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/api/orders/${selectedOrderId}`, // Use selectedOrderId here
+        { feedback, stars: value } // Include feedback and rating in the request body
+      );
+      console.log("Feedback submitted successfully:", response.data);
+      // Optionally, you can perform any actions after submitting feedback, such as updating state or displaying a success message
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      // Optionally, handle errors, display error messages, etc.
+    }
+  };
+  useEffect(() => {
+    console.log(value);
+  }, [value]);
   return (
     <>
       <AppContainer>
@@ -143,7 +161,10 @@ export default function Old({ id }) {
                       <Space width="2rem" />
                       <button
                         className="bg-yellow-300 text-xl px-10 py-2 rounded-md w-[450px] h-[40px] border border-solid border-yellow-300"
-                        onClick={() => SetOpen(true)}
+                        onClick={() => {
+                          SetOpen(true);
+                          setSelectedOrderId(item.id); // Store the id of the current order when the button is clicked
+                        }}
                       >
                         ألتقييم
                       </button>
@@ -158,15 +179,35 @@ export default function Old({ id }) {
         )}
       </AppContainer>
       <Modal
-        title="Basic Modal"
+        title="ألتقييم"
+        centered
         open={Open}
         onOk={handleOk}
-        okButtonProps={{ style: { backgroundColor: "white", color: "ya" } }}
+        className="hover:outline-none"
+        cancelButtonProps={{
+          style: {
+            outline: "none",
+            "&:hover": { outline: "none" },
+          },
+        }}
+        okButtonProps={{ style: { backgroundColor: "yellow", color: "black" } }}
         onCancel={() => SetOpen(false)}
+        style={{ textAlign: "center" }}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <div className="flex flex-col">
+          <Rate
+            allowHalf
+            defaultValue={value} // Pass the value state variable here
+            onChange={(newValue) => setValue(newValue)} // Update the value state on change
+            style={{ fontSize: "30px" }}
+          />
+          <input
+            placeholder="التعليق"
+            value={feedback}
+            onChange={(e) => SetFeedback(e.target.value)}
+            className="border-2 border-solid border-gray-300 rounded-md p-2 mt-4 outline-none text-center text-2xl"
+          />
+        </div>
       </Modal>
     </>
   );

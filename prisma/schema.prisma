@@ -61,6 +61,8 @@ model Orders {
   totalPrice Float
   date       DateTime    @default(now())
   note       String?
+  stars      Float?
+  feedback   String?
   status     OrderStatus
   kitchenId  Int
   kitchen    Kitchen     @relation(fields: [kitchenId], references: [id])
