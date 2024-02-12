@@ -20,10 +20,12 @@ function Page({ params }) {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token == "undefined" || !token) {
+    if (!token || token === "undefined") {
       return;
     } else {
-      setUser(jwtDecode(token));
+      console.log(token);
+      const decodedToken = JSON.parse(atob(token.split(".")[1]));
+      setUser(decodedToken);
     }
   }, []);
   useEffect(() => {

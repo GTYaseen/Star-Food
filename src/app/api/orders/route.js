@@ -10,6 +10,9 @@ export async function GET(req) {
     const orders = await prisma.orders.findMany({
       where: {
         userId: parseInt(id),
+        status: {
+          in: ["Pending", "Preparing"]
+        }
       },
     });
 
