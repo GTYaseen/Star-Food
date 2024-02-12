@@ -62,12 +62,14 @@ export default function Old({ id }) {
     fetchOrders();
     fetchKitchen();
   }, [id]);
+
+  
   const handleOk = async () => {
     SetOpen(false);
     try {
       const response = await axios.put(
         `http://localhost:3000/api/orders/${selectedOrderId}`, // Use selectedOrderId here
-        { feedback, stars: value } // Include feedback and rating in the request body
+        { feedback, stars: value }
       );
       console.log("Feedback submitted successfully:", response.data);
       // Optionally, you can perform any actions after submitting feedback, such as updating state or displaying a success message
@@ -166,7 +168,7 @@ export default function Old({ id }) {
                           setSelectedOrderId(item.id); // Store the id of the current order when the button is clicked
                         }}
                       >
-                        ألتقييم
+                       التقييم
                       </button>
                     </CardFooter>
                   </Card>
