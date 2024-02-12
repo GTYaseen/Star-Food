@@ -63,6 +63,7 @@ model Orders {
   note       String?
   stars      Float?
   feedback   String?
+  commented  Boolean     @default(false)
   status     OrderStatus
   kitchenId  Int
   kitchen    Kitchen     @relation(fields: [kitchenId], references: [id])

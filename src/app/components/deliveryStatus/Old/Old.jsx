@@ -67,7 +67,7 @@ export default function Old({ id }) {
     try {
       const response = await axios.put(
         `http://localhost:3000/api/orders/${selectedOrderId}`, // Use selectedOrderId here
-        { feedback, stars: value } // Include feedback and rating in the request body
+        { feedback, stars: value, commented: true } // Include feedback and rating in the request body
       );
       console.log("Feedback submitted successfully:", response.data);
       // Optionally, you can perform any actions after submitting feedback, such as updating state or displaying a success message
@@ -159,15 +159,21 @@ export default function Old({ id }) {
                         )}
                       </div>
                       <Space width="2rem" />
-                      <button
-                        className="bg-yellow-300 text-xl px-10 py-2 rounded-md w-[450px] h-[40px] border border-solid border-yellow-300"
-                        onClick={() => {
-                          SetOpen(true);
-                          setSelectedOrderId(item.id); // Store the id of the current order when the button is clicked
-                        }}
-                      >
-                        ألتقييم
-                      </button>
+                      {item.commented ? (
+                        <div className="bg-yellow-300 text-center text-xl px-10 py-2 rounded-md w-[450px] h-[40px] border border-solid border-yellow-300">
+                          تم التقييم
+                        </div>
+                      ) : (
+                        <button
+                          className="bg-yellow-300 text-xl px-10 py-2 rounded-md w-[450px] h-[40px] border border-solid border-yellow-300"
+                          onClick={() => {
+                            SetOpen(true);
+                            setSelectedOrderId(item.id); // Store the id of the current order when the button is clicked
+                          }}
+                        >
+                          ألتقييم
+                        </button>
+                      )}
                     </CardFooter>
                   </Card>
                 );
