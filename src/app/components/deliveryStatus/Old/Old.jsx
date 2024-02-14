@@ -171,7 +171,7 @@ export default function Old({ id }) {
                             setSelectedOrderId(item.id); // Store the id of the current order when the button is clicked
                           }}
                         >
-                          ألتقييم
+                         التقييم
                         </button>
                       )}
                     </CardFooter>

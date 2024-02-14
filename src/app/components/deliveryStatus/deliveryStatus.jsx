@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AppContainer from "../../components/container/container";
 import { Space } from "../../components/space/Space";
 import Active from "./Active/Active";
 import Old from "./Old/Old";
+
 export default function DeliveryStatus({ id }) {
   const [clicked, SetClicked] = useState(true);
+  
   return (
     <>
       <div className="bg-white border-b-2 fixed top-12 w-full z-10 h-12">
