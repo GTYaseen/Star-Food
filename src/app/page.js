@@ -36,7 +36,7 @@ function Home() {
   const getKitchens = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:3000/api/kitchen`);
+      const response = await axios.get(`https://star-food-b8w8.vercel.app/api/kitchen`);
       if (response.data.success === true) {
         setKitchens(response.data.kitchens);
       }
@@ -73,12 +73,11 @@ function Home() {
       <AppContainer>
         <Space height={"3rem"} />
 
-        {/* Promotional Section Carousel */}
         <Slider
           dots={true}
           slidesPerRow={true}
           touchMove={true}
-          speed={500}
+          speed={600}
           autoplay={true}
           autoplaySpeed={4000}
           slidesToShow={1}
@@ -91,7 +90,7 @@ function Home() {
               </div>
             </div>
           )}
-        >          {/* First promotional slide */}
+        >   
           <div>
             <div
               className="ml-6 rounded-[45px] overflow-hidden w-[98%] h-[25vh] shadow-lg flex justify-end items-center shadow-custom"

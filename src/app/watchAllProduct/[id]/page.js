@@ -35,7 +35,7 @@ const AllProduct = ({ params }) => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `http://localhost:3000/api/product?id=${id}`
+          `https://star-food-b8w8.vercel.app/api/product?id=${id}`
         );
         setProducts(response.data.product);
         console.log(response.data);

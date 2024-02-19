@@ -1,8 +1,14 @@
 import { PrismaClient } from "@prisma/client";
-import next from "next";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
+
+function setCorsHeaders(response) {
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  return response;
+}
 
 export async function PUT(req, { params }) {
   const { id } = params;
@@ -15,12 +21,19 @@ export async function PUT(req, { params }) {
       data: body,
     });
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       kitchen: UpdatedKitchen,
     });
+
+    return setCorsHeaders(response);
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message });
+    const response = NextResponse.json({
+      success: false,
+      error: error.message,
+    });
+
+    return setCorsHeaders(response);
   }
 }
 
@@ -33,11 +46,18 @@ export async function DELETE(req, { params }) {
       },
     });
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       kitchen: DeletedKitchen,
     });
+
+    return setCorsHeaders(response);
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message });
+    const response = NextResponse.json({
+      success: false,
+      error: error.message,
+    });
+
+    return setCorsHeaders(response);
   }
 }

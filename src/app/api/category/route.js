@@ -1,13 +1,21 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
+
 const prisma = new PrismaClient();
 
-export async function GET(req) {
-  const searchParams = req.nextUrl.searchParams;
-  const id = searchParams.get("id") || undefined;
+function setCorsHeaders(response) {
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  return response;
+}
 
+export async function GET(req) {
   try {
     let whereClause = {};
+
+    const searchParams = req.nextUrl.searchParams;
+    const id = searchParams.get("id") || undefined;
 
     if (id !== undefined) {
       whereClause = {
@@ -22,39 +30,44 @@ export async function GET(req) {
       },
     });
 
-    return NextResponse.json(category, {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
+    const response = NextResponse.json(category);
+
+    return setCorsHeaders(response);
   } catch (error) {
     console.error("Error fetching data:", error);
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       { error: "Internal Server Error" },
       {
         status: 500,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
       }
     );
+
+    return setCorsHeaders(response);
   } finally {
     await prisma.$disconnect();
   }
 }
+
 export async function POST(req) {
-  const body = await req.json();
   try {
-    let category = await prisma.category.create({
+    const body = await req.json();
+    const category = await prisma.category.create({
       data: body,
     });
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       category,
     });
+
+    return setCorsHeaders(response);
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message });
+    const response = NextResponse.json({
+      success: false,
+      error: error.message,
+    });
+
+    return setCorsHeaders(response);
   }
 }

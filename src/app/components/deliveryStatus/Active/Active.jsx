@@ -27,7 +27,7 @@ export default function Active({id}) {
       const fetchOrders = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:3000/api/orders?id=${id}`
+            `https://star-food-b8w8.vercel.app/api/orders?id=${id}`
           );
           if (response.data && response.data.order) {
             setOrders(response.data.order);
@@ -42,7 +42,7 @@ export default function Active({id}) {
       };
       const fetchKitchen = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/api/kitchen`);
+          const response = await axios.get(`https://star-food-b8w8.vercel.app/api/kitchen`);
           if (response.data.success) {
             setKitchen(response.data.kitchens);
           } else {

@@ -32,7 +32,7 @@ export default function Old({ id }) {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/orders/old?id=${id}`
+          `https://star-food-b8w8.vercel.app/api/orders/old?id=${id}`
         );
         if (response.data && response.data.order) {
           setOrders(response.data.order);
@@ -47,7 +47,7 @@ export default function Old({ id }) {
     };
     const fetchKitchen = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/kitchen`);
+        const response = await axios.get(`https://star-food-b8w8.vercel.app/api/kitchen`);
         if (response.data.success) {
           setKitchen(response.data.kitchens);
         } else {
@@ -66,7 +66,7 @@ export default function Old({ id }) {
     SetOpen(false);
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/orders/${selectedOrderId}`, // Use selectedOrderId here
+        `https://star-food-b8w8.vercel.app/api/orders/${selectedOrderId}`, // Use selectedOrderId here
         { feedback, stars: value, commented: true } // Include feedback and rating in the request body
       );
       console.log("Feedback submitted successfully:", response.data);

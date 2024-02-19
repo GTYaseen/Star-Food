@@ -3,23 +3,37 @@ import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
+function setCorsHeaders(response) {
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  return response;
+}
+
 export async function PUT(req, { params }) {
   const { id } = params;
   const body = await req.json();
   try {
-    let category = await prisma.category.update({
+    const updatedCategory = await prisma.category.update({
       where: {
         id: parseInt(id),
       },
       data: body,
     });
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
-      category,
+      category: updatedCategory,
     });
+
+    return setCorsHeaders(response);
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message });
+    const response = NextResponse.json({
+      success: false,
+      error: error.message,
+    });
+
+    return setCorsHeaders(response);
   }
 }
 
@@ -34,11 +48,13 @@ export async function DELETE(req, { params }) {
     });
 
     if (productsInCategory.length > 0) {
-      return NextResponse.json({
+      const response = NextResponse.json({
         success: false,
         msg: "Cannot delete category with associated products",
         error: error.message,
       });
+
+      return setCorsHeaders(response);
     }
 
     // If no associated products, proceed with deletion
@@ -48,11 +64,18 @@ export async function DELETE(req, { params }) {
       },
     });
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       category: deletedCategory,
     });
+
+    return setCorsHeaders(response);
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message });
+    const response = NextResponse.json({
+      success: false,
+      error: error.message,
+    });
+
+    return setCorsHeaders(response);
   }
 }
