@@ -6,19 +6,27 @@ import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 const jwtSecret = process.env.JWT_SECRET_USER;
 
-export async function POST(req) {
-  const { username, password } = await req.json();
+function setCorsHeaders(response) {
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+  response.headers.set("Access-Control-Allow-Headers", "Content-Type");
+  return response;
+}
 
+export async function POST(req) {
   try {
+    const { username, password } = await req.json();
+
     const user = await prisma.users.findUnique({
       where: { username },
     });
 
     if (!user) {
-      return NextResponse.json({
+      const response = NextResponse.json({
         success: false,
         msg: "User not found",
       });
+      return setCorsHeaders(response);
     }
 
     const match = await bcrypt.compare(password, user.password);
@@ -29,18 +37,20 @@ export async function POST(req) {
         jwtSecret,
         { expiresIn: "1h" }
       );
-      console.log(token);
-      return NextResponse.json({
+
+      const response = NextResponse.json({
         success: true,
-        token: token, // Make sure the token is defined
+        token: token,
         user: { id: user.id, username: user.username },
       });
+
+      return setCorsHeaders(response);
     } else {
-      // Handle the case where the password doesn't match
-      return NextResponse.json(
+      const response = NextResponse.json(
         { success: false, msg: "Wrong password!" },
         { status: 401 }
       );
+      return setCorsHeaders(response);
     }
   } catch (error) {
     console.error("Error during processing:", error);
@@ -49,10 +59,12 @@ export async function POST(req) {
       console.error("Prisma error:", error.code);
     }
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       { success: false, error: "Internal server error" },
       { status: 500 }
     );
+
+    return setCorsHeaders(response);
   } finally {
     await prisma.$disconnect();
   }
