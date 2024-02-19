@@ -53,7 +53,7 @@ const Product = ({ id }) => {
     <div className="bg-[#FBFAF4] px-3">
       <div className="flex justify-between">
         <div
-          className="flex items-center cursor-pointer"
+          className="flex items-center cursor-pointer hover:scale-105 active:scale-110"
           onClick={handelWatchAll}
         >
           <GrFormPrevious className="text-4xl text-[#FFD143] " />
