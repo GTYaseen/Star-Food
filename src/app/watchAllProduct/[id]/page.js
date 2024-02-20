@@ -3,11 +3,12 @@ import React, { Suspense, useState, useEffect } from "react";
 import axios from "axios";
 import { Card, CardFooter, Image, CardBody } from "@nextui-org/react";
 import { Space } from "@/app/components/space/Space";
-import ProductModal from "@/app/components/ProductModal/ProductModal";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import AddCart from "@/app/components/addCart/AddCart";
 import AppContainer from "@/app/components/container/container";
 import Navpar from "@/app/components/header/Navpar";
+import { Popover } from "antd";
+import { RiQuestionLine } from "react-icons/ri";
 import useStore from "@/app/store";
 
 const AllProduct = ({ params }) => {
@@ -17,8 +18,8 @@ const AllProduct = ({ params }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const { setUser } = useStore;
-  
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token || token === "undefined") {

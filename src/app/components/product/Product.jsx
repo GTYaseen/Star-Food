@@ -10,7 +10,7 @@ import { RiQuestionLine } from "react-icons/ri";
 import AddCart from "../addCart/AddCart";
 import { useRouter } from "next/navigation";
 
-const Product = ({ id }) => {
+const Product = ({ id, selectedCategoryId }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -33,6 +33,10 @@ const Product = ({ id }) => {
     };
     fetchData();
   }, [id]);
+
+  const filterProducts = selectedCategoryId
+    ? products.filter((product) => product.categoryId === selectedCategoryId)
+    : products;
 
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -75,7 +79,7 @@ const Product = ({ id }) => {
                   <Space height={"5px"} />
                 </div>
               ))
-            : products.map((item, index) => (
+              : filterProducts.map((item, index) => (
                 <Card
                   key={index}
                   className="bg-white border-none mx-auto rounded-3xl w-[230px] shadow-custom m-[10px] sm:m-0 sm:mx-auto "

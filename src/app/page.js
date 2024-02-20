@@ -5,6 +5,8 @@ import FavButton from "./components/favBtn/favBtn";
 import { Card, CardBody, CardFooter, Image, Button } from "@nextui-org/react";
 import { Space } from "./components/space/Space";
 import { GrFormPrevious } from "react-icons/gr";
+import { TiWarningOutline } from "react-icons/ti";
+import { PiWarningOctagonBold } from "react-icons/pi";
 import axios from "axios";
 import Navpar from "./components/header/Navpar";
 import { useRouter } from "next/navigation";
@@ -106,10 +108,13 @@ function Home() {
           <div>
             <div
               className="ml-6 rounded-[45px] overflow-hidden w-[98%] h-[25vh] shadow-lg flex justify-end items-center shadow-custom"
-              style={{ backgroundColor: "#C4C1F9", margin: "5px 5px" }}
+              style={{ backgroundColor: "#eee", margin: "5px 5px" }}
             >
+
               <div className="flex flex-col items-end mr-9">
-                <p className="text-3xl">تيست سلايدر</p>
+              <TiWarningOutline className=" text-3xl text-[red]"/>
+                <p className="text-3xl">تحذير</p>
+                <p className="text-3xl"> ستصاب بأدمان على الطعم </p>
               </div>
             </div>
           </div>

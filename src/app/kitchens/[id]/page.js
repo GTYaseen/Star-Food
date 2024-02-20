@@ -5,7 +5,6 @@ import Navpar from "@/app/components/header/Navpar";
 import { Space } from "@/app/components/space/Space";
 import Category from "@/app/components/category/Category";
 import Product from "@/app/components/product/Product";
-//import { decodeToken } from "@/app/auth";
 import { jwtDecode } from "jwt-decode";
 import useStore from "@/app/store";
 import Cart from "@/app/components/cart/Cart";
@@ -69,7 +68,7 @@ function Page({ params }) {
             <Space height={"3rem"} />
             <Category id={id} />
             <Space height={"3rem"} />
-            <Product id={id} />
+            {/* <Product id={id} /> */}
             <Cart id={id} kitchenData={data[0]}/>
           </>
         ) : (
@@ -92,7 +91,7 @@ function Page({ params }) {
             <Space height={"3rem"} />
             <Category id={id} />
             <Space height={"3rem"} />
-            <Product id={id} />
+            {/* <Product id={id} selectedCategoryId={selectedCategoryId} /> */}
             <Cart id={id} />
           </>
         )}

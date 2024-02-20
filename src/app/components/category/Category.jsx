@@ -5,6 +5,7 @@ import { useState, useEffect, Suspense } from "react";
 import { Card, Image } from "@nextui-org/react";
 import { Space } from "@/app/components/space/Space";
 import { useRouter } from "next/navigation";
+import Product from "../product/Product";
 import axios from "axios";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
@@ -12,6 +13,7 @@ const Category = ({ id }) => {
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null); // Track selected category ID
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,18 +43,15 @@ const Category = ({ id }) => {
 
   const router = useRouter();
 
-  const handleCardClick = () => {
-    router.push(`/products/${id}`);
+  const handleCardClick = (categoryId) => {
+    setSelectedCategoryId(categoryId);
   };
-
 
   return (
     <div>
       <div className="flex justify-between">
         <div className="flex items-center">
-          <GrFormPrevious
-            className="text-4xl text-[#FFD143] cursor-pointer"
-          />
+          <GrFormPrevious className="text-4xl text-[#FFD143] cursor-pointer" />
           <p className="text-3xl text-[#FFD143] drop-shadow-lg cursor-pointer">
             مشاهدة الكل
           </p>
@@ -64,22 +63,21 @@ const Category = ({ id }) => {
         {loading
           ? Array.from({ length: 6 }).map((_, index) => (
               <li key={index} className="flex-shrink-0">
-                <div onClick={handleCardClick}>
-                  <Card
-                    isFooterBlurred
-                    radius="lg"
-                    className="border-none h-[150px] w-[150px]"
-                  >
-                    <div className="animate-pulse bg-yellow-200 rounded-3xl h-32 w-32"></div>
-                  </Card>
-                  <div className="animate-pulse bg-yellow-200 rounded-3xl h-4 w-32" />
-                  <Space height={"1rem"} />
-                </div>
+                <Card
+                  isFooterBlurred
+                  radius="lg"
+                  className="border-none h-[150px] w-[150px]"
+                >
+                  <div className="animate-pulse bg-yellow-200 rounded-3xl h-32 w-32"></div>
+                </Card>
+
+                <div className="animate-pulse bg-yellow-200 rounded-3xl h-4 w-32" />
+                <Space height={"1rem"} />
               </li>
             ))
           : category.map((item) => (
               <li key={item.id} className="cursor-pointer flex-shrink-0">
-                <div>
+                <div onClick={() => handleCardClick(item.id)}>
                   <Card
                     key={item.id}
                     isFooterBlurred
@@ -118,6 +116,7 @@ const Category = ({ id }) => {
               </li>
             ))}
       </ul>
+      <Product id={id} selectedCategoryId={selectedCategoryId} />
     </div>
   );
 };
