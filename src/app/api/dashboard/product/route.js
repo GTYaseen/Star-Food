@@ -2,6 +2,13 @@ import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
+// Function to set CORS headers
+function setCorsHeaders(response) {
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  return response;
+}
 
 export async function GET(req) {
   const searchParams = req.nextUrl.searchParams;
@@ -23,22 +30,20 @@ export async function GET(req) {
       },
     });
 
-    return NextResponse.json({
+    const jsonResponse = {
       success: true,
       product: product,
-    });
-  } catch (error) {
-    console.error("Error fetching data:", error);
+    };
 
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      {
-        status: 500,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    );
+    return setCorsHeaders(NextResponse.json(jsonResponse));
+  } catch (error) {
+    const errorResponse = {
+      error: "Internal Server Error",
+    };
+
+    return setCorsHeaders(NextResponse.json(errorResponse, {
+      status: 500,
+    }));
   } finally {
     await prisma.$disconnect();
   }
@@ -51,11 +56,18 @@ export async function POST(req) {
       data: body,
     });
 
-    return NextResponse.json({
+    const jsonResponse = {
       success: true,
       product,
-    });
+    };
+
+    return setCorsHeaders(NextResponse.json(jsonResponse));
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message });
+    const errorResponse = {
+      success: false,
+      error: error.message,
+    };
+
+    return setCorsHeaders(NextResponse.json(errorResponse));
   }
 }

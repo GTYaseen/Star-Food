@@ -3,6 +3,14 @@ import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
+// Function to set CORS headers
+function setCorsHeaders(response) {
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set("Access-Control-Allow-Methods", "DELETE, PUT, OPTIONS");
+  response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  return response;
+}
+
 export async function PUT(req, { params }) {
   const { id } = params;
   const body = await req.json();
@@ -14,12 +22,19 @@ export async function PUT(req, { params }) {
       data: body,
     });
 
-    return NextResponse.json({
+    const jsonResponse = {
       success: true,
       category,
-    });
+    };
+
+    return setCorsHeaders(NextResponse.json(jsonResponse));
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message });
+    const errorResponse = {
+      success: false,
+      error: error.message,
+    };
+
+    return setCorsHeaders(NextResponse.json(errorResponse));
   }
 }
 
@@ -32,11 +47,18 @@ export async function DELETE(req, { params }) {
       },
     });
 
-    return NextResponse.json({
+    const jsonResponse = {
       success: true,
       category: deletedProduct,
-    });
+    };
+
+    return setCorsHeaders(NextResponse.json(jsonResponse));
   } catch (error) {
-    return NextResponse.json({ success: false, error: error.message });
+    const errorResponse = {
+      success: false,
+      error: error.message,
+    };
+
+    return setCorsHeaders(NextResponse.json(errorResponse));
   }
 }

@@ -1,3 +1,10 @@
+function setCorsHeaders(response) {
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  return response;
+}
+
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -23,29 +30,21 @@ export async function GET(req) {
       },
     });
 
-    return NextResponse.json(
-      {
-        orders: orders,
-        success: true,
-      },
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    );
+    const jsonResponse = {
+      orders: orders,
+      success: true,
+    };
+
+    return setCorsHeaders(NextResponse.json(jsonResponse));
   } catch (error) {
     console.error("Error fetching data:", error);
 
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      {
-        status: 500,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    );
+    const errorResponse = {
+      error: "Internal Server Error",
+      success: false,
+    };
+
+    return setCorsHeaders(NextResponse.json(errorResponse, { status: 500 }));
   } finally {
     await prisma.$disconnect();
   }
@@ -57,14 +56,19 @@ export async function POST(req) {
     let order = await prisma.orders.create({
       data: body,
     });
-    return NextResponse.json({
+
+    const jsonResponse = {
       success: true,
       order,
-    });
+    };
+
+    return setCorsHeaders(NextResponse.json(jsonResponse));
   } catch (error) {
-    return NextResponse.json({
+    const errorResponse = {
       success: false,
       error: error.message,
-    });
+    };
+
+    return setCorsHeaders(NextResponse.json(errorResponse));
   }
 }
