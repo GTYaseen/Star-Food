@@ -38,7 +38,9 @@ function Home() {
   const getKitchens = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`https://star-food-b8w8.vercel.app/api/kitchen`);
+      const response = await axios.get(
+        `https://star-food-b8w8.vercel.app/api/kitchen`
+      );
       if (response.data.success === true) {
         setKitchens(response.data.kitchens);
       }
@@ -85,21 +87,20 @@ function Home() {
           slidesToShow={1}
           slidesToScroll={1}
           swipeToSlide={true}
+          className="px-3"
           appendDots={(dots) => (
             <div>
-              <div className="flex justify-center items-center">
-                {dots}
-              </div>
+              <div className="flex justify-center items-center ">{dots}</div>
             </div>
           )}
-        >   
+        >
           <div>
             <div
-              className="ml-6 rounded-[45px] overflow-hidden w-[98%] h-[25vh] shadow-lg flex justify-end items-center shadow-custom"
+              className="ml-6 rounded-[45px] overflow-hidden w-[98%] h-[15vh] shadow-lg flex justify-end items-center shadow-custom sm:h-[15vh] md:h-[15vh] lg:h-[25vh]"
               style={{ backgroundColor: "#FFE559", margin: "5px 5px" }}
             >
               <div className="flex flex-col items-end mr-9">
-                <p className="text-3xl">تخفيضات تصل الى %20</p>
+                <p className="text-2xl lg:text-3xl">تخفيضات تصل الى %20</p>
                 <p className="text-2xl mt-2">..أطلب الان</p>
               </div>
             </div>
@@ -107,14 +108,15 @@ function Home() {
           {/* second slide */}
           <div>
             <div
-              className="ml-6 rounded-[45px] overflow-hidden w-[98%] h-[25vh] shadow-lg flex justify-end items-center shadow-custom"
+              className="ml-6 rounded-[45px] overflow-hidden w-[98%] h-[15vh] shadow-lg flex justify-end items-center shadow-custom sm:h-[15vh] md:h-[15vh] lg:h-[25vh]"
               style={{ backgroundColor: "#eee", margin: "5px 5px" }}
             >
-
-              <div className="flex flex-col items-end mr-9">
-              <TiWarningOutline className=" text-3xl text-[red]"/>
-                <p className="text-3xl">تحذير</p>
-                <p className="text-3xl"> ستصاب بأدمان على الطعم </p>
+              <div className="flex flex-col items-end mr-9 lg:gap-3">
+                <p className="text-2xl flex lg:text-4xl ">
+                  تحذير
+                  <TiWarningOutline className=" text-3xl text-[red]" />
+                </p>
+                <p className="text-2xl text-end"> ستصاب بأدمان على الطعم </p>
               </div>
             </div>
           </div>
@@ -125,11 +127,11 @@ function Home() {
         {/* Kitchens Section */}
         <div className="flex justify-between mx-5">
           <div className="flex items-center">
-            <div className="flex items-center cursor-pointer hover:scale-105 active:scale-110" 
-            onClick={handlePreviousClick}>
-              <GrFormPrevious
-                className="text-4xl text-[#FFD143]"
-              />
+            <div
+              className="flex items-center cursor-pointer hover:scale-105 active:scale-110"
+              onClick={handlePreviousClick}
+            >
+              <GrFormPrevious className="text-4xl text-[#FFD143]" />
               <p className="text-2xl text-[#FFD143] drop-shadow-lg">
                 مشاهدة الكل
               </p>
@@ -139,17 +141,14 @@ function Home() {
         </div>
         {/* Kitchens */}
         <Space height={"1rem"} />
-        <div className="gap-[10px] grid grid-cols-2 sm:grid-cols-4 rounded-3xl mx-4">
+        <div className="gap-[10px] grid grid-cols-1 px-5 justify-center items-center xs:grid-cols-2  sm:grid-cols-3 lg:grid-cols-4 ">
           {/*add Loading skeletons for card kitchens */}
           {loading
             ? Array.from({ length: 8 }).map((_, index) => (
                 <div key={index} className="animate-pulse">
-                  <div className="bg-yellow-200 border-none rounded-3xl w-[200px] h-[250px]"></div>
-                  <Space height={"5px"} />
-                  <div className="bg-yellow-200 border-none rounded-3xl w-[200px] h-3"></div>
-                  <Space height={"5px"} />
-                  <div className="bg-yellow-200 border-none rounded-3xl w-[200px] h-3"></div>
-                  <Space height={"5px"} />
+                  <div className="bg-yellow-200 border-none rounded-3xl w-[318px] h-[215px] xs:w-full xs:h-[250px]"></div>
+                  <div className="bg-yellow-200 border-none rounded-3xl w-[318px] h-3 mt-2 xs:w-full"></div>
+                  <div className="bg-yellow-200 border-none rounded-3xl w-[318px] h-3 mt-2 xs:w-full"></div>
                 </div>
               ))
             : kitchens.map((item) => (
@@ -158,7 +157,7 @@ function Home() {
                     key={item.id}
                     shadow="3xl"
                     onClick={() => handleCardClick(item.id)}
-                    className="bg-white border-none rounded-3xl w-[200px] h-[250px] ml-6 shadow-custom transition-transform transform hover:scale-105 active:scale-110"
+                    className="bg-white border-none rounded-3xl w-full h-full sx:w-[318px] xs:h-[250px] shadow-custom transition-transform transform hover:scale-105 active:scale-110"
                   >
                     <CardBody className="overflow-visible p-0">
                       <Image
@@ -184,9 +183,9 @@ function Home() {
                         className="flex flex-col items-end mr-[10px] cursor-pointer text-end w-[150px]"
                         onClick={() => handleCardClick(item.id)}
                       >
-                        <p className="text-[20px]">{item.name}</p>
+                        <p className="text-2xl xs:text-lg">{item.name}</p>
 
-                        <span className="text-[16px] mt-[10px]">
+                        <span className="text-[16px] mt-[10px] text-gray-500">
                           {item.description}
                         </span>
                       </div>
