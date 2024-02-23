@@ -59,63 +59,65 @@ const Category = ({ id }) => {
         <p className="text-3xl font-normal drop-shadow-lg">الاصناف</p>
       </div>
       <Space height={"1rem"} />
-      <ul className="flex flex-row gap-5 overflow-y-auto">
-        {loading
-          ? Array.from({ length: 6 }).map((_, index) => (
-              <li key={index} className="flex-shrink-0">
-                <Card
-                  isFooterBlurred
-                  radius="lg"
-                  className="border-none h-[150px] w-[150px]"
-                >
-                  <div className="animate-pulse bg-yellow-200 rounded-3xl h-32 w-32"></div>
-                </Card>
-
-                <div className="animate-pulse bg-yellow-200 rounded-3xl h-4 w-32" />
-                <Space height={"1rem"} />
-              </li>
-            ))
-          : category.map((item) => (
-              <li key={item.id} className="cursor-pointer flex-shrink-0">
-                <div onClick={() => handleCardClick(item.id)}>
+      <div className="px-8">
+        <ul className="flex flex-row gap-5 overflow-y-auto">
+          {loading
+            ? Array.from({ length: 6 }).map((_, index) => (
+                <li key={index} className="flex-shrink-0">
                   <Card
-                    key={item.id}
                     isFooterBlurred
                     radius="lg"
-                    className="border-none h-[150px] w-[150px] transition-transform transform hover:scale-105 active:scale-110"
+                    className="border-none h-[150px] w-[150px]"
                   >
-                    <Suspense
-                      fallback={
-                        <div>
-                          <div className="w-6 h-6 animate-spin" />
-                        </div>
-                      }
-                    >
-                      <Image
-                        alt={item.name}
-                        src={item.image}
-                        loading="lazy" // Use loading attribute for lazy loading
-                        className="w-full object-cover h-[140px] rounded-t-3xl rounded-b-none"
-                        onLoad={handleImageLoad} // Event when the image is loaded
-                        onError={handleImageError} // Event when there is an error loading the image
-                      />
-                      {!imageLoaded && (
-                        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black opacity-50">
-                          <div className="w-6 h-6 animate-spin text-[#FFD143] text-2xl font-bold">
-                            <AiOutlineLoading3Quarters />
-                          </div>
-                        </div>
-                      )}
-                    </Suspense>
+                    <div className="animate-pulse bg-yellow-200 rounded-3xl h-32 w-32"></div>
                   </Card>
-                  <p className="text-2xl font-normal text-center">
-                    {item.name}
-                  </p>
+
+                  <div className="animate-pulse bg-yellow-200 rounded-3xl h-4 w-32" />
                   <Space height={"1rem"} />
-                </div>
-              </li>
-            ))}
-      </ul>
+                </li>
+              ))
+            : category.map((item) => (
+                <li key={item.id} className="cursor-pointer flex-shrink-0">
+                  <div onClick={() => handleCardClick(item.id)}>
+                    <Card
+                      key={item.id}
+                      isFooterBlurred
+                      radius="lg"
+                      className="border-none h-[150px] w-[150px] transition-transform transform hover:scale-105 active:scale-110"
+                    >
+                      <Suspense
+                        fallback={
+                          <div>
+                            <div className="w-6 h-6 animate-spin" />
+                          </div>
+                        }
+                      >
+                        <Image
+                          alt={item.name}
+                          src={item.image}
+                          loading="lazy" // Use loading attribute for lazy loading
+                          className="w-full object-cover h-[140px] rounded-t-3xl rounded-b-none"
+                          onLoad={handleImageLoad} // Event when the image is loaded
+                          onError={handleImageError} // Event when there is an error loading the image
+                        />
+                        {!imageLoaded && (
+                          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black opacity-50">
+                            <div className="w-6 h-6 animate-spin text-[#FFD143] text-2xl font-bold">
+                              <AiOutlineLoading3Quarters />
+                            </div>
+                          </div>
+                        )}
+                      </Suspense>
+                    </Card>
+                    <p className="text-2xl font-normal text-center">
+                      {item.name}
+                    </p>
+                    <Space height={"1rem"} />
+                  </div>
+                </li>
+              ))}
+        </ul>
+      </div>
       <Product id={id} selectedCategoryId={selectedCategoryId} />
     </div>
   );

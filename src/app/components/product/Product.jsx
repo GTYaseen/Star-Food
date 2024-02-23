@@ -67,22 +67,19 @@ const Product = ({ id, selectedCategoryId }) => {
       {/* product */}
       <Space height={"1rem"} />
       <div className="flex justify-center items-center">
-        <div className="gap-[10px] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 rounded-3xl sm:w-full md:w-full lg:w-full mx-auto">
+        <div className="gap-[10px] w-full grid grid-cols-1 px-5 justify-center items-center xs:grid-cols-2  sm:grid-cols-3 lg:grid-cols-4">
           {loading
             ? Array.from({ length: 8 }).map((_, index) => (
                 <div key={index} className="animate-pulse">
-                  <div className="bg-yellow-200 border-none rounded-3xl w-[230px] h-[180px]"></div>
-                  <Space height={"5px"} />
-                  <div className="bg-yellow-200 border-none rounded-3xl w-[230px] h-3"></div>
-                  <Space height={"5px"} />
-                  <div className="bg-yellow-200 border-none rounded-3xl w-[230px] h-3"></div>
-                  <Space height={"5px"} />
+                  <div className="bg-yellow-200 border-none rounded-3xl w-[318px] h-[215px] xs:w-full xs:h-[250px]"></div>
+                  <div className="bg-yellow-200 border-none rounded-3xl w-[318px] h-3 mt-2 xs:w-full"></div>
+                  <div className="bg-yellow-200 border-none rounded-3xl w-[318px] h-3 mt-2 xs:w-full"></div>
                 </div>
               ))
               : filterProducts.map((item, index) => (
                 <Card
                   key={index}
-                  className="bg-white border-none mx-auto rounded-3xl w-[230px] shadow-custom m-[10px] sm:m-0 sm:mx-auto "
+                  className="bg-white border-none rounded-3xl w-full h-full sx:w-[318px] xs:h-[200] shadow-custom transition-transform transform hover:scale-105 active:scale-110"
                 >
                   <CardBody className="overflow-visible p-0">
                     {/* Lazy load the Image component */}
@@ -113,7 +110,7 @@ const Product = ({ id, selectedCategoryId }) => {
                     </Suspense>
                   </CardBody>
                   <Space height={"5px"} />
-                  <CardFooter className="text-small justify-between h-fit">
+                  <CardFooter className="text-small justify-between h-fit p-1">
                     <div className="flex items-center justify-start">
                       <AddCart item={item} />
                       <Popover
@@ -133,7 +130,7 @@ const Product = ({ id, selectedCategoryId }) => {
                       </Popover>
                     </div>
                     <div className="flex flex-col items-end justify-center mr-[10px] w-full">
-                      <p className="text-xl text-end">{item.name}</p>
+                      <p className="text-xl text-end xs:text-base">{item.name}</p>
                       <p>{item.price}</p>
                     </div>
                   </CardFooter>

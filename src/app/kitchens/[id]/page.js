@@ -69,24 +69,22 @@ function Page({ params }) {
             <Category id={id} />
             <Space height={"3rem"} />
             {/* <Product id={id} /> */}
-            <Cart id={id} kitchenData={data[0]}/>
+            <Cart id={id} kitchenData={data[0]} />
           </>
         ) : (
           <>
             {data.kitchens && data.kitchens.length > 0 && (
-              <div className="flex justify-between items-center">
-              <Image
-              shadow="xl"
-              radius="50%"
-              width="100%"
-              height="100%"
-              className="w-[160px] object-cover h-[160px] rounded-full z-0"
-              src={data.kitchens[0].image}
-            />
-               <p className="text-5xl font-normal">
-                {data.kitchens[0].name}
-              </p>
-            </div>
+              <div className="flex justify-between items-center px-2">
+                <Image
+                  shadow="xl"
+                  radius="50%"
+                  width="100%"
+                  height="100%"
+                  className="w-[160px] object-cover h-[160px] rounded-full z-0"
+                  src={data.kitchens[0].image}
+                />
+                <p className="text-5xl font-normal text-end">{data.kitchens[0].name}</p>
+              </div>
             )}
             <Space height={"3rem"} />
             <Category id={id} />
