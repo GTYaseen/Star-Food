@@ -11,7 +11,6 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { jwtDecode } from "jwt-decode";
 import { Modal } from "@/app/components/modal/Modal";
 import axios from "axios";
-import { OrderStatus } from "@prisma/client";
 
 function Page({ params }) {
   const idP = params.id;
@@ -267,7 +266,7 @@ function Page({ params }) {
         </div>
       )}
       <Modal open={kicker} onOk={handelSingIn} onClose={handelHome}>
-        You are not signed in, please sign in
+       يرجى تسجيل الدخول لأتمام عملية الطلب
       </Modal>
     </div>
   );

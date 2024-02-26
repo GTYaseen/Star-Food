@@ -10,7 +10,7 @@ import useStore from "@/app/store";
 import Cart from "@/app/components/cart/Cart";
 import { Image } from "@nextui-org/react";
 
-function Page({ params }) {
+function Page({ params , selectedCategoryId}) {
   const id = params.id;
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);

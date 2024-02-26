@@ -6,7 +6,6 @@ import { Card, CardBody, CardFooter, Image, Button } from "@nextui-org/react";
 import { Space } from "./components/space/Space";
 import { GrFormPrevious } from "react-icons/gr";
 import { TiWarningOutline } from "react-icons/ti";
-import { PiWarningOctagonBold } from "react-icons/pi";
 import axios from "axios";
 import Navpar from "./components/header/Navpar";
 import { useRouter } from "next/navigation";
@@ -90,7 +89,11 @@ function Home() {
           className="px-3"
           appendDots={(dots) => (
             <div>
+<<<<<<< Updated upstream
               <div className="flex justify-center items-center ">{dots}</div>
+=======
+              <div className="flex justify-center items-center">{dots}</div>
+>>>>>>> Stashed changes
             </div>
           )}
         >
@@ -108,6 +111,7 @@ function Home() {
           {/* second slide */}
           <div>
             <div
+<<<<<<< Updated upstream
               className="ml-6 rounded-[45px] overflow-hidden w-[98%] h-[15vh] shadow-lg flex justify-end items-center shadow-custom sm:h-[15vh] md:h-[15vh] lg:h-[25vh]"
               style={{ backgroundColor: "#eee", margin: "5px 5px" }}
             >
@@ -117,6 +121,15 @@ function Home() {
                   <TiWarningOutline className=" text-3xl text-[red]" />
                 </p>
                 <p className="text-2xl text-end"> ستصاب بأدمان على الطعم </p>
+=======
+              className=" shadow-custom ml-6 rounded-[45px] overflow-hidden w-[98%] h-[25vh] shadow-lg flex justify-end items-center shadow-custom"
+              style={{ backgroundColor: "#eee", margin: "5px 5px" }}
+            >
+              <div className="flex flex-col items-end mr-9">
+                <TiWarningOutline className=" text-3xl text-[red]" />
+                <p className="text-3xl">تحذير</p>
+                <p className="text-2xl"> ستصاب بأدمان على الطعم </p>
+>>>>>>> Stashed changes
               </div>
             </div>
           </div>
